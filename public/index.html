@@ -1,1 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HandNote AI</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #222;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 25px 18px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4f46e5;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 7px;
+    }
+
+    textarea,
+    select,
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #4f46e5;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      background: #999;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f8ff;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .loading {
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>✍️ HandNote AI</h1>
+    <p class="subtitle">Your helpful AI study assistant</p>
+
+    <div class="card">
+
+      <label for="question">Ask your question</label>
+
+      <textarea
+        id="question"
+        placeholder="Type your question here..."
+      ></textarea>
+
+      <label for="style">Answer Style</label>
+
+      <select id="style">
+        <option value="standard">Standard</option>
+        <option value="short">Short</option>
+        <option value="detailed">Detailed</option>
+        <option value="exam">Exam Answer</option>
+      </select>
+
+      <label for="language">Language</label>
+
+      <select id="language">
+        <option value="English">English</option>
+        <option value="Hindi">Hindi</option>
+        <option value="Assamese">Assamese</option>
+      </select>
+
+      <label for="file">Upload handwritten image (optional)</label>
+
+      <input
+        type="file"
+        id="file"
+        accept="image/*"
+      >
+
+      <button id="askBtn" onclick="askAI()">
+        Ask HandNote AI
+      </button>
+
+      <div id="result"></div>
+
+    </div>
+
+  </div>
+
+  <script>
+    async function askAI() {
+
+      const question = document.getElementById("question").value.trim();
+      const style = document.getElementById("style").value;
+      const language = document.getElementById("language").value;
+      const file = document.getElementById("file").files[0];
+
+      const result = document.getElementById("result");
+      const button = document.getElementById("askBtn");
+
+      if (!question && !file) {
+        alert("Please enter a question or upload an image.");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Thinking...";
+      result.style.display = "block";
+      result.innerHTML = '<div class="loading">HandNote AI is thinking...</div>';
+
+      try {
+
+        const formData = new FormData();
+
+        if (question) {
+          formData.append("question", question);
+        }
+
+        formData.append("style", style);
+        formData.append("language", language);
+
+        if (file) {
+          formData.append("file", file);
+        }
+
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Request failed");
+        }
+
+        result.textContent = data.answer || "No answer received.";
+
+      } catch (error) {
+
+        result.textContent =
+          "Error: " + error.message;
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent = "Ask HandNote AI";
+
+      }
+    }
+  </script>
+
+</body>
+</html>
