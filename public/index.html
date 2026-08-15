@@ -1,215 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HandNote AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HandNote AI</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #222;
-    }
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7ff;
+  color:#202124;
+}
 
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 25px 18px;
-    }
+header{
+  background:#4f46e5;
+  color:white;
+  padding:22px 18px;
+  text-align:center;
+}
 
-    h1 {
-      text-align: center;
-      color: #4f46e5;
-      margin-bottom: 5px;
-    }
+header h1{
+  margin:0;
+  font-size:28px;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 25px;
-    }
+header p{
+  margin:7px 0 0;
+  opacity:.9;
+}
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
+.container{
+  max-width:850px;
+  margin:auto;
+  padding:18px;
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin-top: 15px;
-      margin-bottom: 7px;
-    }
+.card{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,.08);
+}
 
-    textarea,
-    select,
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-    }
+h2{
+  margin-top:0;
+  font-size:20px;
+}
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 
-    button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #4f46e5;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-    }
+.option{
+  border:1px solid #ddd;
+  border-radius:14px;
+  padding:16px;
+  background:#fafafa;
+}
 
-    button:disabled {
-      background: #999;
-    }
+.option strong{
+  display:block;
+  margin-bottom:5px;
+}
 
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f8f8ff;
-      border-radius: 10px;
-      white-space: pre-wrap;
-      line-height: 1.6;
-      display: none;
-    }
+label{
+  display:block;
+  font-weight:bold;
+  margin:15px 0 7px;
+}
 
-    .loading {
-      text-align: center;
-      color: #666;
-    }
-  </style>
+textarea,select,input[type=file]{
+  width:100%;
+  padding:13px;
+  border:1px solid #d5d5d5;
+  border-radius:10px;
+  font-size:16px;
+  background:white;
+}
+
+textarea{
+  min-height:140px;
+  resize:vertical;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:15px;
+  border:0;
+  border-radius:11px;
+  background:#4f46e5;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#eee;
+  color:#333;
+}
+
+button:disabled{
+  background:#999;
+}
+
+#result{
+  display:none;
+  margin-top:18px;
+  padding:18px;
+  border-radius:12px;
+  background:#f7f7ff;
+  white-space:pre-wrap;
+  line-height:1.65;
+}
+
+.loading{
+  text-align:center;
+  color:#666;
+}
+
+.preview{
+  background:#fffef8;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:20px;
+  min-height:150px;
+  line-height:1.8;
+}
+
+.small{
+  color:#777;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media print{
+  header,.no-print,.card:not(.note-card){
+    display:none!important;
+  }
+
+  body{
+    background:white;
+  }
+
+  .container{
+    max-width:none;
+  }
+
+  .note-card{
+    box-shadow:none;
+    border:0;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<header>
+  <h1>✍️ HandNote AI</h1>
+  <p>Turn your study material into smart notes</p>
+</header>
 
-    <h1>✍️ HandNote AI</h1>
-    <p class="subtitle">Your helpful AI study assistant</p>
+<div class="container">
 
-    <div class="card">
+  <div class="card no-print">
+    <h2>What do you want to do?</h2>
 
-      <label for="question">Ask your question</label>
+    <div class="grid">
+      <div class="option">
+        <strong>📷 Photo → Notes</strong>
+        <span class="small">Upload study material and ask AI about it.</span>
+      </div>
 
-      <textarea
-        id="question"
-        placeholder="Type your question here..."
-      ></textarea>
+      <div class="option">
+        <strong>⌨️ Write → Notes</strong>
+        <span class="small">Type your topic or question.</span>
+      </div>
 
-      <label for="style">Answer Style</label>
+      <div class="option">
+        <strong>🤖 AI Study Assistant</strong>
+        <span class="small">Ask questions and get explanations.</span>
+      </div>
 
-      <select id="style">
-        <option value="standard">Standard</option>
-        <option value="short">Short</option>
-        <option value="detailed">Detailed</option>
-        <option value="exam">Exam Answer</option>
-      </select>
+      <div class="option">
+        <strong>✍️ Handwritten Output</strong>
+        <span class="small">Handwriting generation will be added next.</span>
+      </div>
+    </div>
+  </div>
 
-      <label for="language">Language</label>
+  <div class="card no-print">
 
-      <select id="language">
-        <option value="English">English</option>
-        <option value="Hindi">Hindi</option>
-        <option value="Assamese">Assamese</option>
-      </select>
+    <h2>📚 Create your notes</h2>
 
-      <label for="file">Upload handwritten image (optional)</label>
+    <label for="question">Write your question or topic</label>
 
-      <input
-        type="file"
-        id="file"
-        accept="image/*"
-      >
+    <textarea
+      id="question"
+      placeholder="Example: Explain photosynthesis in simple language..."
+    ></textarea>
 
-      <button id="askBtn" onclick="askAI()">
-        Ask HandNote AI
+    <label for="file">📷 Upload study material</label>
+
+    <input
+      type="file"
+      id="file"
+      accept="image/*"
+    >
+
+    <label for="style">📝 Answer style</label>
+
+    <select id="style">
+      <option value="standard">Standard Notes</option>
+      <option value="short">Short Notes</option>
+      <option value="detailed">Detailed Notes</option>
+      <option value="exam">Exam Answer</option>
+    </select>
+
+    <label for="language">🌐 Language</label>
+
+    <select id="language">
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Assamese">Assamese</option>
+    </select>
+
+    <button id="askBtn" onclick="askAI()">
+      🤖 Generate with HandNote AI
+    </button>
+
+    <div id="result"></div>
+
+  </div>
+
+  <div class="card note-card">
+
+    <h2>📄 Note Preview</h2>
+
+    <div id="preview" class="preview">
+      Your generated notes will appear here.
+    </div>
+
+    <div class="no-print">
+      <button onclick="preparePDF()">
+        📥 Save / Print as PDF
       </button>
 
-      <div id="result"></div>
-
+      <button class="secondary" onclick="clearAll()">
+        🗑️ Clear
+      </button>
     </div>
 
   </div>
 
-  <script>
-    async function askAI() {
+</div>
 
-      const question = document.getElementById("question").value.trim();
-      const style = document.getElementById("style").value;
-      const language = document.getElementById("language").value;
-      const file = document.getElementById("file").files[0];
+<script>
 
-      const result = document.getElementById("result");
-      const button = document.getElementById("askBtn");
+async function askAI(){
 
-      if (!question && !file) {
-        alert("Please enter a question or upload an image.");
-        return;
-      }
+  const question =
+    document.getElementById("question").value.trim();
 
-      button.disabled = true;
-      button.textContent = "Thinking...";
-      result.style.display = "block";
-      result.innerHTML = '<div class="loading">HandNote AI is thinking...</div>';
+  const style =
+    document.getElementById("style").value;
 
-      try {
+  const language =
+    document.getElementById("language").value;
 
-        const formData = new FormData();
+  const file =
+    document.getElementById("file").files[0];
 
-        if (question) {
-          formData.append("question", question);
-        }
+  const result =
+    document.getElementById("result");
 
-        formData.append("style", style);
-        formData.append("language", language);
+  const preview =
+    document.getElementById("preview");
 
-        if (file) {
-          formData.append("file", file);
-        }
+  const button =
+    document.getElementById("askBtn");
 
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          body: formData
-        });
+  if(!question && !file){
+    alert("Please write a question or upload an image.");
+    return;
+  }
 
-        const data = await response.json();
+  button.disabled=true;
+  button.textContent="🤖 HandNote AI is thinking...";
 
-        if (!response.ok) {
-          throw new Error(data.error || "Request failed");
-        }
+  result.style.display="block";
+  result.innerHTML=
+    '<div class="loading">Reading your material and preparing notes...</div>';
 
-        result.textContent = data.answer || "No answer received.";
+  try{
 
-      } catch (error) {
+    const formData=new FormData();
 
-        result.textContent =
-          "Error: " + error.message;
-
-      } finally {
-
-        button.disabled = false;
-        button.textContent = "Ask HandNote AI";
-
-      }
+    if(question){
+      formData.append("question",question);
     }
-  </script>
+
+    formData.append("style",style);
+    formData.append("language",language);
+
+    if(file){
+      formData.append("file",file);
+    }
+
+    const response=await fetch("/api/chat",{
+      method:"POST",
+      body:formData
+    });
+
+    const data=await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error || "Request failed");
+    }
+
+    const answer=data.answer || "No answer received.";
+
+    result.textContent=answer;
+    preview.textContent=answer;
+
+  }catch(error){
+
+    result.textContent=
+      "Something went wrong: "+error.message;
+
+  }finally{
+
+    button.disabled=false;
+    button.textContent="🤖 Generate with HandNote AI";
+
+  }
+}
+
+function preparePDF(){
+  window.print();
+}
+
+function clearAll(){
+
+  document.getElementById("question").value="";
+  document.getElementById("file").value="";
+  document.getElementById("result").style.display="none";
+
+  document.getElementById("preview").textContent=
+    "Your generated notes will appear here.";
+}
+
+</script>
 
 </body>
 </html>
