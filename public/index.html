@@ -62,6 +62,13 @@ h2{
   border-radius:14px;
   padding:16px;
   background:#fafafa;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.option:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 
 .option strong{
@@ -133,11 +140,16 @@ button:disabled{
   padding:20px;
   min-height:150px;
   line-height:1.8;
+  white-space:pre-wrap;
 }
 
 .small{
   color:#777;
   font-size:13px;
+}
+
+.hidden{
+  display:none;
 }
 
 @media(max-width:600px){
@@ -176,52 +188,80 @@ button:disabled{
 
 <div class="container">
 
+  <!-- FEATURES -->
+
   <div class="card no-print">
     <h2>What do you want to do?</h2>
 
     <div class="grid">
-      <div class="option">
+
+      <div class="option" onclick="selectPhoto()">
         <strong>📷 Photo → Notes</strong>
-        <span class="small">Upload study material and ask AI about it.</span>
+        <span class="small">
+          Upload study material and turn it into notes.
+        </span>
       </div>
 
-      <div class="option">
+      <div class="option" onclick="selectWrite()">
         <strong>⌨️ Write → Notes</strong>
-        <span class="small">Type your topic or question.</span>
+        <span class="small">
+          Type a topic and generate organized notes.
+        </span>
       </div>
 
-      <div class="option">
+      <div class="option" onclick="selectAI()">
         <strong>🤖 AI Study Assistant</strong>
-        <span class="small">Ask questions and get explanations.</span>
+        <span class="small">
+          Ask questions and get explanations.
+        </span>
       </div>
 
-      <div class="option">
+      <div class="option" onclick="selectHandwriting()">
         <strong>✍️ Handwritten Output</strong>
-        <span class="small">Handwriting generation will be added next.</span>
+        <span class="small">
+          Prepare notes for handwritten conversion.
+        </span>
       </div>
+
     </div>
   </div>
 
-  <div class="card no-print">
+
+  <!-- CREATE NOTES -->
+
+  <div class="card no-print" id="createCard">
 
     <h2>📚 Create your notes</h2>
 
-    <label for="question">Write your question or topic</label>
+    <label for="question">
+      Write your question or topic
+    </label>
 
     <textarea
       id="question"
       placeholder="Example: Explain photosynthesis in simple language..."
     ></textarea>
 
-    <label for="file">📷 Upload study material</label>
+
+    <label for="file">
+      📎 Upload study material
+    </label>
 
     <input
       type="file"
       id="file"
-      accept="image/*"
+      accept="image/*,.pdf,.txt,.doc,.docx,.ppt,.pptx"
     >
 
-    <label for="style">📝 Answer style</label>
+    <p class="small">
+      Images are supported now. PDF and other document processing
+      will be connected in the next development step.
+    </p>
+
+
+    <label for="style">
+      📝 Answer style
+    </label>
 
     <select id="style">
       <option value="standard">Standard Notes</option>
@@ -230,13 +270,17 @@ button:disabled{
       <option value="exam">Exam Answer</option>
     </select>
 
-    <label for="language">🌐 Language</label>
+
+    <label for="language">
+      🌐 Language
+    </label>
 
     <select id="language">
       <option value="English">English</option>
       <option value="Hindi">Hindi</option>
       <option value="Assamese">Assamese</option>
     </select>
+
 
     <button id="askBtn" onclick="askAI()">
       🤖 Generate with HandNote AI
@@ -245,6 +289,9 @@ button:disabled{
     <div id="result"></div>
 
   </div>
+
+
+  <!-- NOTE PREVIEW -->
 
   <div class="card note-card">
 
@@ -255,6 +302,7 @@ button:disabled{
     </div>
 
     <div class="no-print">
+
       <button onclick="preparePDF()">
         📥 Save / Print as PDF
       </button>
@@ -262,13 +310,65 @@ button:disabled{
       <button class="secondary" onclick="clearAll()">
         🗑️ Clear
       </button>
+
     </div>
 
   </div>
 
 </div>
 
+
 <script>
+
+function scrollToCreate(){
+  document.getElementById("createCard")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+}
+
+
+function selectPhoto(){
+
+  document.getElementById("question").value="";
+
+  document.getElementById("file").click();
+
+  scrollToCreate();
+}
+
+
+function selectWrite(){
+
+  document.getElementById("question").focus();
+
+  scrollToCreate();
+}
+
+
+function selectAI(){
+
+  document.getElementById("question").focus();
+
+  document.getElementById("style").value="standard";
+
+  scrollToCreate();
+}
+
+
+function selectHandwriting(){
+
+  document.getElementById("style").value="detailed";
+
+  document.getElementById("question").focus();
+
+  scrollToCreate();
+
+  alert(
+    "Handwritten output is being prepared. Generate your notes first; handwriting generation will be connected in the next stage."
+  );
+}
+
 
 async function askAI(){
 
@@ -293,74 +393,149 @@ async function askAI(){
   const button =
     document.getElementById("askBtn");
 
+
   if(!question && !file){
-    alert("Please write a question or upload an image.");
+
+    alert(
+      "Please write a question or upload study material."
+    );
+
     return;
   }
 
+
   button.disabled=true;
-  button.textContent="🤖 HandNote AI is thinking...";
+
+  button.textContent=
+    "🤖 HandNote AI is thinking...";
+
 
   result.style.display="block";
+
   result.innerHTML=
     '<div class="loading">Reading your material and preparing notes...</div>';
+
 
   try{
 
     const formData=new FormData();
 
+
     if(question){
-      formData.append("question",question);
+
+      formData.append(
+        "question",
+        question
+      );
+
     }
 
-    formData.append("style",style);
-    formData.append("language",language);
+
+    formData.append(
+      "style",
+      style
+    );
+
+
+    formData.append(
+      "language",
+      language
+    );
+
 
     if(file){
-      formData.append("file",file);
+
+      formData.append(
+        "file",
+        file
+      );
+
     }
 
-    const response=await fetch("/api/chat",{
-      method:"POST",
-      body:formData
-    });
+
+    const response=await fetch(
+      "/api/chat",
+      {
+        method:"POST",
+        body:formData
+      }
+    );
+
 
     const data=await response.json();
 
+
     if(!response.ok){
-      throw new Error(data.error || "Request failed");
+
+      throw new Error(
+        data.error ||
+        "Request failed"
+      );
+
     }
 
-    const answer=data.answer || "No answer received.";
 
-    result.textContent=answer;
-    preview.textContent=answer;
+    const answer=
+      data.answer ||
+      "No answer received.";
+
+
+    result.textContent=
+      answer;
+
+
+    preview.textContent=
+      answer;
+
 
   }catch(error){
 
     result.textContent=
-      "Something went wrong: "+error.message;
+      "Something went wrong: "+
+      error.message;
+
 
   }finally{
 
     button.disabled=false;
-    button.textContent="🤖 Generate with HandNote AI";
+
+    button.textContent=
+      "🤖 Generate with HandNote AI";
 
   }
+
 }
 
+
 function preparePDF(){
+
   window.print();
+
 }
+
 
 function clearAll(){
 
-  document.getElementById("question").value="";
-  document.getElementById("file").value="";
-  document.getElementById("result").style.display="none";
+  document.getElementById(
+    "question"
+  ).value="";
 
-  document.getElementById("preview").textContent=
+
+  document.getElementById(
+    "file"
+  ).value="";
+
+
+  document.getElementById(
+    "result"
+  ).style.display="none";
+
+
+  document.getElementById(
+    "preview"
+  ).textContent=
     "Your generated notes will appear here.";
+
 }
 
 </script>
