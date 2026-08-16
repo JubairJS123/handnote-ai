@@ -136,7 +136,7 @@ button.danger{
   display:none!important;
 }
 
-/* Upload area */
+/* Upload */
 
 .upload-box{
   margin-top:10px;
@@ -186,14 +186,15 @@ button.danger{
   font-weight:bold;
 }
 
+/* Result */
+
 .result{
   display:none;
   margin-top:18px;
   padding:18px;
   border-radius:12px;
   background:#f7f7ff;
-  white-space:pre-wrap;
-  line-height:1.65;
+  line-height:1.7;
 }
 
 .loading{
@@ -207,23 +208,71 @@ button.danger{
   padding:20px 5px;
 }
 
+/* Handwritten paper */
+
 .note-preview{
-  background:#fffef8;
-  border:1px solid #ddd;
+  position:relative;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #fffef8 0px,
+      #fffef8 31px,
+      #dfe7f2 32px
+    );
+  border:1px solid #d7d3c8;
   border-radius:12px;
-  padding:20px;
-  min-height:150px;
-  white-space:pre-wrap;
-  line-height:1.8;
+  padding:28px 22px 28px 48px;
+  min-height:220px;
+  line-height:32px;
+  font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;
+  font-size:18px;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  box-shadow:inset 7px 0 0 #f3b6b6;
+}
+
+.note-title{
+  font-size:25px;
+  font-weight:bold;
+  margin-bottom:14px;
+  text-decoration:underline;
+}
+
+.note-heading{
+  font-size:20px;
+  font-weight:bold;
+  margin-top:14px;
+  margin-bottom:4px;
+}
+
+.note-line{
+  margin:0;
+}
+
+.note-bullet{
+  margin:0;
+  padding-left:4px;
+}
+
+.code-clean{
+  font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;
 }
 
 @media(max-width:600px){
+
   .feature-grid{
     grid-template-columns:1fr;
   }
+
+  .note-preview{
+    padding-left:35px;
+    font-size:16px;
+  }
+
 }
 
 @media print{
+
   header,
   .no-print{
     display:none!important;
@@ -232,10 +281,15 @@ button.danger{
   body{
     background:white;
   }
+
+  .note-preview{
+    box-shadow:none;
+    border:0;
+  }
+
 }
 </style>
 </head>
-
 
 <body>
 
@@ -243,15 +297,11 @@ button.danger{
 
   <h1>✍️ HandNote AI</h1>
 
-  <p>
-    Your AI study and handwriting assistant
-  </p>
+  <p>Your AI study and handwriting assistant</p>
 
 </header>
 
-
 <div class="container">
-
 
   <!-- MAIN FEATURES -->
 
@@ -261,89 +311,52 @@ button.danger{
 
     <div class="feature-grid">
 
-
-      <div
-        class="feature"
-        onclick="openPhotoNotes()"
-      >
-
+      <div class="feature" onclick="openPhotoNotes()">
         <strong>📷 Photo → Notes</strong>
-
         <span class="small">
           Upload a study photo and generate notes.
         </span>
-
       </div>
 
-
-      <div
-        class="feature"
-        onclick="openAskAI()"
-      >
-
+      <div class="feature" onclick="openAskAI()">
         <strong>🤖 Ask AI</strong>
-
         <span class="small">
           Ask a normal question without using a photo.
         </span>
-
       </div>
 
-
-      <div
-        class="feature"
-        onclick="openDocuments()"
-      >
-
+      <div class="feature" onclick="openDocuments()">
         <strong>📚 Document → Notes</strong>
-
         <span class="small">
           PDF and multi-page documents.
         </span>
-
       </div>
 
-
-      <div
-        class="feature"
-        onclick="openHandwriting()"
-      >
-
+      <div class="feature" onclick="openHandwriting()">
         <strong>✍️ Text → Handwritten</strong>
-
         <span class="small">
           Convert text into handwritten notes.
         </span>
-
       </div>
-
 
     </div>
 
   </div>
 
+  <!-- PHOTO -->
 
-
-  <!-- PHOTO TO NOTES -->
-
-  <div
-    id="photoSection"
-    class="card hidden"
-  >
+  <div id="photoSection" class="card hidden">
 
     <h2>📷 Photo → Notes</h2>
 
     <p class="small">
       Upload your study material and HandNote AI will read it
-      and create notes.
+      and create clean handwritten-style notes.
     </p>
-
 
     <div class="upload-box">
 
-      <label for="photoFile">
-        Select study photo
-      </label>
+      <label for="photoFile">Select study photo</label>
 
       <input
         type="file"
@@ -352,42 +365,21 @@ button.danger{
         onchange="photoSelected()"
       >
 
+      <div id="photoFileName" class="file-name hidden"></div>
 
-      <div
-        id="photoFileName"
-        class="file-name hidden"
-      ></div>
-
-
-      <div
-        id="photoProgress"
-        class="progress-container"
-      >
+      <div id="photoProgress" class="progress-container">
 
         <div class="progress-background">
-
-          <div
-            id="photoProgressBar"
-            class="progress-bar"
-          ></div>
-
+          <div id="photoProgressBar" class="progress-bar"></div>
         </div>
 
-        <div
-          id="photoProgressText"
-          class="progress-text"
-        >
+        <div id="photoProgressText" class="progress-text">
           0%
         </div>
 
       </div>
 
-
-      <div
-        id="photoStatus"
-        class="upload-status"
-      ></div>
-
+      <div id="photoStatus" class="upload-status"></div>
 
       <button
         id="removePhotoBtn"
@@ -399,168 +391,91 @@ button.danger{
 
     </div>
 
-
-    <label for="photoStyle">
-      📝 Note style
-    </label>
+    <label for="photoStyle">📝 Note style</label>
 
     <select id="photoStyle">
 
-      <option value="standard">
-        Standard Notes
-      </option>
-
-      <option value="short">
-        Short Notes
-      </option>
-
-      <option value="detailed">
-        Detailed Notes
-      </option>
-
-      <option value="exam">
-        Exam Answer
-      </option>
+      <option value="standard">Standard Notes</option>
+      <option value="short">Short Notes</option>
+      <option value="detailed">Detailed Notes</option>
+      <option value="exam">Exam Answer</option>
 
     </select>
 
-
-    <label for="photoLanguage">
-      🌐 Language
-    </label>
+    <label for="photoLanguage">🌐 Language</label>
 
     <select id="photoLanguage">
 
-      <option value="English">
-        English
-      </option>
-
-      <option value="Hindi">
-        Hindi
-      </option>
-
-      <option value="Assamese">
-        Assamese
-      </option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Assamese">Assamese</option>
 
     </select>
-
 
     <button
       id="photoGenerateBtn"
       onclick="generatePhotoNotes()"
     >
-
       📚 Generate Notes
-
     </button>
 
-
-    <div
-      id="photoResult"
-      class="result"
-    ></div>
+    <div id="photoResult" class="result"></div>
 
   </div>
 
-
-
   <!-- ASK AI -->
 
-  <div
-    id="askSection"
-    class="card hidden"
-  >
+  <div id="askSection" class="card hidden">
 
     <h2>🤖 Ask AI</h2>
 
     <p class="small">
-      Ask anything. This section does not use your Photo → Notes
-      image.
+      Ask anything. Your answer will be cleaned and formatted
+      for easy study.
     </p>
 
-
-    <label for="aiQuestion">
-      Your question
-    </label>
+    <label for="aiQuestion">Your question</label>
 
     <textarea
       id="aiQuestion"
       placeholder="Example: What is photosynthesis?"
     ></textarea>
 
-
-    <label for="aiStyle">
-      📝 Answer style
-    </label>
+    <label for="aiStyle">📝 Answer style</label>
 
     <select id="aiStyle">
 
-      <option value="standard">
-        Standard
-      </option>
-
-      <option value="short">
-        Short
-      </option>
-
-      <option value="detailed">
-        Detailed
-      </option>
-
-      <option value="exam">
-        Exam Answer
-      </option>
+      <option value="standard">Standard</option>
+      <option value="short">Short</option>
+      <option value="detailed">Detailed</option>
+      <option value="exam">Exam Answer</option>
 
     </select>
 
-
-    <label for="aiLanguage">
-      🌐 Language
-    </label>
+    <label for="aiLanguage">🌐 Language</label>
 
     <select id="aiLanguage">
 
-      <option value="English">
-        English
-      </option>
-
-      <option value="Hindi">
-        Hindi
-      </option>
-
-      <option value="Assamese">
-        Assamese
-      </option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Assamese">Assamese</option>
 
     </select>
-
 
     <button
       id="askAIBtn"
       onclick="askNormalAI()"
     >
-
       🤖 Ask HandNote AI
-
     </button>
 
-
-    <div
-      id="aiResult"
-      class="result"
-    ></div>
+    <div id="aiResult" class="result"></div>
 
   </div>
 
-
-
   <!-- DOCUMENT -->
 
-  <div
-    id="documentSection"
-    class="card hidden"
-  >
+  <div id="documentSection" class="card hidden">
 
     <h2>📚 Document → Notes</h2>
 
@@ -581,73 +496,51 @@ button.danger{
 
   </div>
 
-
-
   <!-- HANDWRITING -->
 
-  <div
-    id="handwritingSection"
-    class="card hidden"
-  >
+  <div id="handwritingSection" class="card hidden">
 
     <h2>✍️ Text → Handwritten Notes</h2>
 
     <div class="placeholder">
 
-      🚧 Handwritten note generation will be
-      connected after the normal note system
-      is stable.
+      🚧 Handwritten note generation will be connected
+      after the normal note system is stable.
 
     </div>
 
   </div>
-
-
 
   <!-- NOTE PREVIEW -->
 
   <div class="card">
 
-    <h2>📄 Note Preview</h2>
+    <h2>📄 Handwritten Note Preview</h2>
 
-    <div
-      id="notePreview"
-      class="note-preview"
-    >
+    <div id="notePreview" class="note-preview">
 
       Your generated notes will appear here.
 
     </div>
 
-
     <div class="no-print">
 
-      <button
-        onclick="window.print()"
-      >
-
+      <button onclick="window.print()">
         📥 Save / Print as PDF
-
       </button>
-
 
       <button
         class="secondary"
         onclick="clearEverything()"
       >
-
         🗑️ Clear Everything
-
       </button>
 
     </div>
 
   </div>
 
-
 </div>
-
-
 
 <script>
 
@@ -657,21 +550,34 @@ button.danger{
 
 function hideAllSections(){
 
-  document
-    .getElementById("photoSection")
+  document.getElementById("photoSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("askSection")
+  document.getElementById("askSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("documentSection")
+  document.getElementById("documentSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("handwritingSection")
+  document.getElementById("handwritingSection")
     .classList.add("hidden");
+}
+
+
+function clearAIResult(){
+
+  document.getElementById("aiResult").style.display="none";
+
+  document.getElementById("aiResult").innerHTML="";
+
+}
+
+
+function clearPhotoResult(){
+
+  document.getElementById("photoResult").style.display="none";
+
+  document.getElementById("photoResult").innerHTML="";
 
 }
 
@@ -680,8 +586,9 @@ function openPhotoNotes(){
 
   hideAllSections();
 
-  document
-    .getElementById("photoSection")
+  clearAIResult();
+
+  document.getElementById("photoSection")
     .classList.remove("hidden");
 
 }
@@ -691,13 +598,12 @@ function openAskAI(){
 
   hideAllSections();
 
-  document
-    .getElementById("askSection")
+  clearPhotoResult();
+
+  document.getElementById("askSection")
     .classList.remove("hidden");
 
-  document
-    .getElementById("aiQuestion")
-    .focus();
+  document.getElementById("aiQuestion").focus();
 
 }
 
@@ -706,8 +612,10 @@ function openDocuments(){
 
   hideAllSections();
 
-  document
-    .getElementById("documentSection")
+  clearAIResult();
+  clearPhotoResult();
+
+  document.getElementById("documentSection")
     .classList.remove("hidden");
 
 }
@@ -717,12 +625,178 @@ function openHandwriting(){
 
   hideAllSections();
 
-  document
-    .getElementById("handwritingSection")
+  clearAIResult();
+  clearPhotoResult();
+
+  document.getElementById("handwritingSection")
     .classList.remove("hidden");
 
 }
 
+
+/* =========================
+   CLEAN AI TEXT
+========================= */
+
+function cleanAIText(text){
+
+  if(!text) return "";
+
+  let clean = text;
+
+  /* Remove code fences */
+
+  clean = clean.replace(/```[\s\S]*?```/g, "");
+
+  /* Remove markdown headings */
+
+  clean = clean.replace(/^#{1,6}\s*/gm, "");
+
+  /* Remove bold and italic markdown */
+
+  clean = clean.replace(/\*\*(.*?)\*\*/g, "$1");
+
+  clean = clean.replace(/__(.*?)__/g, "$1");
+
+  clean = clean.replace(/\*(.*?)\*/g, "$1");
+
+  clean = clean.replace(/_(.*?)_/g, "$1");
+
+  /* Remove unnecessary markdown horizontal rules */
+
+  clean = clean.replace(/^\s*[-*_]{3,}\s*$/gm, "");
+
+  /* Clean excessive blank lines */
+
+  clean = clean.replace(/\n{3,}/g, "\n\n");
+
+  return clean.trim();
+
+}
+
+
+/* =========================
+   FORMAT AS HANDWRITTEN NOTE
+========================= */
+
+function renderHandwrittenNotes(text){
+
+  const clean = cleanAIText(text);
+
+  if(!clean){
+
+    return `
+      <div class="note-line">
+        No notes generated.
+      </div>
+    `;
+
+  }
+
+  const lines = clean.split(/\r?\n/);
+
+  let html = "";
+
+  lines.forEach((line,index)=>{
+
+    const trimmed = line.trim();
+
+    if(!trimmed){
+
+      html += `<div style="height:12px"></div>`;
+
+      return;
+
+    }
+
+    /* Bullet */
+
+    if(/^[-•*]\s+/.test(trimmed)){
+
+      const bullet =
+        trimmed.replace(/^[-•*]\s+/,"");
+
+      html += `
+        <div class="note-bullet">
+          • ${escapeHTML(bullet)}
+        </div>
+      `;
+
+      return;
+
+    }
+
+    /* Numbered list */
+
+    if(/^\d+[.)]\s+/.test(trimmed)){
+
+      html += `
+        <div class="note-bullet">
+          ${escapeHTML(trimmed)}
+        </div>
+      `;
+
+      return;
+
+    }
+
+    /* Short heading */
+
+    if(
+      trimmed.length < 70 &&
+      (
+        trimmed.endsWith(":") ||
+        /^[A-Z][A-Za-z\s-]{2,50}$/.test(trimmed)
+      )
+    ){
+
+      html += `
+        <div class="note-heading">
+          ${escapeHTML(trimmed)}
+        </div>
+      `;
+
+      return;
+
+    }
+
+    /* Normal paragraph */
+
+    html += `
+      <div class="note-line">
+        ${escapeHTML(trimmed)}
+      </div>
+    `;
+
+  });
+
+  return html;
+
+}
+
+
+function escapeHTML(text){
+
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   UPDATE NOTE PREVIEW
+========================= */
+
+function updateNotePreview(answer){
+
+  document.getElementById("notePreview").innerHTML =
+    renderHandwrittenNotes(answer);
+
+}
 
 
 /* =========================
@@ -732,8 +806,7 @@ function openHandwriting(){
 function photoSelected(){
 
   const file =
-    document.getElementById("photoFile")
-    .files[0];
+    document.getElementById("photoFile").files[0];
 
   const name =
     document.getElementById("photoFileName");
@@ -753,7 +826,6 @@ function photoSelected(){
   const remove =
     document.getElementById("removePhotoBtn");
 
-
   if(!file){
 
     removePhoto();
@@ -762,36 +834,23 @@ function photoSelected(){
 
   }
 
-
   name.textContent =
     "📷 Selected: " + file.name;
 
   name.classList.remove("hidden");
 
-
   progress.style.display="block";
 
-
   status.textContent =
-    "Preparing upload...";
-
+    "Preparing photo...";
 
   remove.classList.remove("hidden");
 
-
-  /*
-    This progress represents preparation of the
-    selected file. The real server upload progress
-    is tracked when Generate Notes is pressed.
-  */
-
   let percent=0;
-
 
   bar.style.width="0%";
 
   text.textContent="0%";
-
 
   const timer=setInterval(()=>{
 
@@ -804,15 +863,16 @@ function photoSelected(){
       clearInterval(timer);
 
       status.textContent =
-        "✅ Photo ready — 100%. Tap Generate Notes.";
+        "✅ Photo ready — tap Generate Notes.";
 
-    }else{
+    }
+
+    else{
 
       status.textContent =
         "Preparing photo...";
 
     }
-
 
     bar.style.width =
       percent+"%";
@@ -825,54 +885,35 @@ function photoSelected(){
 }
 
 
-
 /* =========================
    REMOVE PHOTO
 ========================= */
 
 function removePhoto(){
 
-  document
-    .getElementById("photoFile")
-    .value="";
+  document.getElementById("photoFile").value="";
 
-
-  document
-    .getElementById("photoFileName")
+  document.getElementById("photoFileName")
     .classList.add("hidden");
 
-
-  document
-    .getElementById("removePhotoBtn")
+  document.getElementById("removePhotoBtn")
     .classList.add("hidden");
 
-
-  document
-    .getElementById("photoProgress")
+  document.getElementById("photoProgress")
     .style.display="none";
 
-
-  document
-    .getElementById("photoProgressBar")
+  document.getElementById("photoProgressBar")
     .style.width="0%";
 
-
-  document
-    .getElementById("photoProgressText")
+  document.getElementById("photoProgressText")
     .textContent="0%";
 
-
-  document
-    .getElementById("photoStatus")
+  document.getElementById("photoStatus")
     .textContent="";
 
-
-  document
-    .getElementById("photoResult")
-    .style.display="none";
+  clearPhotoResult();
 
 }
-
 
 
 /* =========================
@@ -882,26 +923,19 @@ function removePhoto(){
 async function generatePhotoNotes(){
 
   const file =
-    document.getElementById("photoFile")
-    .files[0];
+    document.getElementById("photoFile").files[0];
 
   const style =
-    document.getElementById("photoStyle")
-    .value;
+    document.getElementById("photoStyle").value;
 
   const language =
-    document.getElementById("photoLanguage")
-    .value;
+    document.getElementById("photoLanguage").value;
 
   const result =
     document.getElementById("photoResult");
 
   const button =
     document.getElementById("photoGenerateBtn");
-
-  const preview =
-    document.getElementById("notePreview");
-
 
   if(!file){
 
@@ -911,47 +945,28 @@ async function generatePhotoNotes(){
 
   }
 
+  /* Clear Ask AI */
+
+  clearAIResult();
 
   button.disabled=true;
 
-  button.textContent=
+  button.textContent =
     "🤖 Reading Photo...";
-
 
   result.style.display="block";
 
-  result.innerHTML=
-    '<div class="loading">AI is reading your photo and preparing notes...</div>';
-
+  result.innerHTML =
+    '<div class="loading">AI is reading your photo and preparing handwritten notes...</div>';
 
   try{
 
     const formData =
       new FormData();
 
-
-    formData.append(
-      "file",
-      file
-    );
-
-
-    formData.append(
-      "style",
-      style
-    );
-
-
-    formData.append(
-      "language",
-      language
-    );
-
-
-    /*
-      Photo → Notes has its own request.
-      It does not use the Ask AI question box.
-    */
+    formData.append("file",file);
+    formData.append("style",style);
+    formData.append("language",language);
 
     const response =
       await fetch(
@@ -962,10 +977,8 @@ async function generatePhotoNotes(){
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(!response.ok){
 
@@ -976,27 +989,24 @@ async function generatePhotoNotes(){
 
     }
 
-
     const answer =
       data.answer ||
       "No notes generated.";
 
+    result.innerHTML =
+      renderHandwrittenNotes(answer);
+
+    updateNotePreview(answer);
+
+  }
+  catch(error){
 
     result.textContent =
-      answer;
-
-
-    preview.textContent =
-      answer;
-
-
-  }catch(error){
-
-    result.textContent =
-      "Something went wrong: "+
+      "Something went wrong: " +
       error.message;
 
-  }finally{
+  }
+  finally{
 
     button.disabled=false;
 
@@ -1008,7 +1018,6 @@ async function generatePhotoNotes(){
 }
 
 
-
 /* =========================
    NORMAL ASK AI
 ========================= */
@@ -1016,87 +1025,53 @@ async function generatePhotoNotes(){
 async function askNormalAI(){
 
   const question =
-    document
-      .getElementById("aiQuestion")
-      .value
-      .trim();
+    document.getElementById("aiQuestion")
+      .value.trim();
 
   const style =
-    document
-      .getElementById("aiStyle")
+    document.getElementById("aiStyle")
       .value;
 
   const language =
-    document
-      .getElementById("aiLanguage")
+    document.getElementById("aiLanguage")
       .value;
 
   const result =
-    document
-      .getElementById("aiResult");
+    document.getElementById("aiResult");
 
   const button =
-    document
-      .getElementById("askAIBtn");
-
-  const preview =
-    document
-      .getElementById("notePreview");
-
+    document.getElementById("askAIBtn");
 
   if(!question){
 
-    alert(
-      "Please enter your question."
-    );
+    alert("Please enter your question.");
 
     return;
 
   }
 
+  /* Clear Photo Notes */
+
+  clearPhotoResult();
 
   button.disabled=true;
 
   button.textContent =
     "🤖 Thinking...";
 
-
   result.style.display="block";
 
   result.innerHTML =
     '<div class="loading">HandNote AI is thinking...</div>';
-
 
   try{
 
     const formData =
       new FormData();
 
-
-    /*
-      IMPORTANT:
-      No photo/file is added here.
-      Therefore an old Photo → Notes image
-      cannot accidentally be sent with this question.
-    */
-
-    formData.append(
-      "question",
-      question
-    );
-
-
-    formData.append(
-      "style",
-      style
-    );
-
-
-    formData.append(
-      "language",
-      language
-    );
-
+    formData.append("question",question);
+    formData.append("style",style);
+    formData.append("language",language);
 
     const response =
       await fetch(
@@ -1107,10 +1082,8 @@ async function askNormalAI(){
         }
       );
 
-
     const data =
       await response.json();
-
 
     if(!response.ok){
 
@@ -1121,27 +1094,24 @@ async function askNormalAI(){
 
     }
 
-
     const answer =
       data.answer ||
       "No answer received.";
 
+    result.innerHTML =
+      renderHandwrittenNotes(answer);
+
+    updateNotePreview(answer);
+
+  }
+  catch(error){
 
     result.textContent =
-      answer;
-
-
-    preview.textContent =
-      answer;
-
-
-  }catch(error){
-
-    result.textContent =
-      "Something went wrong: "+
+      "Something went wrong: " +
       error.message;
 
-  }finally{
+  }
+  finally{
 
     button.disabled=false;
 
@@ -1153,7 +1123,6 @@ async function askNormalAI(){
 }
 
 
-
 /* =========================
    CLEAR EVERYTHING
 ========================= */
@@ -1162,21 +1131,13 @@ function clearEverything(){
 
   removePhoto();
 
-
-  document
-    .getElementById("aiQuestion")
+  document.getElementById("aiQuestion")
     .value="";
 
+  clearAIResult();
 
-  document
-    .getElementById("aiResult")
-    .style.display="none";
-
-
-  document
-    .getElementById("notePreview")
-    .textContent =
-      "Your generated notes will appear here.";
+  document.getElementById("notePreview").innerHTML =
+    "Your generated notes will appear here.";
 
 }
 
