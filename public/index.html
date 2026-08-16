@@ -132,11 +132,13 @@ button.danger{
   background:#dc2626;
 }
 
+button.save{
+  background:#16a34a;
+}
+
 .hidden{
   display:none!important;
 }
-
-/* Upload */
 
 .upload-box{
   margin-top:10px;
@@ -186,8 +188,6 @@ button.danger{
   font-weight:bold;
 }
 
-/* AI result */
-
 .result{
   display:none;
   margin-top:18px;
@@ -208,10 +208,11 @@ button.danger{
   padding:20px 5px;
 }
 
-/* Handwritten paper */
+/* HANDWRITTEN PAPER */
 
 .note-preview{
   position:relative;
+
   background:
     repeating-linear-gradient(
       to bottom,
@@ -242,17 +243,10 @@ button.danger{
   box-shadow:inset 7px 0 0 #f3b6b6;
 }
 
-.note-title{
-  font-size:25px;
-  font-weight:bold;
-  margin-bottom:14px;
-  text-decoration:underline;
-}
-
 .note-heading{
-  font-size:20px;
+  font-size:21px;
   font-weight:bold;
-  margin-top:14px;
+  margin-top:12px;
   margin-bottom:4px;
 }
 
@@ -266,9 +260,9 @@ button.danger{
 }
 
 .note-equation{
-  margin:8px 0;
-  padding:5px 8px;
-  font-size:19px;
+  margin:7px 0;
+  padding:3px 7px;
+  font-size:20px;
   font-weight:bold;
   font-family:
     "Comic Sans MS",
@@ -296,20 +290,40 @@ button.danger{
 
 @media print{
 
-  header,
-  .no-print{
-    display:none!important;
-  }
-
   body{
     background:white;
   }
 
-  .note-preview{
-    box-shadow:none;
-    border:0;
+  body *{
+    visibility:hidden;
   }
 
+  #notePreview,
+  #notePreview *{
+    visibility:visible;
+  }
+
+  #notePreview{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    min-height:100vh;
+
+    margin:0;
+    border:0;
+    border-radius:0;
+
+    box-shadow:inset 7px 0 0 #f3b6b6;
+
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  @page{
+    size:A4;
+    margin:12mm;
+  }
 }
 </style>
 </head>
@@ -326,7 +340,7 @@ button.danger{
 
 <div class="container">
 
-  <!-- MAIN FEATURES -->
+  <!-- FEATURES -->
 
   <div class="card no-print">
 
@@ -367,15 +381,15 @@ button.danger{
   </div>
 
 
-  <!-- PHOTO TO NOTES -->
+  <!-- PHOTO -->
 
   <div id="photoSection" class="card hidden">
 
     <h2>📷 Photo → Notes</h2>
 
     <p class="small">
-      Upload your study material and HandNote AI will read it
-      and create clean handwritten-style notes.
+      Upload your study material and HandNote AI will create
+      clean handwritten-style notes.
     </p>
 
     <div class="upload-box">
@@ -391,38 +405,21 @@ button.danger{
         onchange="photoSelected()"
       >
 
-      <div
-        id="photoFileName"
-        class="file-name hidden"
-      ></div>
+      <div id="photoFileName" class="file-name hidden"></div>
 
-      <div
-        id="photoProgress"
-        class="progress-container"
-      >
+      <div id="photoProgress" class="progress-container">
 
         <div class="progress-background">
-
-          <div
-            id="photoProgressBar"
-            class="progress-bar"
-          ></div>
-
+          <div id="photoProgressBar" class="progress-bar"></div>
         </div>
 
-        <div
-          id="photoProgressText"
-          class="progress-text"
-        >
+        <div id="photoProgressText" class="progress-text">
           0%
         </div>
 
       </div>
 
-      <div
-        id="photoStatus"
-        class="upload-status"
-      ></div>
+      <div id="photoStatus" class="upload-status"></div>
 
       <button
         id="removePhotoBtn"
@@ -441,21 +438,10 @@ button.danger{
 
     <select id="photoStyle">
 
-      <option value="standard">
-        Standard Notes
-      </option>
-
-      <option value="short">
-        Short Notes
-      </option>
-
-      <option value="detailed">
-        Detailed Notes
-      </option>
-
-      <option value="exam">
-        Exam Answer
-      </option>
+      <option value="standard">Standard Notes</option>
+      <option value="short">Short Notes</option>
+      <option value="detailed">Detailed Notes</option>
+      <option value="exam">Exam Answer</option>
 
     </select>
 
@@ -466,17 +452,9 @@ button.danger{
 
     <select id="photoLanguage">
 
-      <option value="English">
-        English
-      </option>
-
-      <option value="Hindi">
-        Hindi
-      </option>
-
-      <option value="Assamese">
-        Assamese
-      </option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Assamese">Assamese</option>
 
     </select>
 
@@ -489,26 +467,20 @@ button.danger{
     </button>
 
 
-    <div
-      id="photoResult"
-      class="result"
-    ></div>
+    <div id="photoResult" class="result"></div>
 
   </div>
 
 
   <!-- ASK AI -->
 
-  <div
-    id="askSection"
-    class="card hidden"
-  >
+  <div id="askSection" class="card hidden">
 
     <h2>🤖 Ask AI</h2>
 
     <p class="small">
-      Ask anything. Your answer will be cleaned and formatted
-      for easy study.
+      Ask anything. The answer will be cleaned and converted
+      into a handwritten-style study note.
     </p>
 
     <label for="aiQuestion">
@@ -527,21 +499,10 @@ button.danger{
 
     <select id="aiStyle">
 
-      <option value="standard">
-        Standard
-      </option>
-
-      <option value="short">
-        Short
-      </option>
-
-      <option value="detailed">
-        Detailed
-      </option>
-
-      <option value="exam">
-        Exam Answer
-      </option>
+      <option value="standard">Standard</option>
+      <option value="short">Short</option>
+      <option value="detailed">Detailed</option>
+      <option value="exam">Exam Answer</option>
 
     </select>
 
@@ -552,17 +513,9 @@ button.danger{
 
     <select id="aiLanguage">
 
-      <option value="English">
-        English
-      </option>
-
-      <option value="Hindi">
-        Hindi
-      </option>
-
-      <option value="Assamese">
-        Assamese
-      </option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Assamese">Assamese</option>
 
     </select>
 
@@ -575,20 +528,14 @@ button.danger{
     </button>
 
 
-    <div
-      id="aiResult"
-      class="result"
-    ></div>
+    <div id="aiResult" class="result"></div>
 
   </div>
 
 
   <!-- DOCUMENT -->
 
-  <div
-    id="documentSection"
-    class="card hidden"
-  >
+  <div id="documentSection" class="card hidden">
 
     <h2>📚 Document → Notes</h2>
 
@@ -612,33 +559,27 @@ button.danger{
 
   <!-- HANDWRITING -->
 
-  <div
-    id="handwritingSection"
-    class="card hidden"
-  >
+  <div id="handwritingSection" class="card hidden">
 
     <h2>✍️ Text → Handwritten Notes</h2>
 
     <div class="placeholder">
 
-      🚧 Handwritten note generation will be connected
-      after the normal note system is stable.
+      🚧 Direct text-to-handwriting generation
+      will be connected next.
 
     </div>
 
   </div>
 
 
-  <!-- NOTE PREVIEW -->
+  <!-- PREVIEW -->
 
   <div class="card">
 
     <h2>📄 Handwritten Note Preview</h2>
 
-    <div
-      id="notePreview"
-      class="note-preview"
-    >
+    <div id="notePreview" class="note-preview">
 
       Your generated notes will appear here.
 
@@ -647,9 +588,13 @@ button.danger{
 
     <div class="no-print">
 
-      <button onclick="window.print()">
-        📥 Save / Print as PDF
+      <button
+        class="save"
+        onclick="saveHandwrittenPDF()"
+      >
+        📥 Save Handwritten PDF
       </button>
+
 
       <button
         class="secondary"
@@ -667,28 +612,23 @@ button.danger{
 
 <script>
 
-/* =========================
+/* =========================================================
    SECTION CONTROL
-========================= */
+========================================================= */
 
 function hideAllSections(){
 
-  document
-    .getElementById("photoSection")
+  document.getElementById("photoSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("askSection")
+  document.getElementById("askSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("documentSection")
+  document.getElementById("documentSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("handwritingSection")
+  document.getElementById("handwritingSection")
     .classList.add("hidden");
-
 }
 
 
@@ -698,9 +638,7 @@ function clearAIResult(){
     document.getElementById("aiResult");
 
   result.style.display="none";
-
   result.innerHTML="";
-
 }
 
 
@@ -710,9 +648,7 @@ function clearPhotoResult(){
     document.getElementById("photoResult");
 
   result.style.display="none";
-
   result.innerHTML="";
-
 }
 
 
@@ -722,10 +658,8 @@ function openPhotoNotes(){
 
   clearAIResult();
 
-  document
-    .getElementById("photoSection")
+  document.getElementById("photoSection")
     .classList.remove("hidden");
-
 }
 
 
@@ -735,14 +669,10 @@ function openAskAI(){
 
   clearPhotoResult();
 
-  document
-    .getElementById("askSection")
+  document.getElementById("askSection")
     .classList.remove("hidden");
 
-  document
-    .getElementById("aiQuestion")
-    .focus();
-
+  document.getElementById("aiQuestion").focus();
 }
 
 
@@ -751,13 +681,10 @@ function openDocuments(){
   hideAllSections();
 
   clearAIResult();
-
   clearPhotoResult();
 
-  document
-    .getElementById("documentSection")
+  document.getElementById("documentSection")
     .classList.remove("hidden");
-
 }
 
 
@@ -766,19 +693,16 @@ function openHandwriting(){
   hideAllSections();
 
   clearAIResult();
-
   clearPhotoResult();
 
-  document
-    .getElementById("handwritingSection")
+  document.getElementById("handwritingSection")
     .classList.remove("hidden");
-
 }
 
 
-/* =========================
-   HTML ESCAPE
-========================= */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHTML(text){
 
@@ -788,19 +712,97 @@ function escapeHTML(text){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
-
 }
 
 
-/* =========================
-   MATH CLEANING
-========================= */
+/* =========================================================
+   SUBSCRIPT / SUPERSCRIPT
+========================================================= */
+
+const subscriptMap = {
+  "0":"₀",
+  "1":"₁",
+  "2":"₂",
+  "3":"₃",
+  "4":"₄",
+  "5":"₅",
+  "6":"₆",
+  "7":"₇",
+  "8":"₈",
+  "9":"₉",
+  "+":"₊",
+  "-":"₋",
+  "=":"₌",
+  "(":"₍",
+  ")":"₎",
+  "a":"ₐ",
+  "e":"ₑ",
+  "h":"ₕ",
+  "i":"ᵢ",
+  "j":"ⱼ",
+  "k":"ₖ",
+  "l":"ₗ",
+  "m":"ₘ",
+  "n":"ₙ",
+  "o":"ₒ",
+  "p":"ₚ",
+  "r":"ᵣ",
+  "s":"ₛ",
+  "t":"ₜ",
+  "u":"ᵤ",
+  "v":"ᵥ",
+  "x":"ₓ"
+};
+
+
+const superscriptMap = {
+  "0":"⁰",
+  "1":"¹",
+  "2":"²",
+  "3":"³",
+  "4":"⁴",
+  "5":"⁵",
+  "6":"⁶",
+  "7":"⁷",
+  "8":"⁸",
+  "9":"⁹",
+  "+":"⁺",
+  "-":"⁻",
+  "=":"⁼",
+  "(":"⁽",
+  ")":"⁾",
+  "n":"ⁿ",
+  "i":"ⁱ"
+};
+
+
+function convertSubscript(value){
+
+  return value
+    .split("")
+    .map(char => subscriptMap[char] || char)
+    .join("");
+}
+
+
+function convertSuperscript(value){
+
+  return value
+    .split("")
+    .map(char => superscriptMap[char] || char)
+    .join("");
+}
+
+
+/* =========================================================
+   MATH / EQUATION CLEANER
+========================================================= */
 
 function cleanMath(text){
 
   let value = String(text);
 
-  /* Remove LaTeX display markers */
+  /* LaTeX brackets */
 
   value = value.replace(/\\\[/g,"");
   value = value.replace(/\\\]/g,"");
@@ -810,15 +812,26 @@ function cleanMath(text){
   value = value.replace(/\$\$/g,"");
   value = value.replace(/\$/g,"");
 
-  /* Common LaTeX commands */
 
-  value = value.replace(/\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g,
-    "($1)/($2)");
+  /* Fractions */
 
-  value = value.replace(/\\sqrt\s*\{([^{}]+)\}/g,
-    "√($1)");
+  value = value.replace(
+    /\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g,
+    "($1)/($2)"
+  );
+
+
+  /* Square root */
+
+  value = value.replace(
+    /\\sqrt\s*\{([^{}]+)\}/g,
+    "√($1)"
+  );
 
   value = value.replace(/\\sqrt/g,"√");
+
+
+  /* Mathematical symbols */
 
   value = value.replace(/\\times/g,"×");
   value = value.replace(/\\cdot/g,"·");
@@ -827,14 +840,17 @@ function cleanMath(text){
 
   value = value.replace(/\\leq/g,"≤");
   value = value.replace(/\\le/g,"≤");
+
   value = value.replace(/\\geq/g,"≥");
   value = value.replace(/\\ge/g,"≥");
-  value = value.replace(/\\neq/g,"≠");
 
+  value = value.replace(/\\neq/g,"≠");
   value = value.replace(/\\approx/g,"≈");
+
   value = value.replace(/\\rightarrow/g,"→");
   value = value.replace(/\\leftarrow/g,"←");
   value = value.replace(/\\Rightarrow/g,"⇒");
+
   value = value.replace(/\\infty/g,"∞");
 
   value = value.replace(/\\pi/g,"π");
@@ -847,127 +863,191 @@ function cleanMath(text){
   value = value.replace(/\\mu/g,"μ");
   value = value.replace(/\\sigma/g,"σ");
 
-  value = value.replace(/\\degree/g,"°");
 
-  /* Superscripts */
+  /* Text formatting commands */
 
-  value = value.replace(/\^\{([^{}]+)\}/g,"^($1)");
+  value = value.replace(
+    /\\text\s*\{([^{}]*)\}/g,
+    "$1"
+  );
 
-  /* Subscripts */
+  value = value.replace(
+    /\\mathrm\s*\{([^{}]*)\}/g,
+    "$1"
+  );
 
-  value = value.replace(/_\{([^{}]+)\}/g,"_($1)");
+  value = value.replace(
+    /\\mathbf\s*\{([^{}]*)\}/g,
+    "$1"
+  );
 
-  /* Remove remaining common formatting commands */
-
-  value = value.replace(/\\text\s*\{([^{}]*)\}/g,"$1");
-  value = value.replace(/\\mathrm\s*\{([^{}]*)\}/g,"$1");
-  value = value.replace(/\\mathbf\s*\{([^{}]*)\}/g,"$1");
   value = value.replace(/\\left/g,"");
   value = value.replace(/\\right/g,"");
+
+
+  /* Braced superscripts */
+
+  value = value.replace(
+    /\^\{([^{}]+)\}/g,
+    (_,content) => convertSuperscript(content)
+  );
+
+
+  /* Braced subscripts */
+
+  value = value.replace(
+    /_\{([^{}]+)\}/g,
+    (_,content) => convertSubscript(content)
+  );
+
+
+  /* Normal x^2 / x_2 */
+
+  value = value.replace(
+    /\^([0-9]+)/g,
+    (_,content) => convertSuperscript(content)
+  );
+
+  value = value.replace(
+    /_([0-9]+)/g,
+    (_,content) => convertSubscript(content)
+  );
+
+
+  /* Single-letter superscript */
+
+  value = value.replace(
+    /\^([a-zA-Z])/g,
+    (_,content) => convertSuperscript(content)
+  );
+
+
+  /* Single-letter subscript */
+
+  value = value.replace(
+    /_([a-zA-Z])/g,
+    (_,content) => convertSubscript(content)
+  );
+
 
   /* Remove leftover backslashes */
 
   value = value.replace(/\\/g,"");
 
-  return value.trim();
 
+  return value.trim();
 }
 
 
-/* =========================
-   CLEAN AI TEXT
-========================= */
+/* =========================================================
+   CLEAN AI MARKDOWN / CODE
+========================================================= */
 
 function cleanAIText(text){
 
-  if(!text) return "";
+  if(!text){
+    return "";
+  }
 
   let clean = String(text);
 
+
   /* Remove code blocks */
 
-  clean = clean.replace(/```[a-zA-Z0-9_-]*\s*/g,"");
+  clean = clean.replace(
+    /```[a-zA-Z0-9_-]*\s*/g,
+    ""
+  );
+
   clean = clean.replace(/```/g,"");
+
 
   /* Remove Markdown headings */
 
-  clean = clean.replace(/^#{1,6}\s*/gm,"");
+  clean = clean.replace(
+    /^#{1,6}\s*/gm,
+    ""
+  );
+
 
   /* Bold */
 
-  clean = clean.replace(/\*\*(.*?)\*\*/gs,"$1");
+  clean = clean.replace(
+    /\*\*(.*?)\*\*/gs,
+    "$1"
+  );
 
-  clean = clean.replace(/__(.*?)__/gs,"$1");
+  clean = clean.replace(
+    /__(.*?)__/gs,
+    "$1"
+  );
+
 
   /* Italic */
 
-  clean = clean.replace(/(?<!\*)\*(?!\s)(.*?)(?<!\*)\*(?!\*)/gs,"$1");
+  clean = clean.replace(
+    /(?<!\*)\*(?!\s)(.*?)(?<!\*)\*(?!\*)/gs,
+    "$1"
+  );
 
-  clean = clean.replace(/(?<!\w)_(.*?)_(?!\w)/gs,"$1");
 
-  /* Clean horizontal rules */
+  /* Horizontal rules */
 
-  clean = clean.replace(/^\s*[-*_]{3,}\s*$/gm,"");
+  clean = clean.replace(
+    /^\s*[-*_]{3,}\s*$/gm,
+    ""
+  );
 
-  /* Clean LaTeX */
 
-  clean = clean.replace(/\\\[[\s\S]*?\\\]/g,
-    match => cleanMath(match));
-
-  clean = clean.replace(/\$\$[\s\S]*?\$\$/g,
-    match => cleanMath(match));
-
-  clean = clean.replace(/\$[^$\n]+\$/g,
-    match => cleanMath(match));
-
-  clean = clean.replace(/\\\([^)]*\\\)/g,
-    match => cleanMath(match));
+  /* Clean math */
 
   clean = cleanMath(clean);
 
+
   /* Remove excessive blank lines */
 
-  clean = clean.replace(/\n{3,}/g,"\n\n");
+  clean = clean.replace(
+    /\n{3,}/g,
+    "\n\n"
+  );
+
 
   return clean.trim();
-
 }
 
 
-/* =========================
-   DETECT EQUATIONS
-========================= */
+/* =========================================================
+   EQUATION DETECTION
+========================================================= */
 
 function looksLikeEquation(line){
 
   const value = line.trim();
 
-  if(!value) return false;
+  if(!value){
+    return false;
+  }
 
-  const equationSymbols =
+  const symbols =
     /[=+\-×÷≤≥≠≈→⇒√π∞]/;
 
-  const mathPattern =
-    /[A-Za-z0-9]\s*[\^_]\s*[A-Za-z0-9(]/;
+  const chemistry =
+    /[A-Za-z]+[₀₁₂₃₄₅₆₇₈₉]+/;
 
-  const fractionPattern =
-    /\([^)]*\)\/\([^)]*\)/;
+  const mathPower =
+    /[A-Za-z0-9][⁰¹²³⁴⁵⁶⁷⁸⁹]/;
 
   return (
-    equationSymbols.test(value) &&
-    (
-      mathPattern.test(value) ||
-      fractionPattern.test(value) ||
-      value.length < 90
-    )
+    symbols.test(value) ||
+    chemistry.test(value) ||
+    mathPower.test(value)
   );
-
 }
 
 
-/* =========================
-   HANDWRITTEN RENDER
-========================= */
+/* =========================================================
+   HANDWRITTEN HTML
+========================================================= */
 
 function renderHandwrittenNotes(text){
 
@@ -981,18 +1061,20 @@ function renderHandwrittenNotes(text){
         No notes generated.
       </div>
     `;
-
   }
+
 
   const lines =
     clean.split(/\r?\n/);
 
   let html="";
 
+
   lines.forEach(line=>{
 
     const trimmed =
       line.trim();
+
 
     if(!trimmed){
 
@@ -1000,7 +1082,6 @@ function renderHandwrittenNotes(text){
         `<div style="height:10px"></div>`;
 
       return;
-
     }
 
 
@@ -1009,7 +1090,10 @@ function renderHandwrittenNotes(text){
     if(/^[-•*]\s+/.test(trimmed)){
 
       const bullet =
-        trimmed.replace(/^[-•*]\s+/,"");
+        trimmed.replace(
+          /^[-•*]\s+/,
+          ""
+        );
 
       html += `
         <div class="note-bullet">
@@ -1018,7 +1102,6 @@ function renderHandwrittenNotes(text){
       `;
 
       return;
-
     }
 
 
@@ -1033,7 +1116,6 @@ function renderHandwrittenNotes(text){
       `;
 
       return;
-
     }
 
 
@@ -1048,7 +1130,6 @@ function renderHandwrittenNotes(text){
       `;
 
       return;
-
     }
 
 
@@ -1064,12 +1145,11 @@ function renderHandwrittenNotes(text){
 
       html += `
         <div class="note-heading">
-          ${escapeHTML(trimmed)}
+          ${escapeHTML(cleanMath(trimmed))}
         </div>
       `;
 
       return;
-
     }
 
 
@@ -1083,67 +1163,56 @@ function renderHandwrittenNotes(text){
 
   });
 
-  return html;
 
+  return html;
 }
 
 
-/* =========================
-   NOTE PREVIEW
-========================= */
+/* =========================================================
+   UPDATE PREVIEW
+========================================================= */
 
 function updateNotePreview(answer){
 
-  document
-    .getElementById("notePreview")
+  document.getElementById("notePreview")
     .innerHTML =
       renderHandwrittenNotes(answer);
-
 }
 
 
-/* =========================
+/* =========================================================
    PHOTO SELECTION
-========================= */
+========================================================= */
 
 function photoSelected(){
 
   const file =
-    document
-      .getElementById("photoFile")
+    document.getElementById("photoFile")
       .files[0];
 
   const name =
-    document
-      .getElementById("photoFileName");
+    document.getElementById("photoFileName");
 
   const status =
-    document
-      .getElementById("photoStatus");
+    document.getElementById("photoStatus");
 
   const progress =
-    document
-      .getElementById("photoProgress");
+    document.getElementById("photoProgress");
 
   const bar =
-    document
-      .getElementById("photoProgressBar");
+    document.getElementById("photoProgressBar");
 
   const text =
-    document
-      .getElementById("photoProgressText");
+    document.getElementById("photoProgressText");
 
   const remove =
-    document
-      .getElementById("removePhotoBtn");
+    document.getElementById("removePhotoBtn");
 
 
   if(!file){
 
     removePhoto();
-
     return;
-
   }
 
 
@@ -1159,10 +1228,10 @@ function photoSelected(){
 
   remove.classList.remove("hidden");
 
+
   let percent=0;
 
   bar.style.width="0%";
-
   text.textContent="0%";
 
 
@@ -1195,89 +1264,73 @@ function photoSelected(){
         percent+"%";
 
     },30);
-
 }
 
 
-/* =========================
+/* =========================================================
    REMOVE PHOTO
-========================= */
+========================================================= */
 
 function removePhoto(){
 
-  document
-    .getElementById("photoFile")
+  document.getElementById("photoFile")
     .value="";
 
-  document
-    .getElementById("photoFileName")
+  document.getElementById("photoFileName")
     .classList.add("hidden");
 
-  document
-    .getElementById("removePhotoBtn")
+  document.getElementById("removePhotoBtn")
     .classList.add("hidden");
 
-  document
-    .getElementById("photoProgress")
+  document.getElementById("photoProgress")
     .style.display="none";
 
-  document
-    .getElementById("photoProgressBar")
+  document.getElementById("photoProgressBar")
     .style.width="0%";
 
-  document
-    .getElementById("photoProgressText")
+  document.getElementById("photoProgressText")
     .textContent="0%";
 
-  document
-    .getElementById("photoStatus")
+  document.getElementById("photoStatus")
     .textContent="";
 
   clearPhotoResult();
-
 }
 
 
-/* =========================
+/* =========================================================
    PHOTO → NOTES
-========================= */
+========================================================= */
 
 async function generatePhotoNotes(){
 
   const file =
-    document
-      .getElementById("photoFile")
+    document.getElementById("photoFile")
       .files[0];
 
   const style =
-    document
-      .getElementById("photoStyle")
+    document.getElementById("photoStyle")
       .value;
 
   const language =
-    document
-      .getElementById("photoLanguage")
+    document.getElementById("photoLanguage")
       .value;
 
   const result =
-    document
-      .getElementById("photoResult");
+    document.getElementById("photoResult");
 
   const button =
-    document
-      .getElementById("photoGenerateBtn");
+    document.getElementById("photoGenerateBtn");
 
 
   if(!file){
 
     alert("Please select a photo first.");
-
     return;
-
   }
 
 
-  /* Clear Ask AI */
+  /* Remove Ask AI result */
 
   clearAIResult();
 
@@ -1289,6 +1342,8 @@ async function generatePhotoNotes(){
 
 
   result.style.display="block";
+
+  result.className="result";
 
   result.innerHTML =
     '<div class="loading">AI is reading your photo and preparing handwritten notes...</div>';
@@ -1335,7 +1390,6 @@ async function generatePhotoNotes(){
         data.error ||
         "Photo processing failed."
       );
-
     }
 
 
@@ -1344,12 +1398,12 @@ async function generatePhotoNotes(){
       "No notes generated.";
 
 
+    /* Only cleaned handwritten version */
+
     result.innerHTML =
       renderHandwrittenNotes(answer);
 
-
     updateNotePreview(answer);
-
 
   }
   catch(error){
@@ -1370,41 +1424,34 @@ async function generatePhotoNotes(){
 
     button.textContent =
       "📚 Generate Notes";
-
   }
-
 }
 
 
-/* =========================
+/* =========================================================
    ASK AI
-========================= */
+========================================================= */
 
 async function askNormalAI(){
 
   const question =
-    document
-      .getElementById("aiQuestion")
+    document.getElementById("aiQuestion")
       .value
       .trim();
 
   const style =
-    document
-      .getElementById("aiStyle")
+    document.getElementById("aiStyle")
       .value;
 
   const language =
-    document
-      .getElementById("aiLanguage")
+    document.getElementById("aiLanguage")
       .value;
 
   const result =
-    document
-      .getElementById("aiResult");
+    document.getElementById("aiResult");
 
   const button =
-    document
-      .getElementById("askAIBtn");
+    document.getElementById("askAIBtn");
 
 
   if(!question){
@@ -1414,11 +1461,10 @@ async function askNormalAI(){
     );
 
     return;
-
   }
 
 
-  /* Clear Photo Notes */
+  /* Remove Photo result */
 
   clearPhotoResult();
 
@@ -1478,7 +1524,6 @@ async function askNormalAI(){
         data.error ||
         "AI request failed."
       );
-
     }
 
 
@@ -1487,12 +1532,12 @@ async function askNormalAI(){
       "No answer received.";
 
 
+    /* Only cleaned handwritten version */
+
     result.innerHTML =
       renderHandwrittenNotes(answer);
 
-
     updateNotePreview(answer);
-
 
   }
   catch(error){
@@ -1513,31 +1558,64 @@ async function askNormalAI(){
 
     button.textContent =
       "🤖 Ask HandNote AI";
-
   }
-
 }
 
 
-/* =========================
+/* =========================================================
+   SAVE ONLY HANDWRITTEN PREVIEW
+========================================================= */
+
+function saveHandwrittenPDF(){
+
+  const preview =
+    document.getElementById("notePreview");
+
+  const text =
+    preview.innerText.trim();
+
+
+  if(
+    !text ||
+    text === "Your generated notes will appear here."
+  ){
+
+    alert(
+      "Please generate notes first."
+    );
+
+    return;
+  }
+
+
+  /*
+    The browser print dialog allows:
+    Print → Save as PDF
+
+    Only #notePreview is visible while printing.
+    Therefore the original AI response is NOT saved.
+  */
+
+  window.print();
+}
+
+
+/* =========================================================
    CLEAR EVERYTHING
-========================= */
+========================================================= */
 
 function clearEverything(){
 
   removePhoto();
 
-  document
-    .getElementById("aiQuestion")
+  document.getElementById("aiQuestion")
     .value="";
 
   clearAIResult();
 
-  document
-    .getElementById("notePreview")
+  document.getElementById("notePreview")
     .innerHTML =
       "Your generated notes will appear here.";
-
 }
 
 </script>
