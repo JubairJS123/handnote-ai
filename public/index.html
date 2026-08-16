@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>HandNote AI</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -18,13 +21,13 @@ body{
 header{
   background:#4f46e5;
   color:white;
-  padding:22px 18px;
+  padding:25px 18px;
   text-align:center;
 }
 
 header h1{
   margin:0;
-  font-size:28px;
+  font-size:30px;
 }
 
 header p{
@@ -46,34 +49,39 @@ header p{
   box-shadow:0 4px 18px rgba(0,0,0,.08);
 }
 
-h2{
+.card h2{
   margin-top:0;
-  font-size:20px;
 }
 
-.grid{
+.feature-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
 }
 
-.option{
+.feature{
   border:1px solid #ddd;
   border-radius:14px;
-  padding:16px;
+  padding:17px;
   background:#fafafa;
   cursor:pointer;
   transition:.2s;
 }
 
-.option:hover{
+.feature:hover{
   transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
 
-.option strong{
+.feature strong{
   display:block;
-  margin-bottom:5px;
+  font-size:16px;
+  margin-bottom:6px;
+}
+
+.small{
+  font-size:13px;
+  color:#777;
 }
 
 label{
@@ -82,7 +90,9 @@ label{
   margin:15px 0 7px;
 }
 
-textarea,select,input[type=file]{
+textarea,
+select,
+input[type=file]{
   width:100%;
   padding:13px;
   border:1px solid #d5d5d5;
@@ -109,16 +119,74 @@ button{
   cursor:pointer;
 }
 
-button.secondary{
-  background:#eee;
-  color:#333;
-}
-
 button:disabled{
   background:#999;
 }
 
-#result{
+button.secondary{
+  background:#eeeeee;
+  color:#333;
+}
+
+button.danger{
+  background:#dc2626;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* Upload area */
+
+.upload-box{
+  margin-top:10px;
+  padding:15px;
+  border:1px dashed #aaa;
+  border-radius:12px;
+  background:#fafafa;
+}
+
+.file-name{
+  margin-top:10px;
+  font-weight:bold;
+  color:#333;
+  word-break:break-word;
+}
+
+.progress-container{
+  margin-top:12px;
+  display:none;
+}
+
+.progress-background{
+  width:100%;
+  height:12px;
+  background:#e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  background:#4f46e5;
+  transition:width .15s;
+}
+
+.progress-text{
+  margin-top:7px;
+  font-size:13px;
+  color:#666;
+  text-align:center;
+}
+
+.upload-status{
+  margin-top:10px;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.result{
   display:none;
   margin-top:18px;
   padding:18px;
@@ -133,302 +201,739 @@ button:disabled{
   color:#666;
 }
 
-.preview{
+.placeholder{
+  text-align:center;
+  color:#777;
+  padding:20px 5px;
+}
+
+.note-preview{
   background:#fffef8;
   border:1px solid #ddd;
-  border-radius:10px;
+  border-radius:12px;
   padding:20px;
   min-height:150px;
-  line-height:1.8;
   white-space:pre-wrap;
-}
-
-.small{
-  color:#777;
-  font-size:13px;
-}
-
-.hidden{
-  display:none;
+  line-height:1.8;
 }
 
 @media(max-width:600px){
-  .grid{
+  .feature-grid{
     grid-template-columns:1fr;
   }
 }
 
 @media print{
-  header,.no-print,.card:not(.note-card){
+  header,
+  .no-print{
     display:none!important;
   }
 
   body{
     background:white;
   }
-
-  .container{
-    max-width:none;
-  }
-
-  .note-card{
-    box-shadow:none;
-    border:0;
-  }
 }
 </style>
 </head>
 
+
 <body>
 
 <header>
+
   <h1>✍️ HandNote AI</h1>
-  <p>Turn your study material into smart notes</p>
+
+  <p>
+    Your AI study and handwriting assistant
+  </p>
+
 </header>
+
 
 <div class="container">
 
-  <!-- FEATURES -->
+
+  <!-- MAIN FEATURES -->
 
   <div class="card no-print">
+
     <h2>What do you want to do?</h2>
 
-    <div class="grid">
+    <div class="feature-grid">
 
-      <div class="option" onclick="selectPhoto()">
+
+      <div
+        class="feature"
+        onclick="openPhotoNotes()"
+      >
+
         <strong>📷 Photo → Notes</strong>
+
         <span class="small">
-          Upload study material and turn it into notes.
+          Upload a study photo and generate notes.
         </span>
+
       </div>
 
-      <div class="option" onclick="selectWrite()">
-        <strong>⌨️ Write → Notes</strong>
+
+      <div
+        class="feature"
+        onclick="openAskAI()"
+      >
+
+        <strong>🤖 Ask AI</strong>
+
         <span class="small">
-          Type a topic and generate organized notes.
+          Ask a normal question without using a photo.
         </span>
+
       </div>
 
-      <div class="option" onclick="selectAI()">
-        <strong>🤖 AI Study Assistant</strong>
+
+      <div
+        class="feature"
+        onclick="openDocuments()"
+      >
+
+        <strong>📚 Document → Notes</strong>
+
         <span class="small">
-          Ask questions and get explanations.
+          PDF and multi-page documents.
         </span>
+
       </div>
 
-      <div class="option" onclick="selectHandwriting()">
-        <strong>✍️ Handwritten Output</strong>
+
+      <div
+        class="feature"
+        onclick="openHandwriting()"
+      >
+
+        <strong>✍️ Text → Handwritten</strong>
+
         <span class="small">
-          Prepare notes for handwritten conversion.
+          Convert text into handwritten notes.
         </span>
+
       </div>
+
 
     </div>
+
   </div>
 
 
-  <!-- CREATE NOTES -->
 
-  <div class="card no-print" id="createCard">
+  <!-- PHOTO TO NOTES -->
 
-    <h2>📚 Create your notes</h2>
+  <div
+    id="photoSection"
+    class="card hidden"
+  >
 
-    <label for="question">
-      Write your question or topic
-    </label>
-
-    <textarea
-      id="question"
-      placeholder="Example: Explain photosynthesis in simple language..."
-    ></textarea>
-
-
-    <label for="file">
-      📎 Upload study material
-    </label>
-
-    <input
-      type="file"
-      id="file"
-      accept="image/*,.pdf,.txt,.doc,.docx,.ppt,.pptx"
-    >
+    <h2>📷 Photo → Notes</h2>
 
     <p class="small">
-      Images are supported now. PDF and other document processing
-      will be connected in the next development step.
+      Upload your study material and HandNote AI will read it
+      and create notes.
     </p>
 
 
-    <label for="style">
-      📝 Answer style
+    <div class="upload-box">
+
+      <label for="photoFile">
+        Select study photo
+      </label>
+
+      <input
+        type="file"
+        id="photoFile"
+        accept="image/*"
+        onchange="photoSelected()"
+      >
+
+
+      <div
+        id="photoFileName"
+        class="file-name hidden"
+      ></div>
+
+
+      <div
+        id="photoProgress"
+        class="progress-container"
+      >
+
+        <div class="progress-background">
+
+          <div
+            id="photoProgressBar"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <div
+          id="photoProgressText"
+          class="progress-text"
+        >
+          0%
+        </div>
+
+      </div>
+
+
+      <div
+        id="photoStatus"
+        class="upload-status"
+      ></div>
+
+
+      <button
+        id="removePhotoBtn"
+        class="danger hidden"
+        onclick="removePhoto()"
+      >
+        ❌ Remove Photo
+      </button>
+
+    </div>
+
+
+    <label for="photoStyle">
+      📝 Note style
     </label>
 
-    <select id="style">
-      <option value="standard">Standard Notes</option>
-      <option value="short">Short Notes</option>
-      <option value="detailed">Detailed Notes</option>
-      <option value="exam">Exam Answer</option>
+    <select id="photoStyle">
+
+      <option value="standard">
+        Standard Notes
+      </option>
+
+      <option value="short">
+        Short Notes
+      </option>
+
+      <option value="detailed">
+        Detailed Notes
+      </option>
+
+      <option value="exam">
+        Exam Answer
+      </option>
+
     </select>
 
 
-    <label for="language">
+    <label for="photoLanguage">
       🌐 Language
     </label>
 
-    <select id="language">
-      <option value="English">English</option>
-      <option value="Hindi">Hindi</option>
-      <option value="Assamese">Assamese</option>
+    <select id="photoLanguage">
+
+      <option value="English">
+        English
+      </option>
+
+      <option value="Hindi">
+        Hindi
+      </option>
+
+      <option value="Assamese">
+        Assamese
+      </option>
+
     </select>
 
 
-    <button id="askBtn" onclick="askAI()">
-      🤖 Generate with HandNote AI
+    <button
+      id="photoGenerateBtn"
+      onclick="generatePhotoNotes()"
+    >
+
+      📚 Generate Notes
+
     </button>
 
-    <div id="result"></div>
+
+    <div
+      id="photoResult"
+      class="result"
+    ></div>
 
   </div>
+
+
+
+  <!-- ASK AI -->
+
+  <div
+    id="askSection"
+    class="card hidden"
+  >
+
+    <h2>🤖 Ask AI</h2>
+
+    <p class="small">
+      Ask anything. This section does not use your Photo → Notes
+      image.
+    </p>
+
+
+    <label for="aiQuestion">
+      Your question
+    </label>
+
+    <textarea
+      id="aiQuestion"
+      placeholder="Example: What is photosynthesis?"
+    ></textarea>
+
+
+    <label for="aiStyle">
+      📝 Answer style
+    </label>
+
+    <select id="aiStyle">
+
+      <option value="standard">
+        Standard
+      </option>
+
+      <option value="short">
+        Short
+      </option>
+
+      <option value="detailed">
+        Detailed
+      </option>
+
+      <option value="exam">
+        Exam Answer
+      </option>
+
+    </select>
+
+
+    <label for="aiLanguage">
+      🌐 Language
+    </label>
+
+    <select id="aiLanguage">
+
+      <option value="English">
+        English
+      </option>
+
+      <option value="Hindi">
+        Hindi
+      </option>
+
+      <option value="Assamese">
+        Assamese
+      </option>
+
+    </select>
+
+
+    <button
+      id="askAIBtn"
+      onclick="askNormalAI()"
+    >
+
+      🤖 Ask HandNote AI
+
+    </button>
+
+
+    <div
+      id="aiResult"
+      class="result"
+    ></div>
+
+  </div>
+
+
+
+  <!-- DOCUMENT -->
+
+  <div
+    id="documentSection"
+    class="card hidden"
+  >
+
+    <h2>📚 Document → Notes</h2>
+
+    <div class="placeholder">
+
+      🚧 Multi-page PDF and document processing
+      will be connected next.
+
+      <br><br>
+
+      Planned support:
+
+      <br>
+
+      PDF • DOC • DOCX • PPT • PPTX • TXT
+
+    </div>
+
+  </div>
+
+
+
+  <!-- HANDWRITING -->
+
+  <div
+    id="handwritingSection"
+    class="card hidden"
+  >
+
+    <h2>✍️ Text → Handwritten Notes</h2>
+
+    <div class="placeholder">
+
+      🚧 Handwritten note generation will be
+      connected after the normal note system
+      is stable.
+
+    </div>
+
+  </div>
+
 
 
   <!-- NOTE PREVIEW -->
 
-  <div class="card note-card">
+  <div class="card">
 
     <h2>📄 Note Preview</h2>
 
-    <div id="preview" class="preview">
+    <div
+      id="notePreview"
+      class="note-preview"
+    >
+
       Your generated notes will appear here.
+
     </div>
+
 
     <div class="no-print">
 
-      <button onclick="preparePDF()">
+      <button
+        onclick="window.print()"
+      >
+
         📥 Save / Print as PDF
+
       </button>
 
-      <button class="secondary" onclick="clearAll()">
-        🗑️ Clear
+
+      <button
+        class="secondary"
+        onclick="clearEverything()"
+      >
+
+        🗑️ Clear Everything
+
       </button>
 
     </div>
 
   </div>
 
+
 </div>
+
 
 
 <script>
 
-function scrollToCreate(){
-  document.getElementById("createCard")
-    .scrollIntoView({
-      behavior:"smooth"
-    });
+/* =========================
+   SECTION CONTROL
+========================= */
+
+function hideAllSections(){
+
+  document
+    .getElementById("photoSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("askSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("documentSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("handwritingSection")
+    .classList.add("hidden");
+
 }
 
 
-function selectPhoto(){
+function openPhotoNotes(){
 
-  document.getElementById("question").value="";
+  hideAllSections();
 
-  document.getElementById("file").click();
+  document
+    .getElementById("photoSection")
+    .classList.remove("hidden");
 
-  scrollToCreate();
 }
 
 
-function selectWrite(){
+function openAskAI(){
 
-  document.getElementById("question").focus();
+  hideAllSections();
 
-  scrollToCreate();
+  document
+    .getElementById("askSection")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("aiQuestion")
+    .focus();
+
 }
 
 
-function selectAI(){
+function openDocuments(){
 
-  document.getElementById("question").focus();
+  hideAllSections();
 
-  document.getElementById("style").value="standard";
+  document
+    .getElementById("documentSection")
+    .classList.remove("hidden");
 
-  scrollToCreate();
 }
 
 
-function selectHandwriting(){
+function openHandwriting(){
 
-  document.getElementById("style").value="detailed";
+  hideAllSections();
 
-  document.getElementById("question").focus();
+  document
+    .getElementById("handwritingSection")
+    .classList.remove("hidden");
 
-  scrollToCreate();
-
-  alert(
-    "Handwritten output is being prepared. Generate your notes first; handwriting generation will be connected in the next stage."
-  );
 }
 
 
-async function askAI(){
 
-  const question =
-    document.getElementById("question").value.trim();
+/* =========================
+   PHOTO SELECTION
+========================= */
 
-  const style =
-    document.getElementById("style").value;
-
-  const language =
-    document.getElementById("language").value;
+function photoSelected(){
 
   const file =
-    document.getElementById("file").files[0];
+    document.getElementById("photoFile")
+    .files[0];
 
-  const result =
-    document.getElementById("result");
+  const name =
+    document.getElementById("photoFileName");
 
-  const preview =
-    document.getElementById("preview");
+  const status =
+    document.getElementById("photoStatus");
 
-  const button =
-    document.getElementById("askBtn");
+  const progress =
+    document.getElementById("photoProgress");
+
+  const bar =
+    document.getElementById("photoProgressBar");
+
+  const text =
+    document.getElementById("photoProgressText");
+
+  const remove =
+    document.getElementById("removePhotoBtn");
 
 
-  if(!question && !file){
+  if(!file){
 
-    alert(
-      "Please write a question or upload study material."
-    );
+    removePhoto();
 
     return;
+
+  }
+
+
+  name.textContent =
+    "📷 Selected: " + file.name;
+
+  name.classList.remove("hidden");
+
+
+  progress.style.display="block";
+
+
+  status.textContent =
+    "Preparing upload...";
+
+
+  remove.classList.remove("hidden");
+
+
+  /*
+    This progress represents preparation of the
+    selected file. The real server upload progress
+    is tracked when Generate Notes is pressed.
+  */
+
+  let percent=0;
+
+
+  bar.style.width="0%";
+
+  text.textContent="0%";
+
+
+  const timer=setInterval(()=>{
+
+    percent += 10;
+
+    if(percent>=100){
+
+      percent=100;
+
+      clearInterval(timer);
+
+      status.textContent =
+        "✅ Photo ready — 100%. Tap Generate Notes.";
+
+    }else{
+
+      status.textContent =
+        "Preparing photo...";
+
+    }
+
+
+    bar.style.width =
+      percent+"%";
+
+    text.textContent =
+      percent+"%";
+
+  },30);
+
+}
+
+
+
+/* =========================
+   REMOVE PHOTO
+========================= */
+
+function removePhoto(){
+
+  document
+    .getElementById("photoFile")
+    .value="";
+
+
+  document
+    .getElementById("photoFileName")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("removePhotoBtn")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("photoProgress")
+    .style.display="none";
+
+
+  document
+    .getElementById("photoProgressBar")
+    .style.width="0%";
+
+
+  document
+    .getElementById("photoProgressText")
+    .textContent="0%";
+
+
+  document
+    .getElementById("photoStatus")
+    .textContent="";
+
+
+  document
+    .getElementById("photoResult")
+    .style.display="none";
+
+}
+
+
+
+/* =========================
+   PHOTO → NOTES
+========================= */
+
+async function generatePhotoNotes(){
+
+  const file =
+    document.getElementById("photoFile")
+    .files[0];
+
+  const style =
+    document.getElementById("photoStyle")
+    .value;
+
+  const language =
+    document.getElementById("photoLanguage")
+    .value;
+
+  const result =
+    document.getElementById("photoResult");
+
+  const button =
+    document.getElementById("photoGenerateBtn");
+
+  const preview =
+    document.getElementById("notePreview");
+
+
+  if(!file){
+
+    alert("Please select a photo first.");
+
+    return;
+
   }
 
 
   button.disabled=true;
 
   button.textContent=
-    "🤖 HandNote AI is thinking...";
+    "🤖 Reading Photo...";
 
 
   result.style.display="block";
 
   result.innerHTML=
-    '<div class="loading">Reading your material and preparing notes...</div>';
+    '<div class="loading">AI is reading your photo and preparing notes...</div>';
 
 
   try{
 
-    const formData=new FormData();
+    const formData =
+      new FormData();
 
 
-    if(question){
-
-      formData.append(
-        "question",
-        question
-      );
-
-    }
+    formData.append(
+      "file",
+      file
+    );
 
 
     formData.append(
@@ -443,98 +948,235 @@ async function askAI(){
     );
 
 
-    if(file){
+    /*
+      Photo → Notes has its own request.
+      It does not use the Ask AI question box.
+    */
 
-      formData.append(
-        "file",
-        file
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
+          body:formData
+        }
       );
 
-    }
 
-
-    const response=await fetch(
-      "/api/chat",
-      {
-        method:"POST",
-        body:formData
-      }
-    );
-
-
-    const data=await response.json();
+    const data =
+      await response.json();
 
 
     if(!response.ok){
 
       throw new Error(
         data.error ||
-        "Request failed"
+        "Photo processing failed."
       );
 
     }
 
 
-    const answer=
+    const answer =
       data.answer ||
-      "No answer received.";
+      "No notes generated.";
 
 
-    result.textContent=
+    result.textContent =
       answer;
 
 
-    preview.textContent=
+    preview.textContent =
       answer;
 
 
   }catch(error){
 
-    result.textContent=
+    result.textContent =
       "Something went wrong: "+
       error.message;
-
 
   }finally{
 
     button.disabled=false;
 
-    button.textContent=
-      "🤖 Generate with HandNote AI";
+    button.textContent =
+      "📚 Generate Notes";
 
   }
 
 }
 
 
-function preparePDF(){
 
-  window.print();
+/* =========================
+   NORMAL ASK AI
+========================= */
+
+async function askNormalAI(){
+
+  const question =
+    document
+      .getElementById("aiQuestion")
+      .value
+      .trim();
+
+  const style =
+    document
+      .getElementById("aiStyle")
+      .value;
+
+  const language =
+    document
+      .getElementById("aiLanguage")
+      .value;
+
+  const result =
+    document
+      .getElementById("aiResult");
+
+  const button =
+    document
+      .getElementById("askAIBtn");
+
+  const preview =
+    document
+      .getElementById("notePreview");
+
+
+  if(!question){
+
+    alert(
+      "Please enter your question."
+    );
+
+    return;
+
+  }
+
+
+  button.disabled=true;
+
+  button.textContent =
+    "🤖 Thinking...";
+
+
+  result.style.display="block";
+
+  result.innerHTML =
+    '<div class="loading">HandNote AI is thinking...</div>';
+
+
+  try{
+
+    const formData =
+      new FormData();
+
+
+    /*
+      IMPORTANT:
+      No photo/file is added here.
+      Therefore an old Photo → Notes image
+      cannot accidentally be sent with this question.
+    */
+
+    formData.append(
+      "question",
+      question
+    );
+
+
+    formData.append(
+      "style",
+      style
+    );
+
+
+    formData.append(
+      "language",
+      language
+    );
+
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
+          body:formData
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "AI request failed."
+      );
+
+    }
+
+
+    const answer =
+      data.answer ||
+      "No answer received.";
+
+
+    result.textContent =
+      answer;
+
+
+    preview.textContent =
+      answer;
+
+
+  }catch(error){
+
+    result.textContent =
+      "Something went wrong: "+
+      error.message;
+
+  }finally{
+
+    button.disabled=false;
+
+    button.textContent =
+      "🤖 Ask HandNote AI";
+
+  }
 
 }
 
 
-function clearAll(){
 
-  document.getElementById(
-    "question"
-  ).value="";
+/* =========================
+   CLEAR EVERYTHING
+========================= */
 
+function clearEverything(){
 
-  document.getElementById(
-    "file"
-  ).value="";
+  removePhoto();
 
 
-  document.getElementById(
-    "result"
-  ).style.display="none";
+  document
+    .getElementById("aiQuestion")
+    .value="";
 
 
-  document.getElementById(
-    "preview"
-  ).textContent=
-    "Your generated notes will appear here.";
+  document
+    .getElementById("aiResult")
+    .style.display="none";
+
+
+  document
+    .getElementById("notePreview")
+    .textContent =
+      "Your generated notes will appear here.";
 
 }
 
