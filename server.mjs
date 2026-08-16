@@ -65,40 +65,32 @@ Use headings and bullet points when useful.
 Keep the answer suitable for conversion into handwritten study notes.
 
 If an image is uploaded:
-- Carefully examine the image.
-- Read visible text accurately.
+- Carefully read the image.
+- Extract the important information.
 - If it contains a question, solve it.
-- If it contains study material, convert it into clear notes.
-- Do not describe the image unnecessarily.
+- If it contains study material, create clear and organized notes.
+- Do not unnecessarily describe the image.
 
 Student question:
 ${question || "Please understand the uploaded image and create clear study notes from it."}`;
 
-    let input;
+    const input = [];
 
     if (req.file) {
       const mimeType = req.file.mimetype || "image/jpeg";
       const base64 = req.file.buffer.toString("base64");
 
-      input = [
-        {
-          type: "text",
-          text: prompt
-        },
-        {
-          type: "image",
-          data: base64,
-          mime_type: mimeType
-        }
-      ];
-    } else {
-      input = [
-        {
-          type: "text",
-          text: prompt
-        }
-      ];
+      input.push({
+        type: "image",
+        data: base64,
+        mime_type: mimeType
+      });
     }
+
+    input.push({
+      type: "text",
+      text: prompt
+    });
 
     const model =
       process.env.GEMINI_MODEL || "gemini-3.6-flash";
