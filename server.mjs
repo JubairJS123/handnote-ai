@@ -8,24 +8,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }
+  limits: {
+    fileSize: 10 * 1024 * 1024
+  }
 });
 
 app.use(express.json({ limit: "2mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Health check
 app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
-    aiConfigured: Boolean(process.env.GEMINI_API_KEY)
+    aiConfigured: Boolean(process.env.GEMINI_API_KEY),
+    model: process.env.GEMINI_MODEL || "gemini-3.5-flash-lite"
   });
 });
 
+// AI chat
 app.post("/api/chat", upload.single("file"), async (req, res) => {
   try {
-    if (!process.env.GEMINI_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
       return res.status(503).json({
         error: "AI server is running, but GEMINI_API_KEY is not configured."
       });
@@ -41,48 +49,54 @@ app.post("/api/chat", upload.single("file"), async (req, res) => {
       });
     }
 
-    const parts = [
-      {
-        text: `You are HandNote AI, a helpful study assistant for students.
+    const prompt = `You are HandNote AI, a helpful AI study assistant for students.
 
-Answer accurately and clearly.
-Language: ${language}.
-Answer style requested by the student: ${style}.
-If this is a school/college question, make the answer suitable for the student's level.
-Show working for numerical problems when useful.
-Do not invent facts.
+Language: ${language}
+Answer style: ${style}
 
-Student question: ${question || "(Question is in the uploaded image.)"}`
-      }
-    ];
+Rules:
+- Give accurate and understandable answers.
+- Do not invent facts.
+- For numerical questions, show the important steps.
+- For school or college questions, make the answer suitable for the student's level.
+- Use headings and bullet points when useful.
+- Keep the answer clean so it can later be converted into handwritten notes.
 
+Student question:
+${question || "The student has uploaded an image. Understand the image and answer appropriately."}`;
+
+    const input = [];
+
+    input.push({
+      type: "text",
+      text: prompt
+    });
+
+    // Add uploaded image
     if (req.file) {
-      const mime = req.file.mimetype || "image/jpeg";
+      const mimeType = req.file.mimetype || "image/jpeg";
       const base64 = req.file.buffer.toString("base64");
 
-      parts.push({
-        inline_data: {
-          mime_type: mime,
-          data: base64
-        }
+      input.push({
+        type: "image",
+        data: `data:${mimeType};base64,${base64}`
       });
     }
 
-    const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+    const model =
+      process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
         },
         body: JSON.stringify({
-          contents: [
-            {
-              parts
-            }
-          ]
+          model: model,
+          input: input
         })
       }
     );
@@ -90,7 +104,7 @@ Student question: ${question || "(Question is in the uploaded image.)"}`
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Gemini API error:", data);
+      console.error("Gemini error:", data);
 
       return res.status(response.status).json({
         error:
@@ -99,27 +113,59 @@ Student question: ${question || "(Question is in the uploaded image.)"}`
       });
     }
 
-    const answer =
-      data?.candidates?.[0]?.content?.parts
-        ?.map(part => part.text || "")
+    let answer = "";
+
+    if (Array.isArray(data.outputs)) {
+      answer = data.outputs
+        .map(output => {
+          if (typeof output === "string") return output;
+
+          if (output?.text) return output.text;
+
+          if (output?.content) {
+            if (typeof output.content === "string") {
+              return output.content;
+            }
+
+            if (Array.isArray(output.content)) {
+              return output.content
+                .map(item => item?.text || "")
+                .join("");
+            }
+          }
+
+          return "";
+        })
         .join("")
         .trim();
+    }
+
+    // Support newer response structure if returned
+    if (!answer && Array.isArray(data.steps)) {
+      answer = data.steps
+        .map(step => step?.text || "")
+        .join("")
+        .trim();
+    }
 
     res.json({
       answer: answer || "I couldn't generate an answer."
     });
 
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Server error:", error);
 
     res.status(500).json({
-      error: err?.message || "AI request failed."
+      error: error?.message || "AI request failed."
     });
   }
 });
 
+// Send the website
 app.get(/.*/, (_req, res) => {
-  res.sendFile(path.join(__dirname, "public/index.html"));
+  res.sendFile(
+    path.join(__dirname, "public", "index.html")
+  );
 });
 
 const port = Number(process.env.PORT || 3000);
