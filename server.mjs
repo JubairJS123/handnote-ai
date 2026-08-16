@@ -64,10 +64,17 @@ For numerical problems, show the important steps.
 Use headings and bullet points when useful.
 Keep the answer suitable for conversion into handwritten study notes.
 
-Student question:
-${question || "Please understand the uploaded image and explain its contents."}`;
+IMPORTANT:
+If an image is uploaded, carefully read and understand the image.
+Extract the important information from it.
+If it contains handwritten text, try to read it accurately.
+If it contains a question, solve the question.
+If it contains study material, turn it into clear and organized notes.
 
-    let input = prompt;
+Student question:
+${question || "Please understand the uploaded image and create clear study notes from it."}`;
+
+    let input;
 
     if (req.file) {
       const mimeType = req.file.mimetype || "image/jpeg";
@@ -75,13 +82,31 @@ ${question || "Please understand the uploaded image and explain its contents."}`
 
       input = [
         {
-          type: "text",
-          text: prompt
-        },
+          type: "message",
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: prompt
+            },
+            {
+              type: "input_image",
+              image_url: `data:${mimeType};base64,${base64}`
+            }
+          ]
+        }
+      ];
+    } else {
+      input = [
         {
-          type: "image",
-          data: base64,
-          mime_type: mimeType
+          type: "message",
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: prompt
+            }
+          ]
         }
       ];
     }
