@@ -64,12 +64,12 @@ For numerical problems, show the important steps.
 Use headings and bullet points when useful.
 Keep the answer suitable for conversion into handwritten study notes.
 
-IMPORTANT:
-If an image is uploaded, carefully read and understand the image.
-Extract the important information from it.
-If it contains handwritten text, try to read it accurately.
-If it contains a question, solve the question.
-If it contains study material, turn it into clear and organized notes.
+If an image is uploaded:
+- Carefully examine the image.
+- Read visible text accurately.
+- If it contains a question, solve it.
+- If it contains study material, convert it into clear notes.
+- Do not describe the image unnecessarily.
 
 Student question:
 ${question || "Please understand the uploaded image and create clear study notes from it."}`;
@@ -82,31 +82,20 @@ ${question || "Please understand the uploaded image and create clear study notes
 
       input = [
         {
-          type: "message",
-          role: "user",
-          content: [
-            {
-              type: "input_text",
-              text: prompt
-            },
-            {
-              type: "input_image",
-              image_url: `data:${mimeType};base64,${base64}`
-            }
-          ]
+          type: "text",
+          text: prompt
+        },
+        {
+          type: "image",
+          data: base64,
+          mime_type: mimeType
         }
       ];
     } else {
       input = [
         {
-          type: "message",
-          role: "user",
-          content: [
-            {
-              type: "input_text",
-              text: prompt
-            }
-          ]
+          type: "text",
+          text: prompt
         }
       ];
     }
