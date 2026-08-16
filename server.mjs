@@ -22,8 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const ai = process.env.GEMINI_API_KEY
   ? new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
-      httpOptions: { apiVersion: "v1" }
+      apiKey: process.env.GEMINI_API_KEY
     })
   : null;
 
@@ -66,7 +65,7 @@ Keep the answer suitable for conversion into handwritten study notes.
 
 If an image is uploaded:
 - Carefully read the image.
-- Extract the important information.
+- Extract important information.
 - If it contains a question, solve it.
 - If it contains study material, create clear and organized notes.
 - Do not unnecessarily describe the image.
@@ -74,37 +73,39 @@ If an image is uploaded:
 Student question:
 ${question || "Please understand the uploaded image and create clear study notes from it."}`;
 
-    const input = [];
+    const model =
+      process.env.GEMINI_MODEL || "gemini-3.6-flash";
+
+    let contents;
 
     if (req.file) {
       const mimeType = req.file.mimetype || "image/jpeg";
       const base64 = req.file.buffer.toString("base64");
 
-      input.push({
-        type: "image",
-        data: base64,
-        mime_type: mimeType
-      });
+      contents = [
+        {
+          text: prompt
+        },
+        {
+          inlineData: {
+            mimeType: mimeType,
+            data: base64
+          }
+        }
+      ];
+    } else {
+      contents = prompt;
     }
 
-    input.push({
-      type: "text",
-      text: prompt
-    });
-
-    const model =
-      process.env.GEMINI_MODEL || "gemini-3.6-flash";
-
-    const interaction = await ai.interactions.create({
+    const response = await ai.models.generateContent({
       model,
-      input,
-      store: false
+      contents
     });
 
-    const answer = interaction.output_text;
+    const answer = response.text;
 
     if (!answer) {
-      console.error("Gemini response:", interaction);
+      console.error("Gemini response:", response);
 
       return res.status(502).json({
         error: "Gemini returned no text answer."
