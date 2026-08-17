@@ -7,24 +7,15 @@
 
 <title>HandNote AI</title>
 
-<!-- =========================================================
-     HANDWRITING FONTS
-========================================================= -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link
-  href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Patrick+Hand&family=Comic+Neue:wght@400;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
-  rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Patrick+Hand&family=Comic+Neue:wght@400;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+rel="stylesheet"
 >
 
-
 <style>
-
-/* =========================================================
-   GLOBAL
-========================================================= */
 
 *{
   box-sizing:border-box;
@@ -161,6 +152,10 @@ button.red{
   background:#dc2626;
 }
 
+button.orange{
+  background:#ea580c;
+}
+
 .hidden{
   display:none !important;
 }
@@ -208,9 +203,14 @@ button.red{
   line-height:1.7;
 }
 
+.result.show{
+  display:block;
+}
+
 .loading{
   text-align:center;
   color:#666;
+  padding:15px;
 }
 
 .ai-answer{
@@ -219,7 +219,6 @@ button.red{
   border-radius:12px;
   padding:16px;
   line-height:1.7;
-  white-space:normal;
   overflow-wrap:anywhere;
 }
 
@@ -239,6 +238,22 @@ button.red{
   margin-top:10px;
 }
 
+.photo-question{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:14px;
+}
+
+.photo-question img{
+  width:100%;
+  max-height:280px;
+  object-fit:contain;
+  border-radius:10px;
+  background:#111;
+}
+
 
 /* =========================================================
    HANDWRITTEN PAPER
@@ -248,11 +263,12 @@ button.red{
 
   position:relative;
 
-  min-height:260px;
+  min-height:300px;
 
-  padding:28px 22px 35px 52px;
+  padding:28px 22px 40px 52px;
 
   border:1px solid #d4d0c4;
+
   border-radius:12px;
 
   overflow-wrap:anywhere;
@@ -282,9 +298,6 @@ button.red{
   letter-spacing:.2px;
 }
 
-
-/* English */
-
 .note-preview.lang-english{
   font-family:
     "Patrick Hand",
@@ -293,11 +306,7 @@ button.red{
     cursive;
 }
 
-
-/* Hindi */
-
 .note-preview.lang-hindi{
-
   font-family:
     "Kalam",
     "Noto Sans Devanagari",
@@ -305,15 +314,10 @@ button.red{
     sans-serif;
 
   font-size:20px;
-
   line-height:34px;
 }
 
-
-/* Assamese */
-
 .note-preview.lang-assamese{
-
   font-family:
     "Kalam",
     "Noto Sans Bengali",
@@ -321,14 +325,8 @@ button.red{
     sans-serif;
 
   font-size:20px;
-
   line-height:34px;
 }
-
-
-/* =========================================================
-   HANDWRITTEN ELEMENTS
-========================================================= */
 
 .note-heading{
   font-size:23px;
@@ -354,18 +352,13 @@ button.red{
   height:12px;
 }
 
-
-/* =========================================================
-   HANDWRITTEN EQUATION
-========================================================= */
-
 .hand-equation{
 
   display:block;
 
-  margin:8px 0;
+  margin:10px 0;
 
-  padding:2px 5px;
+  padding:3px 5px;
 
   font-family:
     "Patrick Hand",
@@ -373,32 +366,23 @@ button.red{
     "Comic Neue",
     cursive;
 
-  font-size:22px;
+  font-size:23px;
 
   font-weight:500;
 
-  line-height:34px;
+  line-height:36px;
 
-  letter-spacing:.4px;
+  letter-spacing:.5px;
 
   white-space:normal;
 
   transform:rotate(-0.25deg);
-
 }
-
-
-/* Bigger equation */
 
 .hand-equation.big{
-  font-size:25px;
-  margin:10px 0;
+  font-size:26px;
+  margin:12px 0;
 }
-
-
-/* =========================================================
-   FRACTION
-========================================================= */
 
 .fraction{
 
@@ -424,25 +408,45 @@ button.red{
   padding:1px 5px 0;
 }
 
+.hand-sup{
+  vertical-align:super;
+  font-size:.7em;
+}
 
-/* =========================================================
-   AI ANSWER
-========================================================= */
+.hand-sub{
+  vertical-align:sub;
+  font-size:.7em;
+}
+
+.answer-block{
+  margin-bottom:10px;
+}
+
+.note-title-line{
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.error-box{
+  background:#fff1f2;
+  border:1px solid #fecdd3;
+  color:#991b1b;
+  padding:12px;
+  border-radius:10px;
+}
+
+.success-box{
+  background:#f0fdf4;
+  border:1px solid #bbf7d0;
+  color:#166534;
+  padding:12px;
+  border-radius:10px;
+}
 
 .raw-markdown{
   white-space:pre-wrap;
 }
-
-.raw-equation{
-  font-family:
-    "Times New Roman",
-    serif;
-}
-
-
-/* =========================================================
-   PRINT
-========================================================= */
 
 @media print{
 
@@ -497,11 +501,6 @@ button.red{
   }
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media(max-width:600px){
 
   .feature-grid{
@@ -534,7 +533,6 @@ button.red{
 
 </head>
 
-
 <body>
 
 
@@ -553,7 +551,7 @@ button.red{
 
 
 <!-- =========================================================
-     HOME FEATURES
+     HOME
 ========================================================= -->
 
 <div class="card no-print">
@@ -623,7 +621,7 @@ button.red{
 
 
 <!-- =========================================================
-     PHOTO → NOTES
+     PHOTO
 ========================================================= -->
 
 <div
@@ -634,7 +632,7 @@ button.red{
   <h2>📷 Photo → Notes</h2>
 
   <p class="small">
-    Upload a study question or study material.
+    Upload or take a photo of a question or study material.
   </p>
 
 
@@ -730,11 +728,11 @@ button.red{
     </option>
 
     <option value="Hindi">
-      हिन्दी (Hindi)
+      Hindi
     </option>
 
     <option value="Assamese">
-      অসমীয়া (Assamese)
+      Assamese
     </option>
 
   </select>
@@ -800,1732 +798,4 @@ button.red{
       Detailed
     </option>
 
-    <option value="exam">
-      Exam Answer
-    </option>
-
-  </select>
-
-
-  <label>
-    🌐 Language
-  </label>
-
-  <select id="aiLanguage">
-
-    <option value="English">
-      English
-    </option>
-
-    <option value="Hindi">
-      हिन्दी (Hindi)
-    </option>
-
-    <option value="Assamese">
-      অসমীয়া (Assamese)
-    </option>
-
-  </select>
-
-
-  <button
-    id="askAIBtn"
-    onclick="askNormalAI()"
-  >
-    🤖 Ask HandNote AI
-  </button>
-
-
-  <div
-    id="aiResult"
-    class="result"
-  ></div>
-
-</div>
-
-
-<!-- =========================================================
-     DOCUMENT
-========================================================= -->
-
-<div
-  id="documentSection"
-  class="card hidden"
->
-
-  <h2>📚 Document → Notes</h2>
-
-  <div class="placeholder">
-
-    🚧 Document module will be connected next.
-
-    <br><br>
-
-    Planned:
-
-    <br><br>
-
-    PDF • DOC • DOCX • PPT • PPTX • TXT
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     TEXT → HANDWRITTEN
-========================================================= -->
-
-<div
-  id="handwritingSection"
-  class="card hidden"
->
-
-  <h2>✍️ Text → Handwritten Notes</h2>
-
-
-  <label>
-    Enter your text
-  </label>
-
-  <textarea
-    id="handwritingText"
-    placeholder="Write or paste your notes here..."
-  ></textarea>
-
-
-  <label>
-    🌐 Language
-  </label>
-
-  <select id="handwritingLanguage">
-
-    <option value="English">
-      English
-    </option>
-
-    <option value="Hindi">
-      हिन्दी
-    </option>
-
-    <option value="Assamese">
-      অসমীয়া
-    </option>
-
-  </select>
-
-
-  <button
-    onclick="convertTextToHandwriting()"
-  >
-    ✍️ Convert to Handwriting
-  </button>
-
-</div>
-
-
-<!-- =========================================================
-     HANDWRITTEN PREVIEW
-========================================================= -->
-
-<div class="card">
-
-  <h2>
-    📄 Handwritten Note Preview
-  </h2>
-
-
-  <div
-    id="notePreview"
-    class="note-preview lang-english"
-  >
-
-    Your handwritten notes will appear here.
-
-  </div>
-
-
-  <div class="no-print">
-
-    <button
-      class="green"
-      onclick="saveHandwrittenPDF()"
-    >
-      📥 Save Handwritten PDF
-    </button>
-
-
-    <button
-      class="secondary"
-      onclick="clearEverything()"
-    >
-      🗑️ Clear Everything
-    </button>
-
-  </div>
-
-</div>
-
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-let selectedPhotoFile = null;
-
-let currentLanguage = "English";
-
-let latestAIAnswer = "";
-
-
-/* =========================================================
-   SECTION CONTROL
-========================================================= */
-
-function hideAllSections(){
-
-  document
-    .getElementById("photoSection")
-    .classList.add("hidden");
-
-  document
-    .getElementById("askSection")
-    .classList.add("hidden");
-
-  document
-    .getElementById("documentSection")
-    .classList.add("hidden");
-
-  document
-    .getElementById("handwritingSection")
-    .classList.add("hidden");
-}
-
-
-function openPhotoNotes(){
-
-  hideAllSections();
-
-  document
-    .getElementById("photoSection")
-    .classList.remove("hidden");
-}
-
-
-function openAskAI(){
-
-  hideAllSections();
-
-  document
-    .getElementById("askSection")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("aiQuestion")
-    .focus();
-}
-
-
-function openDocuments(){
-
-  hideAllSections();
-
-  document
-    .getElementById("documentSection")
-    .classList.remove("hidden");
-}
-
-
-function openHandwriting(){
-
-  hideAllSections();
-
-  document
-    .getElementById("handwritingSection")
-    .classList.remove("hidden");
-}
-
-
-/* =========================================================
-   PHOTO
-========================================================= */
-
-function cameraSelected(){
-
-  const input =
-    document.getElementById("cameraFile");
-
-  if(!input.files.length){
-    return;
-  }
-
-  selectedPhotoFile =
-    input.files[0];
-
-  showSelectedPhoto();
-}
-
-
-function photoSelected(){
-
-  const input =
-    document.getElementById("photoFile");
-
-  if(!input.files.length){
-    return;
-  }
-
-  selectedPhotoFile =
-    input.files[0];
-
-  showSelectedPhoto();
-}
-
-
-function showSelectedPhoto(){
-
-  if(!selectedPhotoFile){
-    return;
-  }
-
-  const name =
-    document.getElementById("photoFileName");
-
-  name.textContent =
-    "Selected: " +
-    selectedPhotoFile.name;
-
-  name.classList.remove("hidden");
-
-
-  const preview =
-    document.getElementById("cameraPreview");
-
-  preview.src =
-    URL.createObjectURL(selectedPhotoFile);
-
-  preview.classList.remove("hidden");
-
-
-  document
-    .getElementById("removePhotoBtn")
-    .classList.remove("hidden");
-
-
-  document
-    .getElementById("photoStatus")
-    .textContent =
-    "Photo ready.";
-}
-
-
-function removePhoto(){
-
-  selectedPhotoFile = null;
-
-  document.getElementById("cameraFile").value = "";
-
-  document.getElementById("photoFile").value = "";
-
-  document
-    .getElementById("cameraPreview")
-    .classList.add("hidden");
-
-  document
-    .getElementById("photoFileName")
-    .classList.add("hidden");
-
-  document
-    .getElementById("removePhotoBtn")
-    .classList.add("hidden");
-
-  document
-    .getElementById("photoStatus")
-    .textContent = "";
-}
-
-
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHTML(text){
-
-  return String(text)
-
-    .replace(/&/g,"&amp;")
-
-    .replace(/</g,"&lt;")
-
-    .replace(/>/g,"&gt;")
-
-    .replace(/"/g,"&quot;")
-
-    .replace(/'/g,"&#039;");
-
-}
-
-
-/* =========================================================
-   MARKDOWN CLEANING
-========================================================= */
-
-function cleanAIText(text){
-
-  let value =
-    String(text || "");
-
-
-  value =
-    value.replace(
-      /```(?:latex|math|mathematics|text|markdown)?/gi,
-      ""
-    );
-
-  value =
-    value.replace(
-      /```/g,
-      ""
-    );
-
-
-  value =
-    value.replace(
-      /^#{1,6}\s*/gm,
-      ""
-    );
-
-
-  value =
-    value.replace(
-      /\*\*(.*?)\*\*/gs,
-      "$1"
-    );
-
-
-  value =
-    value.replace(
-      /__(.*?)__/gs,
-      "$1"
-    );
-
-
-  value =
-    value.replace(
-      /<br\s*\/?>/gi,
-      "\n"
-    );
-
-
-  return value.trim();
-}
-
-
-/* =========================================================
-   SUBSCRIPT
-========================================================= */
-
-const subscriptMap = {
-
-  "0":"₀",
-  "1":"₁",
-  "2":"₂",
-  "3":"₃",
-  "4":"₄",
-  "5":"₅",
-  "6":"₆",
-  "7":"₇",
-  "8":"₈",
-  "9":"₉",
-
-  "+":"₊",
-  "-":"₋",
-
-  "a":"ₐ",
-  "e":"ₑ",
-  "h":"ₕ",
-  "i":"ᵢ",
-  "j":"ⱼ",
-  "k":"ₖ",
-  "l":"ₗ",
-  "m":"ₘ",
-  "n":"ₙ",
-  "o":"ₒ",
-  "p":"ₚ",
-  "r":"ᵣ",
-  "s":"ₛ",
-  "t":"ₜ",
-  "u":"ᵤ",
-  "v":"ᵥ",
-  "x":"ₓ"
-};
-
-
-const superscriptMap = {
-
-  "0":"⁰",
-  "1":"¹",
-  "2":"²",
-  "3":"³",
-  "4":"⁴",
-  "5":"⁵",
-  "6":"⁶",
-  "7":"⁷",
-  "8":"⁸",
-  "9":"⁹",
-
-  "+":"⁺",
-  "-":"⁻",
-
-  "n":"ⁿ",
-  "i":"ⁱ"
-};
-
-
-function convertSubscript(value){
-
-  return String(value)
-    .split("")
-    .map(
-      c => subscriptMap[c] || c
-    )
-    .join("");
-}
-
-
-function convertSuperscript(value){
-
-  return String(value)
-    .split("")
-    .map(
-      c => superscriptMap[c] || c
-    )
-    .join("");
-}
-
-
-/* =========================================================
-   LATEX → HANDWRITTEN TEXT
-========================================================= */
-
-function latexToHandwritten(text){
-
-  let value =
-    String(text);
-
-
-  /* Remove math delimiters */
-
-  value =
-    value.replace(/\\\(/g,"");
-
-  value =
-    value.replace(/\\\)/g,"");
-
-  value =
-    value.replace(/\\\[/g,"");
-
-  value =
-    value.replace(/\\\]/g,"");
-
-  value =
-    value.replace(/\$\$/g,"");
-
-  value =
-    value.replace(/\$/g,"");
-
-
-  /* Basic symbols */
-
-  const symbols = {
-
-    "\\times":"×",
-    "\\cdot":"·",
-    "\\div":"÷",
-    "\\pm":"±",
-
-    "\\leq":"≤",
-    "\\le":"≤",
-
-    "\\geq":"≥",
-    "\\ge":"≥",
-
-    "\\neq":"≠",
-    "\\approx":"≈",
-
-    "\\rightarrow":"→",
-    "\\leftarrow":"←",
-    "\\Rightarrow":"⇒",
-
-    "\\infty":"∞",
-
-    "\\pi":"π",
-    "\\alpha":"α",
-    "\\beta":"β",
-    "\\gamma":"γ",
-    "\\delta":"δ",
-    "\\theta":"θ",
-    "\\lambda":"λ",
-    "\\mu":"μ",
-    "\\sigma":"σ",
-    "\\omega":"ω",
-
-    "\\Delta":"Δ",
-    "\\Sigma":"Σ",
-
-    "\\partial":"∂",
-    "\\nabla":"∇",
-
-    "\\sum":"∑",
-    "\\prod":"∏",
-    "\\int":"∫"
-  };
-
-
-  Object.keys(symbols).forEach(
-    key => {
-
-      value =
-        value.replace(
-          new RegExp(
-            key.replace(
-              /[.*+?^${}()|[\]\\]/g,
-              "\\$&"
-            ),
-            "g"
-          ),
-          symbols[key]
-        );
-
-    }
-  );
-
-
-  /* sqrt */
-
-  value =
-    value.replace(
-      /\\sqrt\s*\{([^{}]+)\}/g,
-      "√($1)"
-    );
-
-
-  /* frac */
-
-  value =
-    value.replace(
-      /\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g,
-      "$1 ÷ $2"
-    );
-
-
-  /* superscript */
-
-  value =
-    value.replace(
-      /\^\{([^{}]+)\}/g,
-      (_,x) =>
-        convertSuperscript(x)
-    );
-
-
-  value =
-    value.replace(
-      /\^([0-9]+)/g,
-      (_,x) =>
-        convertSuperscript(x)
-    );
-
-
-  /* subscript */
-
-  value =
-    value.replace(
-      /_\{([^{}]+)\}/g,
-      (_,x) =>
-        convertSubscript(x)
-    );
-
-
-  value =
-    value.replace(
-      /_([0-9]+)/g,
-      (_,x) =>
-        convertSubscript(x)
-    );
-
-
-  /* Remove leftover LaTeX braces */
-
-  value =
-    value.replace(/[{}]/g,"");
-
-
-  /* Common LaTeX spacing */
-
-  value =
-    value.replace(/\\,/g," ");
-
-  value =
-    value.replace(/\\;/g," ");
-
-  value =
-    value.replace(/\\!/g,"");
-
-
-  return value.trim();
-}
-
-
-/* =========================================================
-   EQUATION DETECTION
-========================================================= */
-
-function looksLikeEquation(line){
-
-  const value =
-    String(line).trim();
-
-
-  if(!value){
-    return false;
-  }
-
-
-  /* LaTeX */
-
-  if(
-    /\\(frac|sqrt|times|cdot|div|pm|leq|geq|neq|approx|rightarrow|leftarrow|Rightarrow|infty|pi|alpha|beta|gamma|delta|theta|lambda|mu|sigma|omega|partial|nabla|sum|prod|int)/.test(value)
-  ){
-    return true;
-  }
-
-
-  /* Explicit math delimiters */
-
-  if(
-    /\\\(|\\\[|\$\$|\$/.test(value)
-  ){
-    return true;
-  }
-
-
-  /* x^2 */
-
-  if(
-    /[A-Za-z0-9]\^[A-Za-z0-9{]/.test(value)
-  ){
-    return true;
-  }
-
-
-  /* H_2SO_4 */
-
-  if(
-    /[A-Za-z]+_[A-Za-z0-9{]/.test(value)
-  ){
-    return true;
-  }
-
-
-  /* Equation symbols */
-
-  if(
-    /[=≤≥≠≈±×÷√∫∑∏∞∂∇→⇒]/.test(value)
-  ){
-    return true;
-  }
-
-
-  /* Differential equation */
-
-  if(
-    /dy\/dx|d[0-9]*y\/dx|∂y\/∂x/i.test(value)
-  ){
-    return true;
-  }
-
-
-  /* Common equation */
-
-  if(
-    /^[A-Za-z0-9].*[=]/.test(value)
-  ){
-    return true;
-  }
-
-
-  return false;
-}
-
-
-/* =========================================================
-   NORMALIZE EQUATION
-========================================================= */
-
-function normalizeEquation(line){
-
-  let value =
-    latexToHandwritten(line);
-
-
-  /* Remove excessive spaces */
-
-  value =
-    value.replace(
-      /\s+/g,
-      " "
-    );
-
-
-  return value.trim();
-}
-
-
-/* =========================================================
-   FORMAT SIMPLE FRACTIONS
-========================================================= */
-
-function formatFractionText(text){
-
-  let value =
-    String(text);
-
-
-  /*
-    1/2 style fractions stay readable.
-    We deliberately don't use MathJax so that the
-    handwritten preview does not become computer generated.
-  */
-
-  value =
-    value.replace(
-      /\b(\d+)\s*\/\s*(\d+)\b/g,
-      "$1/$2"
-    );
-
-
-  return value;
-}
-
-
-/* =========================================================
-   RENDER HANDWRITTEN NOTES
-========================================================= */
-
-function renderHandwrittenNotes(text){
-
-  const clean =
-    cleanAIText(text);
-
-
-  if(!clean){
-
-    return `
-      <div class="note-line">
-        No notes generated.
-      </div>
-    `;
-  }
-
-
-  const lines =
-    clean.split(/\r?\n/);
-
-
-  let html = "";
-
-
-  lines.forEach(line => {
-
-    const trimmed =
-      line.trim();
-
-
-    if(!trimmed){
-
-      html +=
-        `<div class="note-space"></div>`;
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       BULLET
-    ----------------------------------------------------- */
-
-    if(
-      /^[-•*]\s+/.test(trimmed)
-    ){
-
-      const bullet =
-        trimmed.replace(
-          /^[-•*]\s+/,
-          ""
-        );
-
-
-      if(
-        looksLikeEquation(bullet)
-      ){
-
-        html += `
-          <div class="note-bullet">
-            •
-            <span class="hand-equation">
-              ${escapeHTML(
-                normalizeEquation(bullet)
-              )}
-            </span>
-          </div>
-        `;
-
-      }else{
-
-        html += `
-          <div class="note-bullet">
-            • ${escapeHTML(
-              latexToHandwritten(bullet)
-            )}
-          </div>
-        `;
-      }
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       NUMBERED
-    ----------------------------------------------------- */
-
-    if(
-      /^\d+[\.\)]\s+/.test(trimmed)
-    ){
-
-      const match =
-        trimmed.match(
-          /^(\d+[\.\)])\s+(.*)$/
-        );
-
-
-      const number =
-        match ? match[1] : "";
-
-      const content =
-        match ? match[2] : trimmed;
-
-
-      if(
-        looksLikeEquation(content)
-      ){
-
-        html += `
-          <div class="note-number">
-
-            ${escapeHTML(number)}
-
-            <span class="hand-equation">
-              ${escapeHTML(
-                normalizeEquation(content)
-              )}
-            </span>
-
-          </div>
-        `;
-
-      }else{
-
-        html += `
-          <div class="note-number">
-            ${escapeHTML(number)}
-            ${escapeHTML(
-              latexToHandwritten(content)
-            )}
-          </div>
-        `;
-      }
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       HEADING
-    ----------------------------------------------------- */
-
-    if(
-      /^[A-Z][A-Za-z0-9\s]{1,60}:$/.test(trimmed)
-      ||
-      /^Chapter\s+/i.test(trimmed)
-      ||
-      /^Introduction$/i.test(trimmed)
-      ||
-      /^Conclusion$/i.test(trimmed)
-      ||
-      /^Answer$/i.test(trimmed)
-      ||
-      /^Solution$/i.test(trimmed)
-    ){
-
-      html += `
-        <div class="note-heading">
-          ${escapeHTML(
-            latexToHandwritten(trimmed)
-          )}
-        </div>
-      `;
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       EQUATION
-    ----------------------------------------------------- */
-
-    if(
-      looksLikeEquation(trimmed)
-    ){
-
-      html += `
-        <div class="hand-equation big">
-          ${escapeHTML(
-            normalizeEquation(trimmed)
-          )}
-        </div>
-      `;
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       NORMAL TEXT
-    ----------------------------------------------------- */
-
-    html += `
-      <div class="note-line">
-        ${escapeHTML(
-          formatFractionText(
-            latexToHandwritten(trimmed)
-          )
-        )}
-      </div>
-    `;
-
-  });
-
-
-  return html;
-}
-
-
-/* =========================================================
-   APPLY LANGUAGE FONT
-========================================================= */
-
-function applyLanguage(language){
-
-  const preview =
-    document.getElementById("notePreview");
-
-
-  preview.classList.remove(
-    "lang-english",
-    "lang-hindi",
-    "lang-assamese"
-  );
-
-
-  if(language === "Hindi"){
-
-    preview.classList.add(
-      "lang-hindi"
-    );
-
-  }else if(language === "Assamese"){
-
-    preview.classList.add(
-      "lang-assamese"
-    );
-
-  }else{
-
-    preview.classList.add(
-      "lang-english"
-    );
-  }
-
-
-  currentLanguage =
-    language;
-}
-
-
-/* =========================================================
-   SHOW HANDWRITTEN
-========================================================= */
-
-function showHandwritten(text, language){
-
-  applyLanguage(language);
-
-  const preview =
-    document.getElementById("notePreview");
-
-
-  preview.innerHTML =
-    renderHandwrittenNotes(text);
-
-
-  preview.scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
-}
-
-
-/* =========================================================
-   AI RESULT UI
-========================================================= */
-
-function showAIResult(
-  resultElement,
-  answer,
-  language
-){
-
-  latestAIAnswer =
-    answer;
-
-
-  resultElement.style.display =
-    "block";
-
-
-  resultElement.innerHTML = `
-
-    <div class="answer-title">
-      🤖 AI Answer
-    </div>
-
-    <div class="ai-answer">
-      ${formatAIAnswer(answer)}
-    </div>
-
-    <div class="action-row">
-
-      <button
-        class="green"
-        onclick="convertLatestAIToHandwritten()"
-      >
-        ✍️ Convert Answer to Handwritten
-      </button>
-
-      <button
-        class="secondary"
-        onclick="copyLatestAnswer()"
-      >
-        📋 Copy Answer
-      </button>
-
-    </div>
-
-  `;
-
-
-  /*
-    Don't automatically convert the AI answer.
-    First show the actual AI answer.
-    User can then choose handwritten conversion.
-  */
-
-}
-
-
-/* =========================================================
-   FORMAT AI ANSWER
-========================================================= */
-
-function formatAIAnswer(text){
-
-  let value =
-    cleanAIText(text);
-
-
-  /*
-    Escape HTML first.
-    This prevents AI output from becoming actual HTML.
-  */
-
-  value =
-    escapeHTML(value);
-
-
-  /*
-    Preserve line breaks.
-  */
-
-  value =
-    value.replace(
-      /\n/g,
-      "<br>"
-    );
-
-
-  /*
-    Highlight basic LaTeX delimiters visually.
-    The actual handwritten conversion happens
-    only after pressing the handwritten button.
-  */
-
-  return value;
-}
-
-
-/* =========================================================
-   CONVERT LATEST AI ANSWER
-========================================================= */
-
-function convertLatestAIToHandwritten(){
-
-  if(!latestAIAnswer){
-
-    alert(
-      "No AI answer available."
-    );
-
-    return;
-  }
-
-
-  showHandwritten(
-    latestAIAnswer,
-    currentLanguage
-  );
-}
-
-
-/* =========================================================
-   COPY
-========================================================= */
-
-async function copyLatestAnswer(){
-
-  if(!latestAIAnswer){
-    return;
-  }
-
-
-  try{
-
-    await navigator.clipboard.writeText(
-      latestAIAnswer
-    );
-
-    alert(
-      "Answer copied."
-    );
-
-  }catch(error){
-
-    alert(
-      "Could not copy the answer."
-    );
-  }
-}
-
-
-/* =========================================================
-   API REQUEST
-========================================================= */
-
-async function sendToAI({
-
-  question,
-  file,
-  style,
-  language
-}){
-
-  const formData =
-    new FormData();
-
-
-  formData.append(
-    "question",
-    question || ""
-  );
-
-
-  formData.append(
-    "style",
-    style || "standard"
-  );
-
-
-  formData.append(
-    "language",
-    language || "English"
-  );
-
-
-  if(file){
-
-    formData.append(
-      "file",
-      file
-    );
-  }
-
-
-  const response =
-    await fetch(
-      "/api/chat",
-      {
-        method:"POST",
-        body:formData
-      }
-    );
-
-
-  let data;
-
-
-  try{
-
-    data =
-      await response.json();
-
-  }catch(error){
-
-    throw new Error(
-      "Server returned an invalid response."
-    );
-  }
-
-
-  if(!response.ok){
-
-    throw new Error(
-      data.error ||
-      "AI request failed."
-    );
-  }
-
-
-  if(!data.answer){
-
-    throw new Error(
-      "AI returned no answer."
-    );
-  }
-
-
-  return data.answer;
-}
-
-
-/* =========================================================
-   PHOTO → AI
-========================================================= */
-
-async function generatePhotoNotes(){
-
-  if(!selectedPhotoFile){
-
-    alert(
-      "Please take a photo or select an image first."
-    );
-
-    return;
-  }
-
-
-  const button =
-    document.getElementById(
-      "photoGenerateBtn"
-    );
-
-
-  const result =
-    document.getElementById(
-      "photoResult"
-    );
-
-
-  const language =
-    document.getElementById(
-      "photoLanguage"
-    ).value;
-
-
-  const style =
-    document.getElementById(
-      "photoStyle"
-    ).value;
-
-
-  currentLanguage =
-    language;
-
-
-  button.disabled =
-    true;
-
-
-  button.textContent =
-    "⏳ Reading photo...";
-
-
-  result.style.display =
-    "block";
-
-
-  result.innerHTML = `
-    <div class="loading">
-      🔎 Reading your question/study material...
-      <br><br>
-      ✍️ Preparing the AI answer...
-    </div>
-  `;
-
-
-  try{
-
-    const answer =
-      await sendToAI({
-
-        question:
-          "Read the uploaded image carefully. If it contains a question, first understand the complete question and then solve/answer it accurately. If it contains study material, organize the important content into clear study notes.",
-
-        file:
-          selectedPhotoFile,
-
-        style:
-          style,
-
-        language:
-          language
-      });
-
-
-    showAIResult(
-      result,
-      answer,
-      language
-    );
-
-
-  }catch(error){
-
-    result.innerHTML = `
-      <div class="error-result">
-        ❌ ${escapeHTML(
-          error.message
-        )}
-      </div>
-    `;
-
-  }finally{
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "📚 Generate AI Answer";
-  }
-}
-
-
-/* =========================================================
-   ASK NORMAL AI
-========================================================= */
-
-async function askNormalAI(){
-
-  const question =
-    document
-      .getElementById("aiQuestion")
-      .value
-      .trim();
-
-
-  if(!question){
-
-    alert(
-      "Please enter your question."
-    );
-
-    return;
-  }
-
-
-  const button =
-    document.getElementById(
-      "askAIBtn"
-    );
-
-
-  const result =
-    document.getElementById(
-      "aiResult"
-    );
-
-
-  const style =
-    document
-      .getElementById("aiStyle")
-      .value;
-
-
-  const language =
-    document
-      .getElementById("aiLanguage")
-      .value;
-
-
-  currentLanguage =
-    language;
-
-
-  button.disabled =
-    true;
-
-
-  button.textContent =
-    "⏳ Thinking...";
-
-
-  result.style.display =
-    "block";
-
-
-  result.innerHTML = `
-    <div class="loading">
-      🤖 AI is solving your question...
-    </div>
-  `;
-
-
-  try{
-
-    const answer =
-      await sendToAI({
-
-        question:
-          question,
-
-        file:
-          null,
-
-        style:
-          style,
-
-        language:
-          language
-      });
-
-
-    showAIResult(
-      result,
-      answer,
-      language
-    );
-
-
-  }catch(error){
-
-    result.innerHTML = `
-      <div class="error-result">
-        ❌ ${escapeHTML(
-          error.message
-        )}
-      </div>
-    `;
-
-  }finally{
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "🤖 Ask HandNote AI";
-  }
-}
-
-
-/* =========================================================
-   TEXT → HANDWRITING
-========================================================= */
-
-function convertTextToHandwriting(){
-
-  const text =
-    document
-      .getElementById(
-        "handwritingText"
-      )
-      .value
-      .trim();
-
-
-  if(!text){
-
-    alert(
-      "Please enter some text first."
-    );
-
-    return;
-  }
-
-
-  const language =
-    document
-      .getElementById(
-        "handwritingLanguage"
-      )
-      .value;
-
-
-  showHandwritten(
-    text,
-    language
-  );
-}
-
-
-/* =========================================================
-   CLEAR
-========================================================= */
-
-function clearEverything(){
-
-  selectedPhotoFile =
-    null;
-
-  latestAIAnswer =
-    "";
-
-
-  document.getElementById(
-    "cameraFile"
-  ).value = "";
-
-
-  document.getElementById(
-    "photoFile"
-  ).value = "";
-
-
-  document.getElementById(
-    "aiQuestion"
-  ).value = "";
-
-
-  document.getElementById(
-    "handwritingText"
-  ).value = "";
-
-
-  document.getElementById(
-    "cameraPreview"
-  ).classList.add(
-    "hidden"
-  );
-
-
-  document.getElementById(
-    "photoFileName"
-  ).classList.add(
-    "hidden"
-  );
-
-
-  document.getElementById(
-    "removePhotoBtn"
-  ).classList.add(
-    "hidden"
-  );
-
-
-  document.getElementById(
-    "photoResult"
-  ).style.display =
-    "none";
-
-
-  document.getElementById(
-    "aiResult"
-  ).style.display =
-    "none";
-
-
-  document.getElementById(
-    "notePreview"
-  ).innerHTML =
-    "Your handwritten notes will appear here.";
-
-
-  applyLanguage(
-    "English"
-  );
-}
-
-
-/* =========================================================
-   SAVE HANDWRITTEN PDF
-========================================================= */
-
-function saveHandwrittenPDF(){
-
-  const preview =
-    document.getElementById(
-      "notePreview"
-    );
-
-
-  if(
-    !preview.innerText.trim() ||
-    preview.innerText.trim() ===
-    "Your handwritten notes will appear here."
-  ){
-
-    alert(
-      "Please generate handwritten notes first."
-    );
-
-    return;
-  }
-
-
-  window.print();
-}
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    applyLanguage(
-      "English"
-    );
-
-  }
-);
-
-</script>
-
-</body>
-</html>
+    <option value="
