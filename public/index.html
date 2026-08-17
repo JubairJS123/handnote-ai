@@ -6,7 +6,7 @@
 
 <title>HandNote AI</title>
 
-<!-- MathJax for proper mathematical/scientific equations -->
+<!-- MathJax -->
 <script>
 window.MathJax = {
   tex: {
@@ -16,7 +16,14 @@ window.MathJax = {
     processEnvironments: true
   },
   options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    skipHtmlTags: [
+      'script',
+      'noscript',
+      'style',
+      'textarea',
+      'pre',
+      'code'
+    ]
   }
 };
 </script>
@@ -158,12 +165,16 @@ button.danger{
   background:#dc2626;
 }
 
+button.camera{
+  background:#111827;
+}
+
 button.save{
   background:#16a34a;
 }
 
 .hidden{
-  display:none!important;
+  display:none !important;
 }
 
 .upload-box{
@@ -234,13 +245,11 @@ button.save{
   padding:20px 5px;
 }
 
-
-/* =========================================================
+/* =====================================================
    HANDWRITTEN PAPER
-========================================================= */
+===================================================== */
 
 .note-preview{
-
   position:relative;
 
   background:
@@ -264,8 +273,6 @@ button.save{
     "Comic Sans MS",
     "Segoe Print",
     "Bradley Hand",
-    "Noto Sans Devanagari",
-    "Noto Sans Bengali",
     cursive;
 
   font-size:18px;
@@ -275,32 +282,21 @@ button.save{
   box-shadow:inset 7px 0 0 #f3b6b6;
 }
 
-
-/* Hindi */
-
 .note-preview.lang-hindi{
-
   font-family:
     "Noto Sans Devanagari",
     "Mangal",
-    "Arial Unicode MS",
+    "Nirmala UI",
     sans-serif;
-
 }
 
-
-/* Assamese */
-
 .note-preview.lang-assamese{
-
   font-family:
     "Noto Sans Bengali",
     "Nirmala UI",
     "Vrinda",
     sans-serif;
-
 }
-
 
 .note-heading{
   font-size:21px;
@@ -319,43 +315,53 @@ button.save{
 }
 
 .note-equation{
+  margin:7px 0;
+  padding:3px 5px;
 
-  margin:8px 0;
-
-  padding:4px 7px;
-
-  font-size:21px;
-
+  font-size:20px;
   font-weight:bold;
 
   font-family:
+    "Comic Sans MS",
+    "Segoe Print",
     "Cambria Math",
-    "STIX Two Math",
     "Times New Roman",
-    serif;
+    cursive;
 
   overflow-x:auto;
-
 }
 
-
-/* MathJax equations */
+.note-equation.simple-math{
+  font-family:
+    "Comic Sans MS",
+    "Segoe Print",
+    cursive;
+}
 
 .note-equation mjx-container{
-
-  font-size:110% !important;
-
+  font-size:105% !important;
 }
 
+.note-equation mjx-container[display="true"]{
+  margin:8px 0 !important;
+}
 
 .error-result{
   color:#b91c1c;
 }
 
+.camera-preview{
+  width:100%;
+  max-height:320px;
+  object-fit:contain;
+  border-radius:12px;
+  margin-top:12px;
+  background:#111;
+}
 
-/* =========================================================
+/* =====================================================
    MOBILE
-========================================================= */
+===================================================== */
 
 @media(max-width:600px){
 
@@ -371,84 +377,87 @@ button.save{
   .note-equation{
     font-size:18px;
   }
-
 }
 
-
-/* =========================================================
-   PRINT / PDF
-========================================================= */
+/* =====================================================
+   PRINT
+===================================================== */
 
 @media print{
 
+  html,
   body{
-    background:white;
+    margin:0 !important;
+    padding:0 !important;
+    background:white !important;
   }
 
   body *{
-    visibility:hidden;
+    visibility:hidden !important;
   }
 
   #notePreview,
   #notePreview *{
-    visibility:visible;
+    visibility:visible !important;
   }
 
   #notePreview{
 
-    position:absolute;
+    position:absolute !important;
 
-    left:0;
-    top:0;
+    left:0 !important;
+    top:0 !important;
 
-    width:100%;
+    width:100% !important;
 
-    min-height:100vh;
+    min-height:0 !important;
 
-    margin:0;
+    margin:0 !important;
 
-    border:0;
+    border:0 !important;
+    border-radius:0 !important;
 
-    border-radius:0;
+    box-shadow:inset 7px 0 0 #f3b6b6 !important;
 
-    box-shadow:inset 7px 0 0 #f3b6b6;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        #fffef8 0px,
+        #fffef8 31px,
+        #dfe7f2 32px
+      ) !important;
 
-    -webkit-print-color-adjust:exact;
-    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+
+    overflow:visible !important;
+  }
+
+  .no-print{
+    display:none !important;
   }
 
   @page{
     size:A4;
-    margin:12mm;
+    margin:10mm;
   }
-
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-
   <h1>✍️ HandNote AI</h1>
-
-  <p>
-    Your AI study and handwriting assistant
-  </p>
-
+  <p>Your AI study and handwriting assistant</p>
 </header>
-
 
 <div class="container">
 
-
-<!-- =======================================================
+<!-- =====================================================
      FEATURES
-======================================================= -->
+===================================================== -->
 
 <div class="card no-print">
 
@@ -456,93 +465,73 @@ button.save{
 
   <div class="feature-grid">
 
-    <div
-      class="feature"
-      onclick="openPhotoNotes()"
-    >
-
+    <div class="feature" onclick="openPhotoNotes()">
       <strong>📷 Photo → Notes</strong>
-
       <span class="small">
-        Upload a study photo and generate notes.
+        Take a photo or upload a study image.
       </span>
-
     </div>
 
-
-    <div
-      class="feature"
-      onclick="openAskAI()"
-    >
-
+    <div class="feature" onclick="openAskAI()">
       <strong>🤖 Ask AI</strong>
-
       <span class="small">
-        Ask a normal question without using a photo.
+        Ask maths, physics, chemistry or any study question.
       </span>
-
     </div>
 
-
-    <div
-      class="feature"
-      onclick="openDocuments()"
-    >
-
+    <div class="feature" onclick="openDocuments()">
       <strong>📚 Document → Notes</strong>
-
       <span class="small">
         PDF and multi-page documents.
       </span>
-
     </div>
 
-
-    <div
-      class="feature"
-      onclick="openHandwriting()"
-    >
-
+    <div class="feature" onclick="openHandwriting()">
       <strong>✍️ Text → Handwritten</strong>
-
       <span class="small">
-        Convert text into handwritten notes.
+        Convert your own text into handwritten notes.
       </span>
-
     </div>
 
   </div>
-
 </div>
 
 
+<!-- =====================================================
+     PHOTO
+===================================================== -->
 
-<!-- =======================================================
-     PHOTO → NOTES
-======================================================= -->
-
-<div
-  id="photoSection"
-  class="card hidden"
->
+<div id="photoSection" class="card hidden">
 
   <h2>📷 Photo → Notes</h2>
 
   <p class="small">
-
-    Upload your study material and HandNote AI
-    will read it and create clean notes.
-
+    Take a photo or select an image from your phone.
   </p>
-
 
   <div class="upload-box">
 
-    <label for="photoFile">
-      Select study photo
-    </label>
+    <label>📷 Study photo</label>
 
+    <!-- Camera -->
+    <input
+      type="file"
+      id="cameraFile"
+      accept="image/*"
+      capture="environment"
+      class="hidden"
+      onchange="cameraSelected()"
+    >
 
+    <button
+      type="button"
+      class="camera"
+      onclick="document.getElementById('cameraFile').click()"
+    >
+      📷 Take Photo
+    </button>
+
+    <!-- Gallery -->
     <input
       type="file"
       id="photoFile"
@@ -550,12 +539,16 @@ button.save{
       onchange="photoSelected()"
     >
 
+    <img
+      id="cameraPreview"
+      class="camera-preview hidden"
+      alt="Selected photo"
+    >
 
     <div
       id="photoFileName"
       class="file-name hidden"
     ></div>
-
 
     <div
       id="photoProgress"
@@ -563,14 +556,11 @@ button.save{
     >
 
       <div class="progress-background">
-
         <div
           id="photoProgressBar"
           class="progress-bar"
         ></div>
-
       </div>
-
 
       <div
         id="photoProgressText"
@@ -581,86 +571,55 @@ button.save{
 
     </div>
 
-
     <div
       id="photoStatus"
       class="upload-status"
     ></div>
-
 
     <button
       id="removePhotoBtn"
       class="danger hidden"
       onclick="removePhoto()"
     >
-
       ❌ Remove Photo
-
     </button>
 
   </div>
-
 
 
   <label for="photoStyle">
     📝 Note style
   </label>
 
-
   <select id="photoStyle">
 
-    <option value="standard">
-      Standard Notes
-    </option>
-
-    <option value="short">
-      Short Notes
-    </option>
-
-    <option value="detailed">
-      Detailed Notes
-    </option>
-
-    <option value="exam">
-      Exam Answer
-    </option>
+    <option value="standard">Standard Notes</option>
+    <option value="short">Short Notes</option>
+    <option value="detailed">Detailed Notes</option>
+    <option value="exam">Exam Answer</option>
 
   </select>
-
 
 
   <label for="photoLanguage">
     🌐 Language
   </label>
 
-
   <select id="photoLanguage">
 
-    <option value="English">
-      English
-    </option>
-
-    <option value="Hindi">
-      हिन्दी (Hindi)
-    </option>
-
-    <option value="Assamese">
-      অসমীয়া (Assamese)
-    </option>
+    <option value="English">English</option>
+    <option value="Hindi">हिन्दी (Hindi)</option>
+    <option value="Assamese">অসমীয়া (Assamese)</option>
 
   </select>
-
 
 
   <button
     id="photoGenerateBtn"
     onclick="generatePhotoNotes()"
   >
-
-    📚 Generate Notes
-
+    📚 Generate Handwritten Notes
   </button>
-
 
   <div
     id="photoResult"
@@ -670,30 +629,22 @@ button.save{
 </div>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      ASK AI
-======================================================= -->
+===================================================== -->
 
-<div
-  id="askSection"
-  class="card hidden"
->
+<div id="askSection" class="card hidden">
 
-  <h2>🤖 Ask AI</h2>
+  <h2>🤖 Ask HandNote AI</h2>
 
   <p class="small">
-
-    Ask anything. HandNote AI will create
-    clean study-friendly notes.
-
+    Maths, physics, chemistry, biology and other subjects.
+    Equations will be formatted instead of showing raw code.
   </p>
-
 
   <label for="aiQuestion">
     Your question
   </label>
-
 
   <textarea
     id="aiQuestion"
@@ -701,64 +652,38 @@ button.save{
   ></textarea>
 
 
-
   <label for="aiStyle">
     📝 Answer style
   </label>
 
-
   <select id="aiStyle">
 
-    <option value="standard">
-      Standard
-    </option>
-
-    <option value="short">
-      Short
-    </option>
-
-    <option value="detailed">
-      Detailed
-    </option>
-
-    <option value="exam">
-      Exam Answer
-    </option>
+    <option value="standard">Standard</option>
+    <option value="short">Short</option>
+    <option value="detailed">Detailed</option>
+    <option value="exam">Exam Answer</option>
 
   </select>
-
 
 
   <label for="aiLanguage">
     🌐 Language
   </label>
 
-
   <select id="aiLanguage">
 
-    <option value="English">
-      English
-    </option>
-
-    <option value="Hindi">
-      हिन्दी (Hindi)
-    </option>
-
-    <option value="Assamese">
-      অসমীয়া (Assamese)
-    </option>
+    <option value="English">English</option>
+    <option value="Hindi">हिन्दी (Hindi)</option>
+    <option value="Assamese">অসমীয়া (Assamese)</option>
 
   </select>
-
 
 
   <button
     id="askAIBtn"
     onclick="askNormalAI()"
   >
-
     🤖 Ask HandNote AI
-
   </button>
 
 
@@ -770,25 +695,17 @@ button.save{
 </div>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      DOCUMENT
-======================================================= -->
+===================================================== -->
 
-<div
-  id="documentSection"
-  class="card hidden"
->
+<div id="documentSection" class="card hidden">
 
-  <h2>
-    📚 Document → Notes
-  </h2>
-
+  <h2>📚 Document → Notes</h2>
 
   <div class="placeholder">
 
-    🚧 Multi-page document processing
-    will be connected next.
+    🚧 Document processing is the next module.
 
     <br><br>
 
@@ -803,52 +720,56 @@ button.save{
 </div>
 
 
+<!-- =====================================================
+     TEXT TO HANDWRITING
+===================================================== -->
 
-<!-- =======================================================
-     HANDWRITING
-======================================================= -->
+<div id="handwritingSection" class="card hidden">
 
-<div
-  id="handwritingSection"
-  class="card hidden"
->
+  <h2>✍️ Text → Handwritten Notes</h2>
 
-  <h2>
-    ✍️ Text → Handwritten Notes
-  </h2>
+  <label for="handwritingText">
+    Enter your text
+  </label>
 
+  <textarea
+    id="handwritingText"
+    placeholder="Write or paste your notes here..."
+  ></textarea>
 
-  <div class="placeholder">
+  <label for="handwritingLanguage">
+    🌐 Language
+  </label>
 
-    🚧 Direct text-to-handwriting generation
-    will be connected next.
+  <select id="handwritingLanguage">
 
-  </div>
+    <option value="English">English</option>
+    <option value="Hindi">हिन्दी</option>
+    <option value="Assamese">অসমীয়া</option>
+
+  </select>
+
+  <button onclick="convertTextToHandwriting()">
+    ✍️ Convert to Handwriting
+  </button>
 
 </div>
 
 
-
-<!-- =======================================================
+<!-- =====================================================
      PREVIEW
-======================================================= -->
+===================================================== -->
 
 <div class="card">
 
-  <h2>
-    📄 Handwritten Note Preview
-  </h2>
-
+  <h2>📄 Handwritten Note Preview</h2>
 
   <div
     id="notePreview"
     class="note-preview"
   >
-
-    Your generated notes will appear here.
-
+    Your generated handwritten notes will appear here.
   </div>
-
 
   <div class="no-print">
 
@@ -856,79 +777,50 @@ button.save{
       class="save"
       onclick="saveHandwrittenPDF()"
     >
-
       📥 Save Handwritten PDF
-
     </button>
-
 
     <button
       class="secondary"
       onclick="clearEverything()"
     >
-
       🗑️ Clear Everything
-
     </button>
 
   </div>
 
 </div>
 
-
 </div>
-
 
 
 <script>
 
+/* =====================================================
+   GLOBAL
+===================================================== */
 
-/* =========================================================
+let selectedPhotoFile = null;
+let currentLanguage = "English";
+
+
+/* =====================================================
    SECTION CONTROL
-========================================================= */
+===================================================== */
 
 function hideAllSections(){
 
-  document
-    .getElementById("photoSection")
+  document.getElementById("photoSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("askSection")
+  document.getElementById("askSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("documentSection")
+  document.getElementById("documentSection")
     .classList.add("hidden");
 
-  document
-    .getElementById("handwritingSection")
+  document.getElementById("handwritingSection")
     .classList.add("hidden");
-
-}
-
-
-function clearAIResult(){
-
-  const result =
-    document.getElementById("aiResult");
-
-  result.style.display="none";
-
-  result.innerHTML="";
-
-}
-
-
-function clearPhotoResult(){
-
-  const result =
-    document.getElementById("photoResult");
-
-  result.style.display="none";
-
-  result.innerHTML="";
-
 }
 
 
@@ -936,12 +828,8 @@ function openPhotoNotes(){
 
   hideAllSections();
 
-  clearAIResult();
-
-  document
-    .getElementById("photoSection")
+  document.getElementById("photoSection")
     .classList.remove("hidden");
-
 }
 
 
@@ -949,16 +837,10 @@ function openAskAI(){
 
   hideAllSections();
 
-  clearPhotoResult();
-
-  document
-    .getElementById("askSection")
+  document.getElementById("askSection")
     .classList.remove("hidden");
 
-  document
-    .getElementById("aiQuestion")
-    .focus();
-
+  document.getElementById("aiQuestion").focus();
 }
 
 
@@ -966,14 +848,8 @@ function openDocuments(){
 
   hideAllSections();
 
-  clearAIResult();
-
-  clearPhotoResult();
-
-  document
-    .getElementById("documentSection")
+  document.getElementById("documentSection")
     .classList.remove("hidden");
-
 }
 
 
@@ -981,43 +857,29 @@ function openHandwriting(){
 
   hideAllSections();
 
-  clearAIResult();
-
-  clearPhotoResult();
-
-  document
-    .getElementById("handwritingSection")
+  document.getElementById("handwritingSection")
     .classList.remove("hidden");
-
 }
 
 
-
-/* =========================================================
+/* =====================================================
    HTML ESCAPE
-========================================================= */
+===================================================== */
 
 function escapeHTML(text){
 
   return String(text)
-
     .replace(/&/g,"&amp;")
-
     .replace(/</g,"&lt;")
-
     .replace(/>/g,"&gt;")
-
     .replace(/"/g,"&quot;")
-
     .replace(/'/g,"&#039;");
-
 }
 
 
-
-/* =========================================================
-   UNICODE SUBSCRIPTS
-========================================================= */
+/* =====================================================
+   UNICODE MATH
+===================================================== */
 
 const subscriptMap = {
 
@@ -1052,7 +914,6 @@ const subscriptMap = {
   "u":"ᵤ",
   "v":"ᵥ",
   "x":"ₓ"
-
 };
 
 
@@ -1074,18 +935,15 @@ const superscriptMap = {
 
   "n":"ⁿ",
   "i":"ⁱ"
-
 };
-
 
 
 function convertSubscript(value){
 
   return value
     .split("")
-    .map(char => subscriptMap[char] || char)
+    .map(c => subscriptMap[c] || c)
     .join("");
-
 }
 
 
@@ -1093,201 +951,261 @@ function convertSuperscript(value){
 
   return value
     .split("")
-    .map(char => superscriptMap[char] || char)
+    .map(c => superscriptMap[c] || c)
     .join("");
-
 }
 
 
+/* =====================================================
+   CHEMISTRY + SIMPLE MATH CLEANER
+===================================================== */
 
-/* =========================================================
-   BASIC MATH CLEANER
-========================================================= */
+function cleanSimpleMath(text){
 
-function cleanBasicMath(text){
-
-  let value =
-    String(text);
+  let value = String(text);
 
 
-  /* Common LaTeX symbols */
+  /* Remove surrounding math delimiters
+     for simple Unicode conversion. */
 
-  value =
-    value.replace(/\\times/g,"×");
-
-  value =
-    value.replace(/\\cdot/g,"·");
-
-  value =
-    value.replace(/\\div/g,"÷");
-
-  value =
-    value.replace(/\\pm/g,"±");
-
-  value =
-    value.replace(/\\leq/g,"≤");
-
-  value =
-    value.replace(/\\le/g,"≤");
-
-  value =
-    value.replace(/\\geq/g,"≥");
-
-  value =
-    value.replace(/\\ge/g,"≥");
-
-  value =
-    value.replace(/\\neq/g,"≠");
-
-  value =
-    value.replace(/\\approx/g,"≈");
-
-  value =
-    value.replace(/\\rightarrow/g,"→");
-
-  value =
-    value.replace(/\\leftarrow/g,"←");
-
-  value =
-    value.replace(/\\Rightarrow/g,"⇒");
-
-  value =
-    value.replace(/\\infty/g,"∞");
-
-  value =
-    value.replace(/\\pi/g,"π");
-
-  value =
-    value.replace(/\\alpha/g,"α");
-
-  value =
-    value.replace(/\\beta/g,"β");
-
-  value =
-    value.replace(/\\gamma/g,"γ");
-
-  value =
-    value.replace(/\\delta/g,"δ");
-
-  value =
-    value.replace(/\\theta/g,"θ");
-
-  value =
-    value.replace(/\\lambda/g,"λ");
-
-  value =
-    value.replace(/\\mu/g,"μ");
-
-  value =
-    value.replace(/\\sigma/g,"σ");
-
-  value =
-    value.replace(/\\omega/g,"ω");
-
-  value =
-    value.replace(/\\Delta/g,"Δ");
-
-  value =
-    value.replace(/\\Sigma/g,"Σ");
+  value = value.replace(/\\\(/g,"");
+  value = value.replace(/\\\)/g,"");
+  value = value.replace(/\\\[/g,"");
+  value = value.replace(/\\\]/g,"");
+  value = value.replace(/\$\$/g,"");
+  value = value.replace(/\$/g,"");
 
 
+  /* Common symbols */
 
-  /* x^2 */
+  value = value.replace(/\\times/g,"×");
+  value = value.replace(/\\cdot/g,"·");
+  value = value.replace(/\\div/g,"÷");
+  value = value.replace(/\\pm/g,"±");
 
-  value =
-    value.replace(
-      /\^([0-9]+)/g,
-      (_,content)=>
-        convertSuperscript(content)
-    );
+  value = value.replace(/\\leq/g,"≤");
+  value = value.replace(/\\le/g,"≤");
+
+  value = value.replace(/\\geq/g,"≥");
+  value = value.replace(/\\ge/g,"≥");
+
+  value = value.replace(/\\neq/g,"≠");
+  value = value.replace(/\\approx/g,"≈");
+
+  value = value.replace(/\\rightarrow/g,"→");
+  value = value.replace(/\\leftarrow/g,"←");
+  value = value.replace(/\\Rightarrow/g,"⇒");
+
+  value = value.replace(/\\infty/g,"∞");
+
+  value = value.replace(/\\pi/g,"π");
+  value = value.replace(/\\alpha/g,"α");
+  value = value.replace(/\\beta/g,"β");
+  value = value.replace(/\\gamma/g,"γ");
+  value = value.replace(/\\delta/g,"δ");
+  value = value.replace(/\\theta/g,"θ");
+  value = value.replace(/\\lambda/g,"λ");
+  value = value.replace(/\\mu/g,"μ");
+  value = value.replace(/\\sigma/g,"σ");
+  value = value.replace(/\\omega/g,"ω");
+  value = value.replace(/\\Delta/g,"Δ");
+  value = value.replace(/\\Sigma/g,"Σ");
 
 
-  /* x_2 */
+  /* frac */
 
-  value =
-    value.replace(
-      /_([0-9]+)/g,
-      (_,content)=>
-        convertSubscript(content)
-    );
+  value = value.replace(
+    /\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g,
+    "($1)/($2)"
+  );
 
 
-  /* x^{2} */
+  /* sqrt */
 
-  value =
-    value.replace(
-      /\^\{([^{}]+)\}/g,
-      (_,content)=>
-        convertSuperscript(content)
-    );
+  value = value.replace(
+    /\\sqrt\s*\{([^{}]+)\}/g,
+    "√($1)"
+  );
 
 
-  /* x_{2} */
+  /* Superscript */
 
-  value =
-    value.replace(
-      /_\{([^{}]+)\}/g,
-      (_,content)=>
-        convertSubscript(content)
-    );
+  value = value.replace(
+    /\^\{([^{}]+)\}/g,
+    (_,x) => convertSuperscript(x)
+  );
+
+  value = value.replace(
+    /\^([0-9]+)/g,
+    (_,x) => convertSuperscript(x)
+  );
+
+
+  /* Subscript */
+
+  value = value.replace(
+    /_\{([^{}]+)\}/g,
+    (_,x) => convertSubscript(x)
+  );
+
+  value = value.replace(
+    /_([0-9]+)/g,
+    (_,x) => convertSubscript(x)
+  );
 
 
   return value;
-
 }
 
 
+/* =====================================================
+   ADVANCED MATH DETECTION
+===================================================== */
 
-/* =========================================================
-   DETECT LATEX
-========================================================= */
+function isAdvancedMath(text){
 
-function containsAdvancedMath(text){
-
-  const value =
-    String(text);
-
+  const value = String(text);
 
   return (
-
-    /\\(frac|sqrt|int|sum|prod|lim|partial|nabla|infty|alpha|beta|gamma|delta|theta|lambda|mu|sigma|omega|pi|Delta|Sigma)/.test(value)
-
-    ||
-
-    /\\\[/.test(value)
-
-    ||
-
-    /\$\$/.test(value)
-
-    ||
-
-    /\\\(/.test(value)
-
-    ||
-
-    /\\begin\{/.test(value)
-
+    /\\frac/.test(value) ||
+    /\\sqrt/.test(value) ||
+    /\\int/.test(value) ||
+    /\\sum/.test(value) ||
+    /\\prod/.test(value) ||
+    /\\lim/.test(value) ||
+    /\\partial/.test(value) ||
+    /\\nabla/.test(value) ||
+    /\\begin\{/.test(value) ||
+    /\\end\{/.test(value) ||
+    /\\[([]/.test(value) ||
+    /\$\$/.test(value) ||
+    /[∫∑∏∂∇]/.test(value)
   );
-
 }
 
 
+/* =====================================================
+   EQUATION DETECTION
+===================================================== */
 
-/* =========================================================
-   CONVERT LATEX LINE
-========================================================= */
+function looksLikeEquation(line){
 
-function prepareEquation(text){
+  const value = String(line).trim();
 
-  let value =
-    String(text).trim();
+  if(!value){
+    return false;
+  }
+
+  if(isAdvancedMath(value)){
+    return true;
+  }
+
+  /* CO_2 / H_2SO_4 */
+
+  if(/[A-Za-z]+_[A-Za-z0-9]+/.test(value)){
+    return true;
+  }
+
+  /* x^2 */
+
+  if(/[A-Za-z0-9]\^[A-Za-z0-9]/.test(value)){
+    return true;
+  }
+
+  /* Unicode equations */
+
+  if(
+    /[=≤≥≠≈±×÷√∫∑∏∞∂∇→⇒]/.test(value)
+  ){
+    return true;
+  }
+
+  /* Differential equations */
+
+  if(
+    /dy\/dx|d[0-9]*y\/dx|∂y\/∂x/i.test(value)
+  ){
+    return true;
+  }
+
+  /* Common equation structure */
+
+  if(
+    /^[A-Za-z].*[=]/.test(value)
+  ){
+    return true;
+  }
+
+  return false;
+}
 
 
-  /*
-    If AI already returned MathJax delimiters,
-    preserve them.
-  */
+/* =====================================================
+   CLEAN AI MARKDOWN
+===================================================== */
+
+function cleanAIText(text){
+
+  if(!text){
+    return "";
+  }
+
+  let clean = String(text);
+
+  /* Code fences */
+
+  clean = clean.replace(
+    /```(?:latex|math|mathematics|text|markdown)?/gi,
+    ""
+  );
+
+  clean = clean.replace(/```/g,"");
+
+
+  /* Markdown headings */
+
+  clean = clean.replace(
+    /^#{1,6}\s*/gm,
+    ""
+  );
+
+
+  /* Bold */
+
+  clean = clean.replace(
+    /\*\*(.*?)\*\*/gs,
+    "$1"
+  );
+
+  clean = clean.replace(
+    /__(.*?)__/gs,
+    "$1"
+  );
+
+
+  /* Remove accidental HTML */
+
+  clean = clean.replace(
+    /<br\s*\/?>/gi,
+    "\n"
+  );
+
+
+  /* Keep math backslashes intact */
+
+  return clean.trim();
+}
+
+
+/* =====================================================
+   PREPARE MATH
+===================================================== */
+
+function prepareMathForDisplay(text){
+
+  let value = String(text).trim();
+
+  /* Already MathJax */
 
   if(
     value.includes("\\(") ||
@@ -1296,168 +1214,37 @@ function prepareEquation(text){
   ){
 
     return value;
+  }
 
+
+  /* Plain Unicode chemistry/equation */
+
+  if(
+    !value.includes("\\") &&
+    !value.includes("^") &&
+    !value.includes("_")
+  ){
+
+    return escapeHTML(value);
   }
 
 
   /*
-    Convert common LaTeX commands that should remain
-    mathematical notation.
+    Convert LaTeX equation into MathJax.
+    This prevents raw LaTeX from being visible.
   */
 
   return "\\(" + value + "\\)";
-
 }
 
 
-
-/* =========================================================
-   EQUATION DETECTION
-========================================================= */
-
-function looksLikeEquation(line){
-
-  const value =
-    String(line).trim();
-
-
-  if(!value){
-    return false;
-  }
-
-
-  if(containsAdvancedMath(value)){
-    return true;
-  }
-
-
-  /*
-    Subscripts such as CO_2, H_2SO_4
-  */
-
-  if(
-    /[A-Za-z]+_[A-Za-z0-9]+/.test(value)
-  ){
-
-    return true;
-
-  }
-
-
-  /*
-    Superscripts such as x^2
-  */
-
-  if(
-    /[A-Za-z0-9]\^[A-Za-z0-9]/.test(value)
-  ){
-
-    return true;
-
-  }
-
-
-  /*
-    Mathematical/scientific symbols
-  */
-
-  if(
-    /[=≤≥≠≈±×÷√∫∑∏∞∂∇→⇒]/.test(value)
-  ){
-
-    return true;
-
-  }
-
-
-  /*
-    Common equation structures
-  */
-
-  if(
-    /^(d|∂)?[a-zA-Z].*(\/|=)/.test(value)
-  ){
-
-    return true;
-
-  }
-
-
-  return false;
-
-}
-
-
-
-/* =========================================================
-   CLEAN NORMAL TEXT
-========================================================= */
-
-function cleanNormalText(text){
-
-  let clean =
-    String(text);
-
-
-  /*
-    Remove Markdown code fences only.
-    Do NOT remove backslashes from mathematical
-    content here.
-  */
-
-  clean =
-    clean.replace(
-      /```[a-zA-Z0-9_-]*\s*/g,
-      ""
-    );
-
-  clean =
-    clean.replace(
-      /```/g,
-      ""
-    );
-
-
-  /* Markdown headings */
-
-  clean =
-    clean.replace(
-      /^#{1,6}\s*/gm,
-      ""
-    );
-
-
-  /* Bold */
-
-  clean =
-    clean.replace(
-      /\*\*(.*?)\*\*/gs,
-      "$1"
-    );
-
-
-  clean =
-    clean.replace(
-      /__(.*?)__/gs,
-      "$1"
-    );
-
-
-  return clean.trim();
-
-}
-
-
-
-/* =========================================================
-   HANDWRITTEN NOTE RENDERER
-========================================================= */
+/* =====================================================
+   RENDER HANDWRITTEN NOTES
+===================================================== */
 
 function renderHandwrittenNotes(text){
 
-  const clean =
-    cleanNormalText(text);
-
+  const clean = cleanAIText(text);
 
   if(!clean){
 
@@ -1466,180 +1253,141 @@ function renderHandwrittenNotes(text){
         No notes generated.
       </div>
     `;
-
   }
 
 
-  const lines =
-    clean.split(/\r?\n/);
+  const lines = clean.split(/\r?\n/);
+
+  let html = "";
 
 
-  let html="";
+  lines.forEach(line => {
 
-
-  lines.forEach(line=>{
-
-    const trimmed =
-      line.trim();
-
+    const trimmed = line.trim();
 
     if(!trimmed){
 
-      html +=
-        `<div style="height:10px"></div>`;
+      html += `<div style="height:10px"></div>`;
 
       return;
-
     }
 
 
+    /* Bullet */
 
-    /* =====================================================
-       BULLET
-    ===================================================== */
+    if(/^[-•*]\s+/.test(trimmed)){
 
-    if(
-      /^[-•*]\s+/.test(trimmed)
-    ){
+      const bullet = trimmed.replace(
+        /^[-•*]\s+/,
+        ""
+      );
 
-      const bullet =
-        trimmed.replace(
-          /^[-•*]\s+/,
-          ""
-        );
+      if(looksLikeEquation(bullet)){
 
+        html += `
+          <div class="note-bullet">
+            • <span class="math-inline">
+              ${prepareMathForDisplay(bullet)}
+            </span>
+          </div>
+        `;
+
+      }else{
+
+        html += `
+          <div class="note-bullet">
+            • ${escapeHTML(cleanSimpleMath(bullet))}
+          </div>
+        `;
+      }
+
+      return;
+    }
+
+
+    /* Numbered */
+
+    if(/^\d+[.)]\s+/.test(trimmed)){
+
+      const cleaned = cleanSimpleMath(trimmed);
 
       html += `
         <div class="note-bullet">
-          • ${escapeHTML(cleanBasicMath(bullet))}
+          ${escapeHTML(cleaned)}
         </div>
       `;
 
-
       return;
-
     }
 
 
+    /* Equation */
 
-    /* =====================================================
-       NUMBERED
-    ===================================================== */
+    if(looksLikeEquation(trimmed)){
 
-    if(
-      /^\d+[.)]\s+/.test(trimmed)
-    ){
-
-      html += `
-        <div class="note-bullet">
-          ${escapeHTML(
-            cleanBasicMath(trimmed)
-          )}
-        </div>
-      `;
-
-
-      return;
-
-    }
-
-
-
-    /* =====================================================
-       ADVANCED EQUATION
-    ===================================================== */
-
-    if(
-      containsAdvancedMath(trimmed)
-    ){
-
-      html += `
-        <div class="note-equation math-line">
-          ${prepareEquation(trimmed)}
-        </div>
-      `;
-
-
-      return;
-
-    }
-
-
-
-    /* =====================================================
-       SIMPLE EQUATION
-    ===================================================== */
-
-    if(
-      looksLikeEquation(trimmed)
-    ){
+      let equation = prepareMathForDisplay(trimmed);
 
       /*
-        If it is something like CO_2 or x^2,
-        Unicode conversion is cleaner.
+        If equation is only simple chemistry/math,
+        use handwritten font instead of computer math.
       */
 
       const simple =
-        cleanBasicMath(trimmed);
+        !isAdvancedMath(trimmed) &&
+        !trimmed.includes("\\frac") &&
+        !trimmed.includes("\\sqrt");
 
 
-      html += `
-        <div class="note-equation">
-          ${escapeHTML(simple)}
-        </div>
-      `;
+      if(simple){
 
+        equation = escapeHTML(
+          cleanSimpleMath(trimmed)
+        );
+
+        html += `
+          <div class="note-equation simple-math">
+            ${equation}
+          </div>
+        `;
+
+      }else{
+
+        html += `
+          <div class="note-equation">
+            ${equation}
+          </div>
+        `;
+      }
 
       return;
-
     }
 
 
-
-    /* =====================================================
-       HEADING
-    ===================================================== */
+    /* Heading */
 
     if(
-
       trimmed.length < 70 &&
-
       (
-
-        trimmed.endsWith(":")
-
-        ||
-
+        trimmed.endsWith(":") ||
         /^[A-Z][A-Za-z\s-]{2,50}$/.test(trimmed)
-
       )
-
     ){
 
       html += `
         <div class="note-heading">
-          ${escapeHTML(
-            cleanBasicMath(trimmed)
-          )}
+          ${escapeHTML(trimmed)}
         </div>
       `;
 
-
       return;
-
     }
 
 
-
-    /* =====================================================
-       NORMAL TEXT
-    ===================================================== */
+    /* Normal multilingual text */
 
     html += `
       <div class="note-line">
-        ${escapeHTML(
-          cleanBasicMath(trimmed)
-        )}
+        ${escapeHTML(trimmed)}
       </div>
     `;
 
@@ -1647,16 +1395,16 @@ function renderHandwrittenNotes(text){
 
 
   return html;
-
 }
 
 
+/* =====================================================
+   UPDATE PREVIEW
+===================================================== */
 
-/* =========================================================
-   LANGUAGE FONT
-========================================================= */
+async function updateNotePreview(answer, language){
 
-function applyLanguage(language){
+  currentLanguage = language || "English";
 
   const preview =
     document.getElementById("notePreview");
@@ -1668,41 +1416,17 @@ function applyLanguage(language){
   );
 
 
-  if(language === "Hindi"){
+  if(currentLanguage === "Hindi"){
 
-    preview.classList.add(
-      "lang-hindi"
-    );
+    preview.classList.add("lang-hindi");
 
   }
 
+  if(currentLanguage === "Assamese"){
 
-  if(language === "Assamese"){
-
-    preview.classList.add(
-      "lang-assamese"
-    );
+    preview.classList.add("lang-assamese");
 
   }
-
-}
-
-
-
-/* =========================================================
-   UPDATE PREVIEW
-========================================================= */
-
-async function updateNotePreview(
-  answer,
-  language="English"
-){
-
-  const preview =
-    document.getElementById("notePreview");
-
-
-  applyLanguage(language);
 
 
   preview.innerHTML =
@@ -1710,334 +1434,345 @@ async function updateNotePreview(
 
 
   /*
-    Ask MathJax to render all advanced equations.
+    IMPORTANT:
+    Render MathJax AFTER inserting the answer.
   */
 
-  if(
-    window.MathJax &&
-    window.MathJax.typesetPromise
-  ){
+  if(window.MathJax){
 
     try{
 
-      await MathJax.typesetPromise(
-        [preview]
-      );
+      await MathJax.typesetPromise([
+        preview
+      ]);
 
     }catch(error){
 
       console.error(
-        "MathJax rendering error:",
+        "MathJax error:",
         error
       );
-
     }
-
   }
-
 }
 
 
-
-/* =========================================================
+/* =====================================================
    PHOTO SELECTION
-========================================================= */
+===================================================== */
+
+function handleSelectedFile(file){
+
+  if(!file){
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+
+    alert("Please select an image file.");
+
+    return;
+  }
+
+  selectedPhotoFile = file;
+
+  document.getElementById("photoFileName")
+    .textContent =
+      "📷 Selected: " + file.name;
+
+  document.getElementById("photoFileName")
+    .classList.remove("hidden");
+
+  document.getElementById("removePhotoBtn")
+    .classList.remove("hidden");
+
+
+  const preview =
+    document.getElementById("cameraPreview");
+
+  preview.src =
+    URL.createObjectURL(file);
+
+  preview.classList.remove("hidden");
+
+
+  document.getElementById("photoStatus")
+    .textContent =
+      "✅ Photo ready — tap Generate Notes.";
+}
+
 
 function photoSelected(){
 
   const file =
-    document
-      .getElementById("photoFile")
+    document.getElementById("photoFile")
       .files[0];
 
-
-  const name =
-    document
-      .getElementById("photoFileName");
-
-
-  const status =
-    document
-      .getElementById("photoStatus");
-
-
-  const progress =
-    document
-      .getElementById("photoProgress");
-
-
-  const bar =
-    document
-      .getElementById("photoProgressBar");
-
-
-  const text =
-    document
-      .getElementById("photoProgressText");
-
-
-  const remove =
-    document
-      .getElementById("removePhotoBtn");
-
-
-  if(!file){
-
-    removePhoto();
-
-    return;
-
-  }
-
-
-  name.textContent =
-    "📷 Selected: " + file.name;
-
-
-  name.classList.remove(
-    "hidden"
-  );
-
-
-  progress.style.display =
-    "block";
-
-
-  status.textContent =
-    "Preparing photo...";
-
-
-  remove.classList.remove(
-    "hidden"
-  );
-
-
-  let percent=0;
-
-
-  bar.style.width="0%";
-
-  text.textContent="0%";
-
-
-  const timer =
-    setInterval(()=>{
-
-      percent += 10;
-
-
-      if(percent>=100){
-
-        percent=100;
-
-        clearInterval(timer);
-
-
-        status.textContent =
-          "✅ Photo ready — tap Generate Notes.";
-
-      }else{
-
-        status.textContent =
-          "Preparing photo...";
-
-      }
-
-
-      bar.style.width =
-        percent+"%";
-
-
-      text.textContent =
-        percent+"%";
-
-
-    },30);
-
+  handleSelectedFile(file);
 }
 
 
+function cameraSelected(){
 
-/* =========================================================
+  const file =
+    document.getElementById("cameraFile")
+      .files[0];
+
+  handleSelectedFile(file);
+}
+
+
+/* =====================================================
    REMOVE PHOTO
-========================================================= */
+===================================================== */
 
 function removePhoto(){
 
-  document
-    .getElementById("photoFile")
-    .value="";
+  selectedPhotoFile = null;
 
+  document.getElementById("photoFile")
+    .value = "";
 
-  document
-    .getElementById("photoFileName")
-    .classList.add(
-      "hidden"
-    );
+  document.getElementById("cameraFile")
+    .value = "";
 
+  document.getElementById("photoFileName")
+    .classList.add("hidden");
 
-  document
-    .getElementById("removePhotoBtn")
-    .classList.add(
-      "hidden"
-    );
+  document.getElementById("removePhotoBtn")
+    .classList.add("hidden");
 
+  document.getElementById("cameraPreview")
+    .classList.add("hidden");
 
-  document
-    .getElementById("photoProgress")
-    .style.display =
-      "none";
+  document.getElementById("cameraPreview")
+    .src = "";
 
+  document.getElementById("photoStatus")
+    .textContent = "";
 
-  document
-    .getElementById("photoProgressBar")
-    .style.width =
-      "0%";
-
-
-  document
-    .getElementById("photoProgressText")
-    .textContent =
-      "0%";
-
-
-  document
-    .getElementById("photoStatus")
-    .textContent =
-      "";
-
-
-  clearPhotoResult();
-
+  document.getElementById("photoProgress")
+    .style.display = "none";
 }
 
 
+/* =====================================================
+   PROGRESS
+===================================================== */
 
-/* =========================================================
-   PHOTO → NOTES
-========================================================= */
+function startProgress(){
 
-async function generatePhotoNotes(){
+  const container =
+    document.getElementById("photoProgress");
 
-  const file =
-    document
-      .getElementById("photoFile")
-      .files[0];
+  const bar =
+    document.getElementById("photoProgressBar");
 
-
-  const style =
-    document
-      .getElementById("photoStyle")
-      .value;
+  const text =
+    document.getElementById("photoProgressText");
 
 
-  const language =
-    document
-      .getElementById("photoLanguage")
-      .value;
+  container.style.display = "block";
+
+  let percent = 0;
+
+  bar.style.width = "0%";
+  text.textContent = "0%";
 
 
-  const result =
-    document
-      .getElementById("photoResult");
+  const timer = setInterval(() => {
+
+    percent += 5;
+
+    if(percent >= 95){
+
+      percent = 95;
+
+      clearInterval(timer);
+    }
+
+    bar.style.width =
+      percent + "%";
+
+    text.textContent =
+      percent + "%";
+
+  },80);
+}
 
 
-  const button =
-    document
-      .getElementById("photoGenerateBtn");
+function finishProgress(){
+
+  document.getElementById("photoProgressBar")
+    .style.width = "100%";
+
+  document.getElementById("photoProgressText")
+    .textContent = "100%";
+}
 
 
-  if(!file){
+/* =====================================================
+   API REQUEST
+===================================================== */
 
-    alert(
-      "Please select a photo first."
+async function callHandNoteAI({
+  question = "",
+  language = "English",
+  style = "standard",
+  file = null
+}){
+
+  const formData =
+    new FormData();
+
+  formData.append(
+    "question",
+    question
+  );
+
+  formData.append(
+    "language",
+    language
+  );
+
+  formData.append(
+    "style",
+    style
+  );
+
+
+  if(file){
+
+    formData.append(
+      "file",
+      file,
+      file.name || "photo.jpg"
     );
-
-    return;
-
   }
 
 
-  button.disabled=true;
+  const response =
+    await fetch(
+      "/api/chat",
+      {
+        method:"POST",
+        body:formData
+      }
+    );
 
+
+  let data;
+
+  try{
+
+    data = await response.json();
+
+  }catch{
+
+    throw new Error(
+      "Server returned an invalid response."
+    );
+  }
+
+
+  if(!response.ok){
+
+    throw new Error(
+      data.error ||
+      "HandNote AI request failed."
+    );
+  }
+
+
+  if(!data.answer){
+
+    throw new Error(
+      "AI returned no answer."
+    );
+  }
+
+
+  return data.answer;
+}
+
+
+/* =====================================================
+   PHOTO GENERATION
+===================================================== */
+
+async function generatePhotoNotes(){
+
+  if(!selectedPhotoFile){
+
+    alert(
+      "Please take a photo or select a photo first."
+    );
+
+    return;
+  }
+
+
+  const button =
+    document.getElementById(
+      "photoGenerateBtn"
+    );
+
+  const result =
+    document.getElementById(
+      "photoResult"
+    );
+
+
+  const language =
+    document.getElementById(
+      "photoLanguage"
+    ).value;
+
+  const style =
+    document.getElementById(
+      "photoStyle"
+    ).value;
+
+
+  button.disabled = true;
 
   button.textContent =
-    "🤖 Reading Photo...";
+    "⏳ Reading photo...";
 
 
-  result.style.display =
-    "block";
-
+  result.style.display = "block";
 
   result.innerHTML =
-    '<div class="loading">AI is reading your photo and preparing notes...</div>';
+    `<div class="loading">
+      Reading your study material...
+    </div>`;
+
+
+  startProgress();
 
 
   try{
 
-    const formData =
-      new FormData();
-
-
-    formData.append(
-      "file",
-      file
-    );
-
-
-    formData.append(
-      "style",
-      style
-    );
-
-
-    formData.append(
-      "language",
-      language
-    );
-
-
-    const response =
-      await fetch(
-        "/api/chat",
-        {
-          method:"POST",
-          body:formData
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.error ||
-        "Photo processing failed."
-      );
-
-    }
-
-
     const answer =
-      data.answer ||
-      "No notes generated.";
+      await callHandNoteAI({
+
+        question:
+          "Read the uploaded study image carefully. Create accurate study notes. Preserve mathematical equations, physics formulas and chemistry formulas. Use proper mathematical notation where necessary. Do not return programming code. Do not put the answer inside code fences.",
+
+        language,
+        style,
+
+        file:
+          selectedPhotoFile
+      });
 
 
-    /*
-      Show the AI result separately.
-    */
-
-    result.textContent =
-      answer;
+    finishProgress();
 
 
-    /*
-      Show only the cleaned/handwritten version
-      in the preview.
-    */
+    result.innerHTML =
+      "✅ Notes generated successfully.";
+
 
     await updateNotePreview(
       answer,
@@ -2048,57 +1783,30 @@ async function generatePhotoNotes(){
   }catch(error){
 
     result.innerHTML =
-      `<div class="error-result">
-        Something went wrong: ${escapeHTML(error.message)}
-      </div>`;
+      `<span class="error-result">
+        ❌ ${escapeHTML(error.message)}
+      </span>`;
 
   }finally{
 
-    button.disabled=false;
-
+    button.disabled = false;
 
     button.textContent =
-      "📚 Generate Notes";
-
+      "📚 Generate Handwritten Notes";
   }
-
 }
 
 
-
-/* =========================================================
-   NORMAL ASK AI
-========================================================= */
+/* =====================================================
+   ASK AI
+===================================================== */
 
 async function askNormalAI(){
 
   const question =
-    document
-      .getElementById("aiQuestion")
-      .value
-      .trim();
-
-
-  const style =
-    document
-      .getElementById("aiStyle")
-      .value;
-
-
-  const language =
-    document
-      .getElementById("aiLanguage")
-      .value;
-
-
-  const result =
-    document
-      .getElementById("aiResult");
-
-
-  const button =
-    document
-      .getElementById("askAIBtn");
+    document.getElementById(
+      "aiQuestion"
+    ).value.trim();
 
 
   if(!question){
@@ -2108,80 +1816,61 @@ async function askNormalAI(){
     );
 
     return;
-
   }
 
 
-  button.disabled=true;
+  const language =
+    document.getElementById(
+      "aiLanguage"
+    ).value;
 
+  const style =
+    document.getElementById(
+      "aiStyle"
+    ).value;
+
+
+  const button =
+    document.getElementById(
+      "askAIBtn"
+    );
+
+  const result =
+    document.getElementById(
+      "aiResult"
+    );
+
+
+  button.disabled = true;
 
   button.textContent =
-    "🤖 Thinking...";
+    "⏳ Solving...";
 
 
-  result.style.display =
-    "block";
-
+  result.style.display = "block";
 
   result.innerHTML =
-    '<div class="loading">HandNote AI is thinking...</div>';
+    `<div class="loading">
+      Solving and formatting your answer...
+    </div>`;
 
 
   try{
 
-    const formData =
-      new FormData();
-
-
-    formData.append(
-      "question",
-      question
-    );
-
-
-    formData.append(
-      "style",
-      style
-    );
-
-
-    formData.append(
-      "language",
-      language
-    );
-
-
-    const response =
-      await fetch(
-        "/api/chat",
-        {
-          method:"POST",
-          body:formData
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.error ||
-        "AI request failed."
-      );
-
-    }
-
-
     const answer =
-      data.answer ||
-      "No answer received.";
+      await callHandNoteAI({
+
+        question:
+          question +
+          "\n\nIMPORTANT: This answer is for HandNote AI handwritten notes. Do not output programming code. Do not put mathematical answers in code fences. Use readable mathematical notation or LaTeX math notation that can be rendered by MathJax. Preserve equations accurately.",
+
+        language,
+        style
+      });
 
 
-    result.textContent =
-      answer;
+    result.innerHTML =
+      "✅ Answer generated.";
 
 
     await updateNotePreview(
@@ -2193,151 +1882,189 @@ async function askNormalAI(){
   }catch(error){
 
     result.innerHTML =
-      `<div class="error-result">
-        Something went wrong: ${escapeHTML(error.message)}
-      </div>`;
+      `<span class="error-result">
+        ❌ ${escapeHTML(error.message)}
+      </span>`;
 
   }finally{
 
-    button.disabled=false;
-
+    button.disabled = false;
 
     button.textContent =
       "🤖 Ask HandNote AI";
-
   }
-
 }
 
 
+/* =====================================================
+   TEXT → HANDWRITING
+===================================================== */
 
-/* =========================================================
-   SAVE HANDWRITTEN PDF
-========================================================= */
+async function convertTextToHandwriting(){
 
-function saveHandwrittenPDF(){
-
-  const preview =
-    document.getElementById("notePreview");
+  const text =
+    document.getElementById(
+      "handwritingText"
+    ).value.trim();
 
 
-  if(
-    !preview ||
-    !preview.innerText.trim() ||
-    preview.innerText.includes(
-      "Your generated notes will appear here."
-    )
-  ){
+  if(!text){
 
     alert(
-      "Please generate handwritten notes first."
+      "Please enter some text first."
     );
 
     return;
+  }
 
+
+  const language =
+    document.getElementById(
+      "handwritingLanguage"
+    ).value;
+
+
+  await updateNotePreview(
+    text,
+    language
+  );
+}
+
+
+/* =====================================================
+   SAVE HANDWRITTEN PDF
+===================================================== */
+
+async function saveHandwrittenPDF(){
+
+  const preview =
+    document.getElementById(
+      "notePreview"
+    );
+
+
+  if(!preview.innerText.trim()){
+
+    alert(
+      "There is no handwritten note to save."
+    );
+
+    return;
   }
 
 
   /*
-    Only #notePreview is visible during printing.
-    Therefore the AI raw answer is NOT included.
+    Browser print dialog.
+    Only #notePreview is visible in print CSS.
+    Therefore the AI raw answer, buttons and other
+    sections are NOT included in the PDF.
   */
 
-  window.print();
+  if(window.MathJax){
 
+    try{
+
+      await MathJax.typesetPromise([
+        preview
+      ]);
+
+    }catch(error){
+
+      console.error(error);
+    }
+  }
+
+
+  setTimeout(() => {
+
+    window.print();
+
+  },300);
 }
 
 
-
-/* =========================================================
+/* =====================================================
    CLEAR EVERYTHING
-========================================================= */
+===================================================== */
 
 function clearEverything(){
 
+  selectedPhotoFile = null;
+
+  document.getElementById("photoFile")
+    .value = "";
+
+  document.getElementById("cameraFile")
+    .value = "";
+
+  document.getElementById("aiQuestion")
+    .value = "";
+
+  document.getElementById("handwritingText")
+    .value = "";
+
+
+  document.getElementById("photoResult")
+    .innerHTML = "";
+
+  document.getElementById("photoResult")
+    .style.display = "none";
+
+
+  document.getElementById("aiResult")
+    .innerHTML = "";
+
+  document.getElementById("aiResult")
+    .style.display = "none";
+
+
+  document.getElementById("notePreview")
+    .className = "note-preview";
+
+
+  document.getElementById("notePreview")
+    .innerHTML =
+      "Your generated handwritten notes will appear here.";
+
+
   removePhoto();
 
-
-  document
-    .getElementById("aiQuestion")
-    .value="";
-
-
-  document
-    .getElementById("aiResult")
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById("aiResult")
-    .innerHTML =
-      "";
-
-
-  document
-    .getElementById("photoResult")
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById("photoResult")
-    .innerHTML =
-      "";
-
-
-  document
-    .getElementById("notePreview")
-    .innerHTML =
-      "Your generated notes will appear here.";
-
-
-  document
-    .getElementById("notePreview")
-    .classList.remove(
-      "lang-hindi",
-      "lang-assamese"
-    );
-
+  hideAllSections();
 }
 
 
-
-/* =========================================================
-   LANGUAGE CHANGE PREVIEW
-========================================================= */
+/* =====================================================
+   ENTER KEY
+===================================================== */
 
 document
-  .getElementById("photoLanguage")
+  .getElementById("aiQuestion")
   .addEventListener(
-    "change",
-    function(){
+    "keydown",
+    function(event){
 
-      applyLanguage(
-        this.value
-      );
+      if(
+        event.key === "Enter" &&
+        (event.ctrlKey || event.metaKey)
+      ){
+
+        askNormalAI();
+
+      }
 
     }
   );
 
 
-document
-  .getElementById("aiLanguage")
-  .addEventListener(
-    "change",
-    function(){
+/* =====================================================
+   INITIAL
+===================================================== */
 
-      applyLanguage(
-        this.value
-      );
-
-    }
-  );
-
+console.log(
+  "HandNote AI frontend loaded successfully."
+);
 
 </script>
-
 
 </body>
 </html>
