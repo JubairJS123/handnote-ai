@@ -1,39 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>HandNote AI</title>
 
-<!-- MathJax -->
-<script>
-window.MathJax = {
-  tex: {
-    inlineMath: [['\\(', '\\)'], ['$', '$']],
-    displayMath: [['\\[', '\\]'], ['$$', '$$']],
-    processEscapes: true,
-    processEnvironments: true
-  },
-  options: {
-    skipHtmlTags: [
-      'script',
-      'noscript',
-      'style',
-      'textarea',
-      'pre',
-      'code'
-    ]
-  }
-};
-</script>
+<!-- =========================================================
+     HANDWRITING FONTS
+========================================================= -->
 
-<script
-  async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Patrick+Hand&family=Comic+Neue:wght@400;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+>
+
 
 <style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 *{
   box-sizing:border-box;
@@ -41,14 +32,9 @@ window.MathJax = {
 
 body{
   margin:0;
-  font-family:
-    Arial,
-    "Noto Sans",
-    "Noto Sans Devanagari",
-    "Noto Sans Bengali",
-    sans-serif;
-  background:#f5f7ff;
+  background:#f4f6ff;
   color:#202124;
+  font-family:Arial,"Noto Sans",sans-serif;
 }
 
 header{
@@ -69,7 +55,8 @@ header p{
 }
 
 .container{
-  max-width:850px;
+  width:100%;
+  max-width:900px;
   margin:auto;
   padding:18px;
 }
@@ -108,7 +95,7 @@ header p{
 
 .feature strong{
   display:block;
-  font-size:16px;
+  font-size:17px;
   margin-bottom:6px;
 }
 
@@ -142,7 +129,7 @@ textarea{
 button{
   width:100%;
   padding:14px;
-  margin-top:15px;
+  margin-top:12px;
   border:0;
   border-radius:11px;
   background:#4f46e5;
@@ -154,31 +141,37 @@ button{
 
 button:disabled{
   background:#999;
+  cursor:not-allowed;
 }
 
 button.secondary{
-  background:#eeeeee;
-  color:#333;
+  background:#e9e9e9;
+  color:#222;
 }
 
-button.danger{
-  background:#dc2626;
+button.green{
+  background:#16a34a;
 }
 
-button.camera{
+button.dark{
   background:#111827;
 }
 
-button.save{
-  background:#16a34a;
+button.red{
+  background:#dc2626;
 }
 
 .hidden{
   display:none !important;
 }
 
+.placeholder{
+  text-align:center;
+  color:#777;
+  padding:25px 5px;
+}
+
 .upload-box{
-  margin-top:10px;
   padding:15px;
   border:1px dashed #aaa;
   border-radius:12px;
@@ -188,38 +181,19 @@ button.save{
 .file-name{
   margin-top:10px;
   font-weight:bold;
-  color:#333;
   word-break:break-word;
 }
 
-.progress-container{
-  margin-top:12px;
-  display:none;
-}
-
-.progress-background{
+.camera-preview{
   width:100%;
-  height:12px;
-  background:#e5e7eb;
-  border-radius:20px;
-  overflow:hidden;
+  max-height:320px;
+  object-fit:contain;
+  margin-top:12px;
+  border-radius:12px;
+  background:#111;
 }
 
-.progress-bar{
-  width:0%;
-  height:100%;
-  background:#4f46e5;
-  transition:width .15s;
-}
-
-.progress-text{
-  margin-top:7px;
-  font-size:13px;
-  color:#666;
-  text-align:center;
-}
-
-.upload-status{
+.status{
   margin-top:10px;
   font-size:14px;
   font-weight:bold;
@@ -239,74 +213,132 @@ button.save{
   color:#666;
 }
 
-.placeholder{
-  text-align:center;
-  color:#777;
-  padding:20px 5px;
+.ai-answer{
+  background:white;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:16px;
+  line-height:1.7;
+  white-space:normal;
+  overflow-wrap:anywhere;
 }
 
-/* =====================================================
+.answer-title{
+  font-weight:bold;
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.action-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.action-row button{
+  margin-top:10px;
+}
+
+
+/* =========================================================
    HANDWRITTEN PAPER
-===================================================== */
+========================================================= */
 
 .note-preview{
+
   position:relative;
+
+  min-height:260px;
+
+  padding:28px 22px 35px 52px;
+
+  border:1px solid #d4d0c4;
+  border-radius:12px;
+
+  overflow-wrap:anywhere;
 
   background:
     repeating-linear-gradient(
       to bottom,
-      #fffef8 0px,
-      #fffef8 31px,
-      #dfe7f2 32px
+      #fffef7 0px,
+      #fffef7 31px,
+      #dbe5ef 32px
     );
 
-  border:1px solid #d7d3c8;
-  border-radius:12px;
+  box-shadow:
+    inset 7px 0 0 #efb0b0,
+    0 2px 8px rgba(0,0,0,.08);
 
-  padding:28px 22px 28px 48px;
+  font-family:
+    "Patrick Hand",
+    "Comic Neue",
+    "Comic Sans MS",
+    cursive;
 
-  min-height:220px;
+  font-size:20px;
 
   line-height:32px;
 
-  font-family:
-    "Comic Sans MS",
-    "Segoe Print",
-    "Bradley Hand",
-    cursive;
-
-  font-size:18px;
-
-  overflow-wrap:anywhere;
-
-  box-shadow:inset 7px 0 0 #f3b6b6;
+  letter-spacing:.2px;
 }
+
+
+/* English */
+
+.note-preview.lang-english{
+  font-family:
+    "Patrick Hand",
+    "Comic Neue",
+    "Comic Sans MS",
+    cursive;
+}
+
+
+/* Hindi */
 
 .note-preview.lang-hindi{
+
   font-family:
+    "Kalam",
     "Noto Sans Devanagari",
     "Mangal",
-    "Nirmala UI",
     sans-serif;
+
+  font-size:20px;
+
+  line-height:34px;
 }
+
+
+/* Assamese */
 
 .note-preview.lang-assamese{
+
   font-family:
+    "Kalam",
     "Noto Sans Bengali",
-    "Nirmala UI",
     "Vrinda",
     sans-serif;
+
+  font-size:20px;
+
+  line-height:34px;
 }
 
+
+/* =========================================================
+   HANDWRITTEN ELEMENTS
+========================================================= */
+
 .note-heading{
-  font-size:21px;
-  font-weight:bold;
-  margin-top:12px;
-  margin-bottom:4px;
+  font-size:23px;
+  font-weight:700;
+  margin:10px 0 4px;
 }
 
 .note-line{
   margin:0;
+  min-height:32px;
 }
 
 .note-bullet{
@@ -314,82 +346,111 @@ button.save{
   padding-left:4px;
 }
 
-.note-equation{
-  margin:7px 0;
-  padding:3px 5px;
+.note-number{
+  margin:0;
+}
 
-  font-size:20px;
-  font-weight:bold;
+.note-space{
+  height:12px;
+}
+
+
+/* =========================================================
+   HANDWRITTEN EQUATION
+========================================================= */
+
+.hand-equation{
+
+  display:block;
+
+  margin:8px 0;
+
+  padding:2px 5px;
 
   font-family:
-    "Comic Sans MS",
-    "Segoe Print",
-    "Cambria Math",
+    "Patrick Hand",
+    "Kalam",
+    "Comic Neue",
+    cursive;
+
+  font-size:22px;
+
+  font-weight:500;
+
+  line-height:34px;
+
+  letter-spacing:.4px;
+
+  white-space:normal;
+
+  transform:rotate(-0.25deg);
+
+}
+
+
+/* Bigger equation */
+
+.hand-equation.big{
+  font-size:25px;
+  margin:10px 0;
+}
+
+
+/* =========================================================
+   FRACTION
+========================================================= */
+
+.fraction{
+
+  display:inline-flex;
+
+  flex-direction:column;
+
+  vertical-align:middle;
+
+  text-align:center;
+
+  line-height:18px;
+
+  margin:0 4px;
+}
+
+.fraction .top{
+  border-bottom:2px solid currentColor;
+  padding:0 5px 1px;
+}
+
+.fraction .bottom{
+  padding:1px 5px 0;
+}
+
+
+/* =========================================================
+   AI ANSWER
+========================================================= */
+
+.raw-markdown{
+  white-space:pre-wrap;
+}
+
+.raw-equation{
+  font-family:
     "Times New Roman",
-    cursive;
-
-  overflow-x:auto;
+    serif;
 }
 
-.note-equation.simple-math{
-  font-family:
-    "Comic Sans MS",
-    "Segoe Print",
-    cursive;
-}
 
-.note-equation mjx-container{
-  font-size:105% !important;
-}
-
-.note-equation mjx-container[display="true"]{
-  margin:8px 0 !important;
-}
-
-.error-result{
-  color:#b91c1c;
-}
-
-.camera-preview{
-  width:100%;
-  max-height:320px;
-  object-fit:contain;
-  border-radius:12px;
-  margin-top:12px;
-  background:#111;
-}
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media(max-width:600px){
-
-  .feature-grid{
-    grid-template-columns:1fr;
-  }
-
-  .note-preview{
-    padding-left:35px;
-    font-size:16px;
-  }
-
-  .note-equation{
-    font-size:18px;
-  }
-}
-
-/* =====================================================
+/* =========================================================
    PRINT
-===================================================== */
+========================================================= */
 
 @media print{
 
   html,
   body{
+    background:white !important;
     margin:0 !important;
     padding:0 !important;
-    background:white !important;
   }
 
   body *{
@@ -417,15 +478,8 @@ button.save{
     border:0 !important;
     border-radius:0 !important;
 
-    box-shadow:inset 7px 0 0 #f3b6b6 !important;
-
-    background:
-      repeating-linear-gradient(
-        to bottom,
-        #fffef8 0px,
-        #fffef8 31px,
-        #dfe7f2 32px
-      ) !important;
+    box-shadow:
+      inset 7px 0 0 #efb0b0 !important;
 
     -webkit-print-color-adjust:exact !important;
     print-color-adjust:exact !important;
@@ -443,21 +497,64 @@ button.save{
   }
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+
+  .container{
+    padding:12px;
+  }
+
+  .card{
+    padding:16px;
+  }
+
+  .note-preview{
+    padding-left:38px;
+    font-size:18px;
+  }
+
+  .hand-equation{
+    font-size:20px;
+  }
+
+  .action-row{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <h1>✍️ HandNote AI</h1>
-  <p>Your AI study and handwriting assistant</p>
+
+  <p>
+    Your AI study and handwriting assistant
+  </p>
+
 </header>
+
 
 <div class="container">
 
-<!-- =====================================================
-     FEATURES
-===================================================== -->
+
+<!-- =========================================================
+     HOME FEATURES
+========================================================= -->
 
 <div class="card no-print">
 
@@ -465,120 +562,130 @@ button.save{
 
   <div class="feature-grid">
 
-    <div class="feature" onclick="openPhotoNotes()">
+    <div
+      class="feature"
+      onclick="openPhotoNotes()"
+    >
+
       <strong>📷 Photo → Notes</strong>
+
       <span class="small">
-        Take a photo or upload a study image.
+        Upload or take a study photo.
       </span>
+
     </div>
 
-    <div class="feature" onclick="openAskAI()">
+
+    <div
+      class="feature"
+      onclick="openAskAI()"
+    >
+
       <strong>🤖 Ask AI</strong>
+
       <span class="small">
-        Ask maths, physics, chemistry or any study question.
+        Ask questions and get AI answers.
       </span>
+
     </div>
 
-    <div class="feature" onclick="openDocuments()">
+
+    <div
+      class="feature"
+      onclick="openDocuments()"
+    >
+
       <strong>📚 Document → Notes</strong>
+
       <span class="small">
-        PDF and multi-page documents.
+        PDF and document support.
       </span>
+
     </div>
 
-    <div class="feature" onclick="openHandwriting()">
+
+    <div
+      class="feature"
+      onclick="openHandwriting()"
+    >
+
       <strong>✍️ Text → Handwritten</strong>
+
       <span class="small">
         Convert your own text into handwritten notes.
       </span>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- =====================================================
-     PHOTO
-===================================================== -->
+<!-- =========================================================
+     PHOTO → NOTES
+========================================================= -->
 
-<div id="photoSection" class="card hidden">
+<div
+  id="photoSection"
+  class="card hidden"
+>
 
   <h2>📷 Photo → Notes</h2>
 
   <p class="small">
-    Take a photo or select an image from your phone.
+    Upload a study question or study material.
   </p>
+
 
   <div class="upload-box">
 
-    <label>📷 Study photo</label>
+    <label>
+      📷 Take Photo
+    </label>
 
-    <!-- Camera -->
     <input
-      type="file"
       id="cameraFile"
+      type="file"
       accept="image/*"
       capture="environment"
-      class="hidden"
       onchange="cameraSelected()"
     >
 
-    <button
-      type="button"
-      class="camera"
-      onclick="document.getElementById('cameraFile').click()"
-    >
-      📷 Take Photo
-    </button>
 
-    <!-- Gallery -->
+    <label>
+      🖼️ Or choose from Gallery
+    </label>
+
     <input
-      type="file"
       id="photoFile"
+      type="file"
       accept="image/*"
       onchange="photoSelected()"
     >
 
+
     <img
       id="cameraPreview"
       class="camera-preview hidden"
-      alt="Selected photo"
     >
+
 
     <div
       id="photoFileName"
       class="file-name hidden"
     ></div>
 
-    <div
-      id="photoProgress"
-      class="progress-container"
-    >
-
-      <div class="progress-background">
-        <div
-          id="photoProgressBar"
-          class="progress-bar"
-        ></div>
-      </div>
-
-      <div
-        id="photoProgressText"
-        class="progress-text"
-      >
-        0%
-      </div>
-
-    </div>
 
     <div
       id="photoStatus"
-      class="upload-status"
+      class="status"
     ></div>
+
 
     <button
       id="removePhotoBtn"
-      class="danger hidden"
+      class="red hidden"
       onclick="removePhoto()"
     >
       ❌ Remove Photo
@@ -587,29 +694,48 @@ button.save{
   </div>
 
 
-  <label for="photoStyle">
-    📝 Note style
+  <label>
+    📝 Note Style
   </label>
 
   <select id="photoStyle">
 
-    <option value="standard">Standard Notes</option>
-    <option value="short">Short Notes</option>
-    <option value="detailed">Detailed Notes</option>
-    <option value="exam">Exam Answer</option>
+    <option value="standard">
+      Standard Notes
+    </option>
+
+    <option value="short">
+      Short Notes
+    </option>
+
+    <option value="detailed">
+      Detailed Notes
+    </option>
+
+    <option value="exam">
+      Exam Answer
+    </option>
 
   </select>
 
 
-  <label for="photoLanguage">
+  <label>
     🌐 Language
   </label>
 
   <select id="photoLanguage">
 
-    <option value="English">English</option>
-    <option value="Hindi">हिन्दी (Hindi)</option>
-    <option value="Assamese">অসমীয়া (Assamese)</option>
+    <option value="English">
+      English
+    </option>
+
+    <option value="Hindi">
+      हिन्दी (Hindi)
+    </option>
+
+    <option value="Assamese">
+      অসমীয়া (Assamese)
+    </option>
 
   </select>
 
@@ -618,8 +744,9 @@ button.save{
     id="photoGenerateBtn"
     onclick="generatePhotoNotes()"
   >
-    📚 Generate Handwritten Notes
+    📚 Generate AI Answer
   </button>
+
 
   <div
     id="photoResult"
@@ -629,21 +756,24 @@ button.save{
 </div>
 
 
-<!-- =====================================================
+<!-- =========================================================
      ASK AI
-===================================================== -->
+========================================================= -->
 
-<div id="askSection" class="card hidden">
+<div
+  id="askSection"
+  class="card hidden"
+>
 
   <h2>🤖 Ask HandNote AI</h2>
 
   <p class="small">
-    Maths, physics, chemistry, biology and other subjects.
-    Equations will be formatted instead of showing raw code.
+    Ask maths, physics, chemistry, biology or any study question.
   </p>
 
-  <label for="aiQuestion">
-    Your question
+
+  <label>
+    Your Question
   </label>
 
   <textarea
@@ -652,29 +782,48 @@ button.save{
   ></textarea>
 
 
-  <label for="aiStyle">
-    📝 Answer style
+  <label>
+    📝 Answer Style
   </label>
 
   <select id="aiStyle">
 
-    <option value="standard">Standard</option>
-    <option value="short">Short</option>
-    <option value="detailed">Detailed</option>
-    <option value="exam">Exam Answer</option>
+    <option value="standard">
+      Standard
+    </option>
+
+    <option value="short">
+      Short
+    </option>
+
+    <option value="detailed">
+      Detailed
+    </option>
+
+    <option value="exam">
+      Exam Answer
+    </option>
 
   </select>
 
 
-  <label for="aiLanguage">
+  <label>
     🌐 Language
   </label>
 
   <select id="aiLanguage">
 
-    <option value="English">English</option>
-    <option value="Hindi">हिन्दी (Hindi)</option>
-    <option value="Assamese">অসমীয়া (Assamese)</option>
+    <option value="English">
+      English
+    </option>
+
+    <option value="Hindi">
+      हिन्दी (Hindi)
+    </option>
+
+    <option value="Assamese">
+      অসমীয়া (Assamese)
+    </option>
 
   </select>
 
@@ -695,21 +844,24 @@ button.save{
 </div>
 
 
-<!-- =====================================================
+<!-- =========================================================
      DOCUMENT
-===================================================== -->
+========================================================= -->
 
-<div id="documentSection" class="card hidden">
+<div
+  id="documentSection"
+  class="card hidden"
+>
 
   <h2>📚 Document → Notes</h2>
 
   <div class="placeholder">
 
-    🚧 Document processing is the next module.
+    🚧 Document module will be connected next.
 
     <br><br>
 
-    Planned support:
+    Planned:
 
     <br><br>
 
@@ -720,15 +872,19 @@ button.save{
 </div>
 
 
-<!-- =====================================================
-     TEXT TO HANDWRITING
-===================================================== -->
+<!-- =========================================================
+     TEXT → HANDWRITTEN
+========================================================= -->
 
-<div id="handwritingSection" class="card hidden">
+<div
+  id="handwritingSection"
+  class="card hidden"
+>
 
   <h2>✍️ Text → Handwritten Notes</h2>
 
-  <label for="handwritingText">
+
+  <label>
     Enter your text
   </label>
 
@@ -737,48 +893,67 @@ button.save{
     placeholder="Write or paste your notes here..."
   ></textarea>
 
-  <label for="handwritingLanguage">
+
+  <label>
     🌐 Language
   </label>
 
   <select id="handwritingLanguage">
 
-    <option value="English">English</option>
-    <option value="Hindi">हिन्दी</option>
-    <option value="Assamese">অসমীয়া</option>
+    <option value="English">
+      English
+    </option>
+
+    <option value="Hindi">
+      हिन्दी
+    </option>
+
+    <option value="Assamese">
+      অসমীয়া
+    </option>
 
   </select>
 
-  <button onclick="convertTextToHandwriting()">
+
+  <button
+    onclick="convertTextToHandwriting()"
+  >
     ✍️ Convert to Handwriting
   </button>
 
 </div>
 
 
-<!-- =====================================================
-     PREVIEW
-===================================================== -->
+<!-- =========================================================
+     HANDWRITTEN PREVIEW
+========================================================= -->
 
 <div class="card">
 
-  <h2>📄 Handwritten Note Preview</h2>
+  <h2>
+    📄 Handwritten Note Preview
+  </h2>
+
 
   <div
     id="notePreview"
-    class="note-preview"
+    class="note-preview lang-english"
   >
-    Your generated handwritten notes will appear here.
+
+    Your handwritten notes will appear here.
+
   </div>
+
 
   <div class="no-print">
 
     <button
-      class="save"
+      class="green"
       onclick="saveHandwrittenPDF()"
     >
       📥 Save Handwritten PDF
     </button>
+
 
     <button
       class="secondary"
@@ -791,35 +966,43 @@ button.save{
 
 </div>
 
+
 </div>
 
 
 <script>
 
-/* =====================================================
+/* =========================================================
    GLOBAL
-===================================================== */
+========================================================= */
 
 let selectedPhotoFile = null;
+
 let currentLanguage = "English";
 
+let latestAIAnswer = "";
 
-/* =====================================================
+
+/* =========================================================
    SECTION CONTROL
-===================================================== */
+========================================================= */
 
 function hideAllSections(){
 
-  document.getElementById("photoSection")
+  document
+    .getElementById("photoSection")
     .classList.add("hidden");
 
-  document.getElementById("askSection")
+  document
+    .getElementById("askSection")
     .classList.add("hidden");
 
-  document.getElementById("documentSection")
+  document
+    .getElementById("documentSection")
     .classList.add("hidden");
 
-  document.getElementById("handwritingSection")
+  document
+    .getElementById("handwritingSection")
     .classList.add("hidden");
 }
 
@@ -828,7 +1011,8 @@ function openPhotoNotes(){
 
   hideAllSections();
 
-  document.getElementById("photoSection")
+  document
+    .getElementById("photoSection")
     .classList.remove("hidden");
 }
 
@@ -837,10 +1021,13 @@ function openAskAI(){
 
   hideAllSections();
 
-  document.getElementById("askSection")
+  document
+    .getElementById("askSection")
     .classList.remove("hidden");
 
-  document.getElementById("aiQuestion").focus();
+  document
+    .getElementById("aiQuestion")
+    .focus();
 }
 
 
@@ -848,7 +1035,8 @@ function openDocuments(){
 
   hideAllSections();
 
-  document.getElementById("documentSection")
+  document
+    .getElementById("documentSection")
     .classList.remove("hidden");
 }
 
@@ -857,29 +1045,190 @@ function openHandwriting(){
 
   hideAllSections();
 
-  document.getElementById("handwritingSection")
+  document
+    .getElementById("handwritingSection")
     .classList.remove("hidden");
 }
 
 
-/* =====================================================
+/* =========================================================
+   PHOTO
+========================================================= */
+
+function cameraSelected(){
+
+  const input =
+    document.getElementById("cameraFile");
+
+  if(!input.files.length){
+    return;
+  }
+
+  selectedPhotoFile =
+    input.files[0];
+
+  showSelectedPhoto();
+}
+
+
+function photoSelected(){
+
+  const input =
+    document.getElementById("photoFile");
+
+  if(!input.files.length){
+    return;
+  }
+
+  selectedPhotoFile =
+    input.files[0];
+
+  showSelectedPhoto();
+}
+
+
+function showSelectedPhoto(){
+
+  if(!selectedPhotoFile){
+    return;
+  }
+
+  const name =
+    document.getElementById("photoFileName");
+
+  name.textContent =
+    "Selected: " +
+    selectedPhotoFile.name;
+
+  name.classList.remove("hidden");
+
+
+  const preview =
+    document.getElementById("cameraPreview");
+
+  preview.src =
+    URL.createObjectURL(selectedPhotoFile);
+
+  preview.classList.remove("hidden");
+
+
+  document
+    .getElementById("removePhotoBtn")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("photoStatus")
+    .textContent =
+    "Photo ready.";
+}
+
+
+function removePhoto(){
+
+  selectedPhotoFile = null;
+
+  document.getElementById("cameraFile").value = "";
+
+  document.getElementById("photoFile").value = "";
+
+  document
+    .getElementById("cameraPreview")
+    .classList.add("hidden");
+
+  document
+    .getElementById("photoFileName")
+    .classList.add("hidden");
+
+  document
+    .getElementById("removePhotoBtn")
+    .classList.add("hidden");
+
+  document
+    .getElementById("photoStatus")
+    .textContent = "";
+}
+
+
+/* =========================================================
    HTML ESCAPE
-===================================================== */
+========================================================= */
 
 function escapeHTML(text){
 
   return String(text)
+
     .replace(/&/g,"&amp;")
+
     .replace(/</g,"&lt;")
+
     .replace(/>/g,"&gt;")
+
     .replace(/"/g,"&quot;")
+
     .replace(/'/g,"&#039;");
+
 }
 
 
-/* =====================================================
-   UNICODE MATH
-===================================================== */
+/* =========================================================
+   MARKDOWN CLEANING
+========================================================= */
+
+function cleanAIText(text){
+
+  let value =
+    String(text || "");
+
+
+  value =
+    value.replace(
+      /```(?:latex|math|mathematics|text|markdown)?/gi,
+      ""
+    );
+
+  value =
+    value.replace(
+      /```/g,
+      ""
+    );
+
+
+  value =
+    value.replace(
+      /^#{1,6}\s*/gm,
+      ""
+    );
+
+
+  value =
+    value.replace(
+      /\*\*(.*?)\*\*/gs,
+      "$1"
+    );
+
+
+  value =
+    value.replace(
+      /__(.*?)__/gs,
+      "$1"
+    );
+
+
+  value =
+    value.replace(
+      /<br\s*\/?>/gi,
+      "\n"
+    );
+
+
+  return value.trim();
+}
+
+
+/* =========================================================
+   SUBSCRIPT
+========================================================= */
 
 const subscriptMap = {
 
@@ -940,179 +1289,251 @@ const superscriptMap = {
 
 function convertSubscript(value){
 
-  return value
+  return String(value)
     .split("")
-    .map(c => subscriptMap[c] || c)
+    .map(
+      c => subscriptMap[c] || c
+    )
     .join("");
 }
 
 
 function convertSuperscript(value){
 
-  return value
+  return String(value)
     .split("")
-    .map(c => superscriptMap[c] || c)
+    .map(
+      c => superscriptMap[c] || c
+    )
     .join("");
 }
 
 
-/* =====================================================
-   CHEMISTRY + SIMPLE MATH CLEANER
-===================================================== */
+/* =========================================================
+   LATEX → HANDWRITTEN TEXT
+========================================================= */
 
-function cleanSimpleMath(text){
+function latexToHandwritten(text){
 
-  let value = String(text);
-
-
-  /* Remove surrounding math delimiters
-     for simple Unicode conversion. */
-
-  value = value.replace(/\\\(/g,"");
-  value = value.replace(/\\\)/g,"");
-  value = value.replace(/\\\[/g,"");
-  value = value.replace(/\\\]/g,"");
-  value = value.replace(/\$\$/g,"");
-  value = value.replace(/\$/g,"");
+  let value =
+    String(text);
 
 
-  /* Common symbols */
+  /* Remove math delimiters */
 
-  value = value.replace(/\\times/g,"×");
-  value = value.replace(/\\cdot/g,"·");
-  value = value.replace(/\\div/g,"÷");
-  value = value.replace(/\\pm/g,"±");
+  value =
+    value.replace(/\\\(/g,"");
 
-  value = value.replace(/\\leq/g,"≤");
-  value = value.replace(/\\le/g,"≤");
+  value =
+    value.replace(/\\\)/g,"");
 
-  value = value.replace(/\\geq/g,"≥");
-  value = value.replace(/\\ge/g,"≥");
+  value =
+    value.replace(/\\\[/g,"");
 
-  value = value.replace(/\\neq/g,"≠");
-  value = value.replace(/\\approx/g,"≈");
+  value =
+    value.replace(/\\\]/g,"");
 
-  value = value.replace(/\\rightarrow/g,"→");
-  value = value.replace(/\\leftarrow/g,"←");
-  value = value.replace(/\\Rightarrow/g,"⇒");
+  value =
+    value.replace(/\$\$/g,"");
 
-  value = value.replace(/\\infty/g,"∞");
-
-  value = value.replace(/\\pi/g,"π");
-  value = value.replace(/\\alpha/g,"α");
-  value = value.replace(/\\beta/g,"β");
-  value = value.replace(/\\gamma/g,"γ");
-  value = value.replace(/\\delta/g,"δ");
-  value = value.replace(/\\theta/g,"θ");
-  value = value.replace(/\\lambda/g,"λ");
-  value = value.replace(/\\mu/g,"μ");
-  value = value.replace(/\\sigma/g,"σ");
-  value = value.replace(/\\omega/g,"ω");
-  value = value.replace(/\\Delta/g,"Δ");
-  value = value.replace(/\\Sigma/g,"Σ");
+  value =
+    value.replace(/\$/g,"");
 
 
-  /* frac */
+  /* Basic symbols */
 
-  value = value.replace(
-    /\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g,
-    "($1)/($2)"
+  const symbols = {
+
+    "\\times":"×",
+    "\\cdot":"·",
+    "\\div":"÷",
+    "\\pm":"±",
+
+    "\\leq":"≤",
+    "\\le":"≤",
+
+    "\\geq":"≥",
+    "\\ge":"≥",
+
+    "\\neq":"≠",
+    "\\approx":"≈",
+
+    "\\rightarrow":"→",
+    "\\leftarrow":"←",
+    "\\Rightarrow":"⇒",
+
+    "\\infty":"∞",
+
+    "\\pi":"π",
+    "\\alpha":"α",
+    "\\beta":"β",
+    "\\gamma":"γ",
+    "\\delta":"δ",
+    "\\theta":"θ",
+    "\\lambda":"λ",
+    "\\mu":"μ",
+    "\\sigma":"σ",
+    "\\omega":"ω",
+
+    "\\Delta":"Δ",
+    "\\Sigma":"Σ",
+
+    "\\partial":"∂",
+    "\\nabla":"∇",
+
+    "\\sum":"∑",
+    "\\prod":"∏",
+    "\\int":"∫"
+  };
+
+
+  Object.keys(symbols).forEach(
+    key => {
+
+      value =
+        value.replace(
+          new RegExp(
+            key.replace(
+              /[.*+?^${}()|[\]\\]/g,
+              "\\$&"
+            ),
+            "g"
+          ),
+          symbols[key]
+        );
+
+    }
   );
 
 
   /* sqrt */
 
-  value = value.replace(
-    /\\sqrt\s*\{([^{}]+)\}/g,
-    "√($1)"
-  );
+  value =
+    value.replace(
+      /\\sqrt\s*\{([^{}]+)\}/g,
+      "√($1)"
+    );
 
 
-  /* Superscript */
+  /* frac */
 
-  value = value.replace(
-    /\^\{([^{}]+)\}/g,
-    (_,x) => convertSuperscript(x)
-  );
-
-  value = value.replace(
-    /\^([0-9]+)/g,
-    (_,x) => convertSuperscript(x)
-  );
+  value =
+    value.replace(
+      /\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g,
+      "$1 ÷ $2"
+    );
 
 
-  /* Subscript */
+  /* superscript */
 
-  value = value.replace(
-    /_\{([^{}]+)\}/g,
-    (_,x) => convertSubscript(x)
-  );
-
-  value = value.replace(
-    /_([0-9]+)/g,
-    (_,x) => convertSubscript(x)
-  );
+  value =
+    value.replace(
+      /\^\{([^{}]+)\}/g,
+      (_,x) =>
+        convertSuperscript(x)
+    );
 
 
-  return value;
+  value =
+    value.replace(
+      /\^([0-9]+)/g,
+      (_,x) =>
+        convertSuperscript(x)
+    );
+
+
+  /* subscript */
+
+  value =
+    value.replace(
+      /_\{([^{}]+)\}/g,
+      (_,x) =>
+        convertSubscript(x)
+    );
+
+
+  value =
+    value.replace(
+      /_([0-9]+)/g,
+      (_,x) =>
+        convertSubscript(x)
+    );
+
+
+  /* Remove leftover LaTeX braces */
+
+  value =
+    value.replace(/[{}]/g,"");
+
+
+  /* Common LaTeX spacing */
+
+  value =
+    value.replace(/\\,/g," ");
+
+  value =
+    value.replace(/\\;/g," ");
+
+  value =
+    value.replace(/\\!/g,"");
+
+
+  return value.trim();
 }
 
 
-/* =====================================================
-   ADVANCED MATH DETECTION
-===================================================== */
-
-function isAdvancedMath(text){
-
-  const value = String(text);
-
-  return (
-    /\\frac/.test(value) ||
-    /\\sqrt/.test(value) ||
-    /\\int/.test(value) ||
-    /\\sum/.test(value) ||
-    /\\prod/.test(value) ||
-    /\\lim/.test(value) ||
-    /\\partial/.test(value) ||
-    /\\nabla/.test(value) ||
-    /\\begin\{/.test(value) ||
-    /\\end\{/.test(value) ||
-    /\\[([]/.test(value) ||
-    /\$\$/.test(value) ||
-    /[∫∑∏∂∇]/.test(value)
-  );
-}
-
-
-/* =====================================================
+/* =========================================================
    EQUATION DETECTION
-===================================================== */
+========================================================= */
 
 function looksLikeEquation(line){
 
-  const value = String(line).trim();
+  const value =
+    String(line).trim();
+
 
   if(!value){
     return false;
   }
 
-  if(isAdvancedMath(value)){
+
+  /* LaTeX */
+
+  if(
+    /\\(frac|sqrt|times|cdot|div|pm|leq|geq|neq|approx|rightarrow|leftarrow|Rightarrow|infty|pi|alpha|beta|gamma|delta|theta|lambda|mu|sigma|omega|partial|nabla|sum|prod|int)/.test(value)
+  ){
     return true;
   }
 
-  /* CO_2 / H_2SO_4 */
 
-  if(/[A-Za-z]+_[A-Za-z0-9]+/.test(value)){
+  /* Explicit math delimiters */
+
+  if(
+    /\\\(|\\\[|\$\$|\$/.test(value)
+  ){
     return true;
   }
+
 
   /* x^2 */
 
-  if(/[A-Za-z0-9]\^[A-Za-z0-9]/.test(value)){
+  if(
+    /[A-Za-z0-9]\^[A-Za-z0-9{]/.test(value)
+  ){
     return true;
   }
 
-  /* Unicode equations */
+
+  /* H_2SO_4 */
+
+  if(
+    /[A-Za-z]+_[A-Za-z0-9{]/.test(value)
+  ){
+    return true;
+  }
+
+
+  /* Equation symbols */
 
   if(
     /[=≤≥≠≈±×÷√∫∑∏∞∂∇→⇒]/.test(value)
@@ -1120,7 +1541,8 @@ function looksLikeEquation(line){
     return true;
   }
 
-  /* Differential equations */
+
+  /* Differential equation */
 
   if(
     /dy\/dx|d[0-9]*y\/dx|∂y\/∂x/i.test(value)
@@ -1128,123 +1550,79 @@ function looksLikeEquation(line){
     return true;
   }
 
-  /* Common equation structure */
+
+  /* Common equation */
 
   if(
-    /^[A-Za-z].*[=]/.test(value)
+    /^[A-Za-z0-9].*[=]/.test(value)
   ){
     return true;
   }
+
 
   return false;
 }
 
 
-/* =====================================================
-   CLEAN AI MARKDOWN
-===================================================== */
+/* =========================================================
+   NORMALIZE EQUATION
+========================================================= */
 
-function cleanAIText(text){
+function normalizeEquation(line){
 
-  if(!text){
-    return "";
-  }
-
-  let clean = String(text);
-
-  /* Code fences */
-
-  clean = clean.replace(
-    /```(?:latex|math|mathematics|text|markdown)?/gi,
-    ""
-  );
-
-  clean = clean.replace(/```/g,"");
+  let value =
+    latexToHandwritten(line);
 
 
-  /* Markdown headings */
+  /* Remove excessive spaces */
 
-  clean = clean.replace(
-    /^#{1,6}\s*/gm,
-    ""
-  );
-
-
-  /* Bold */
-
-  clean = clean.replace(
-    /\*\*(.*?)\*\*/gs,
-    "$1"
-  );
-
-  clean = clean.replace(
-    /__(.*?)__/gs,
-    "$1"
-  );
+  value =
+    value.replace(
+      /\s+/g,
+      " "
+    );
 
 
-  /* Remove accidental HTML */
-
-  clean = clean.replace(
-    /<br\s*\/?>/gi,
-    "\n"
-  );
-
-
-  /* Keep math backslashes intact */
-
-  return clean.trim();
+  return value.trim();
 }
 
 
-/* =====================================================
-   PREPARE MATH
-===================================================== */
+/* =========================================================
+   FORMAT SIMPLE FRACTIONS
+========================================================= */
 
-function prepareMathForDisplay(text){
+function formatFractionText(text){
 
-  let value = String(text).trim();
-
-  /* Already MathJax */
-
-  if(
-    value.includes("\\(") ||
-    value.includes("\\[") ||
-    value.includes("$$")
-  ){
-
-    return value;
-  }
-
-
-  /* Plain Unicode chemistry/equation */
-
-  if(
-    !value.includes("\\") &&
-    !value.includes("^") &&
-    !value.includes("_")
-  ){
-
-    return escapeHTML(value);
-  }
+  let value =
+    String(text);
 
 
   /*
-    Convert LaTeX equation into MathJax.
-    This prevents raw LaTeX from being visible.
+    1/2 style fractions stay readable.
+    We deliberately don't use MathJax so that the
+    handwritten preview does not become computer generated.
   */
 
-  return "\\(" + value + "\\)";
+  value =
+    value.replace(
+      /\b(\d+)\s*\/\s*(\d+)\b/g,
+      "$1/$2"
+    );
+
+
+  return value;
 }
 
 
-/* =====================================================
+/* =========================================================
    RENDER HANDWRITTEN NOTES
-===================================================== */
+========================================================= */
 
 function renderHandwrittenNotes(text){
 
-  const clean = cleanAIText(text);
+  const clean =
+    cleanAIText(text);
+
 
   if(!clean){
 
@@ -1256,38 +1634,54 @@ function renderHandwrittenNotes(text){
   }
 
 
-  const lines = clean.split(/\r?\n/);
+  const lines =
+    clean.split(/\r?\n/);
+
 
   let html = "";
 
 
   lines.forEach(line => {
 
-    const trimmed = line.trim();
+    const trimmed =
+      line.trim();
+
 
     if(!trimmed){
 
-      html += `<div style="height:10px"></div>`;
+      html +=
+        `<div class="note-space"></div>`;
 
       return;
     }
 
 
-    /* Bullet */
+    /* -----------------------------------------------------
+       BULLET
+    ----------------------------------------------------- */
 
-    if(/^[-•*]\s+/.test(trimmed)){
+    if(
+      /^[-•*]\s+/.test(trimmed)
+    ){
 
-      const bullet = trimmed.replace(
-        /^[-•*]\s+/,
-        ""
-      );
+      const bullet =
+        trimmed.replace(
+          /^[-•*]\s+/,
+          ""
+        );
 
-      if(looksLikeEquation(bullet)){
+
+      if(
+        looksLikeEquation(bullet)
+      ){
 
         html += `
           <div class="note-bullet">
-            • <span class="math-inline">
-              ${prepareMathForDisplay(bullet)}
+            •
+            <span class="hand-equation">
+              ${escapeHTML(
+                normalizeEquation(bullet)
+              )}
             </span>
           </div>
         `;
@@ -1296,7 +1690,9 @@ function renderHandwrittenNotes(text){
 
         html += `
           <div class="note-bullet">
-            • ${escapeHTML(cleanSimpleMath(bullet))}
+            • ${escapeHTML(
+              latexToHandwritten(bullet)
+            )}
           </div>
         `;
       }
@@ -1305,56 +1701,53 @@ function renderHandwrittenNotes(text){
     }
 
 
-    /* Numbered */
+    /* -----------------------------------------------------
+       NUMBERED
+    ----------------------------------------------------- */
 
-    if(/^\d+[.)]\s+/.test(trimmed)){
+    if(
+      /^\d+[\.\)]\s+/.test(trimmed)
+    ){
 
-      const cleaned = cleanSimpleMath(trimmed);
-
-      html += `
-        <div class="note-bullet">
-          ${escapeHTML(cleaned)}
-        </div>
-      `;
-
-      return;
-    }
-
-
-    /* Equation */
-
-    if(looksLikeEquation(trimmed)){
-
-      let equation = prepareMathForDisplay(trimmed);
-
-      /*
-        If equation is only simple chemistry/math,
-        use handwritten font instead of computer math.
-      */
-
-      const simple =
-        !isAdvancedMath(trimmed) &&
-        !trimmed.includes("\\frac") &&
-        !trimmed.includes("\\sqrt");
-
-
-      if(simple){
-
-        equation = escapeHTML(
-          cleanSimpleMath(trimmed)
+      const match =
+        trimmed.match(
+          /^(\d+[\.\)])\s+(.*)$/
         );
 
+
+      const number =
+        match ? match[1] : "";
+
+      const content =
+        match ? match[2] : trimmed;
+
+
+      if(
+        looksLikeEquation(content)
+      ){
+
         html += `
-          <div class="note-equation simple-math">
-            ${equation}
+          <div class="note-number">
+
+            ${escapeHTML(number)}
+
+            <span class="hand-equation">
+              ${escapeHTML(
+                normalizeEquation(content)
+              )}
+            </span>
+
           </div>
         `;
 
       }else{
 
         html += `
-          <div class="note-equation">
-            ${equation}
+          <div class="note-number">
+            ${escapeHTML(number)}
+            ${escapeHTML(
+              latexToHandwritten(content)
+            )}
           </div>
         `;
       }
@@ -1363,19 +1756,29 @@ function renderHandwrittenNotes(text){
     }
 
 
-    /* Heading */
+    /* -----------------------------------------------------
+       HEADING
+    ----------------------------------------------------- */
 
     if(
-      trimmed.length < 70 &&
-      (
-        trimmed.endsWith(":") ||
-        /^[A-Z][A-Za-z\s-]{2,50}$/.test(trimmed)
-      )
+      /^[A-Z][A-Za-z0-9\s]{1,60}:$/.test(trimmed)
+      ||
+      /^Chapter\s+/i.test(trimmed)
+      ||
+      /^Introduction$/i.test(trimmed)
+      ||
+      /^Conclusion$/i.test(trimmed)
+      ||
+      /^Answer$/i.test(trimmed)
+      ||
+      /^Solution$/i.test(trimmed)
     ){
 
       html += `
         <div class="note-heading">
-          ${escapeHTML(trimmed)}
+          ${escapeHTML(
+            latexToHandwritten(trimmed)
+          )}
         </div>
       `;
 
@@ -1383,11 +1786,37 @@ function renderHandwrittenNotes(text){
     }
 
 
-    /* Normal multilingual text */
+    /* -----------------------------------------------------
+       EQUATION
+    ----------------------------------------------------- */
+
+    if(
+      looksLikeEquation(trimmed)
+    ){
+
+      html += `
+        <div class="hand-equation big">
+          ${escapeHTML(
+            normalizeEquation(trimmed)
+          )}
+        </div>
+      `;
+
+      return;
+    }
+
+
+    /* -----------------------------------------------------
+       NORMAL TEXT
+    ----------------------------------------------------- */
 
     html += `
       <div class="note-line">
-        ${escapeHTML(trimmed)}
+        ${escapeHTML(
+          formatFractionText(
+            latexToHandwritten(trimmed)
+          )
+        )}
       </div>
     `;
 
@@ -1398,246 +1827,253 @@ function renderHandwrittenNotes(text){
 }
 
 
-/* =====================================================
-   UPDATE PREVIEW
-===================================================== */
+/* =========================================================
+   APPLY LANGUAGE FONT
+========================================================= */
 
-async function updateNotePreview(answer, language){
-
-  currentLanguage = language || "English";
+function applyLanguage(language){
 
   const preview =
     document.getElementById("notePreview");
 
 
   preview.classList.remove(
+    "lang-english",
     "lang-hindi",
     "lang-assamese"
   );
 
 
-  if(currentLanguage === "Hindi"){
+  if(language === "Hindi"){
 
-    preview.classList.add("lang-hindi");
+    preview.classList.add(
+      "lang-hindi"
+    );
 
+  }else if(language === "Assamese"){
+
+    preview.classList.add(
+      "lang-assamese"
+    );
+
+  }else{
+
+    preview.classList.add(
+      "lang-english"
+    );
   }
 
-  if(currentLanguage === "Assamese"){
 
-    preview.classList.add("lang-assamese");
+  currentLanguage =
+    language;
+}
 
-  }
+
+/* =========================================================
+   SHOW HANDWRITTEN
+========================================================= */
+
+function showHandwritten(text, language){
+
+  applyLanguage(language);
+
+  const preview =
+    document.getElementById("notePreview");
 
 
   preview.innerHTML =
-    renderHandwrittenNotes(answer);
+    renderHandwrittenNotes(text);
+
+
+  preview.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+
+/* =========================================================
+   AI RESULT UI
+========================================================= */
+
+function showAIResult(
+  resultElement,
+  answer,
+  language
+){
+
+  latestAIAnswer =
+    answer;
+
+
+  resultElement.style.display =
+    "block";
+
+
+  resultElement.innerHTML = `
+
+    <div class="answer-title">
+      🤖 AI Answer
+    </div>
+
+    <div class="ai-answer">
+      ${formatAIAnswer(answer)}
+    </div>
+
+    <div class="action-row">
+
+      <button
+        class="green"
+        onclick="convertLatestAIToHandwritten()"
+      >
+        ✍️ Convert Answer to Handwritten
+      </button>
+
+      <button
+        class="secondary"
+        onclick="copyLatestAnswer()"
+      >
+        📋 Copy Answer
+      </button>
+
+    </div>
+
+  `;
 
 
   /*
-    IMPORTANT:
-    Render MathJax AFTER inserting the answer.
+    Don't automatically convert the AI answer.
+    First show the actual AI answer.
+    User can then choose handwritten conversion.
   */
 
-  if(window.MathJax){
-
-    try{
-
-      await MathJax.typesetPromise([
-        preview
-      ]);
-
-    }catch(error){
-
-      console.error(
-        "MathJax error:",
-        error
-      );
-    }
-  }
 }
 
 
-/* =====================================================
-   PHOTO SELECTION
-===================================================== */
+/* =========================================================
+   FORMAT AI ANSWER
+========================================================= */
 
-function handleSelectedFile(file){
+function formatAIAnswer(text){
 
-  if(!file){
+  let value =
+    cleanAIText(text);
+
+
+  /*
+    Escape HTML first.
+    This prevents AI output from becoming actual HTML.
+  */
+
+  value =
+    escapeHTML(value);
+
+
+  /*
+    Preserve line breaks.
+  */
+
+  value =
+    value.replace(
+      /\n/g,
+      "<br>"
+    );
+
+
+  /*
+    Highlight basic LaTeX delimiters visually.
+    The actual handwritten conversion happens
+    only after pressing the handwritten button.
+  */
+
+  return value;
+}
+
+
+/* =========================================================
+   CONVERT LATEST AI ANSWER
+========================================================= */
+
+function convertLatestAIToHandwritten(){
+
+  if(!latestAIAnswer){
+
+    alert(
+      "No AI answer available."
+    );
+
     return;
   }
 
-  if(!file.type.startsWith("image/")){
 
-    alert("Please select an image file.");
+  showHandwritten(
+    latestAIAnswer,
+    currentLanguage
+  );
+}
 
+
+/* =========================================================
+   COPY
+========================================================= */
+
+async function copyLatestAnswer(){
+
+  if(!latestAIAnswer){
     return;
   }
 
-  selectedPhotoFile = file;
 
-  document.getElementById("photoFileName")
-    .textContent =
-      "📷 Selected: " + file.name;
+  try{
 
-  document.getElementById("photoFileName")
-    .classList.remove("hidden");
+    await navigator.clipboard.writeText(
+      latestAIAnswer
+    );
 
-  document.getElementById("removePhotoBtn")
-    .classList.remove("hidden");
+    alert(
+      "Answer copied."
+    );
 
+  }catch(error){
 
-  const preview =
-    document.getElementById("cameraPreview");
-
-  preview.src =
-    URL.createObjectURL(file);
-
-  preview.classList.remove("hidden");
-
-
-  document.getElementById("photoStatus")
-    .textContent =
-      "✅ Photo ready — tap Generate Notes.";
+    alert(
+      "Could not copy the answer."
+    );
+  }
 }
 
 
-function photoSelected(){
-
-  const file =
-    document.getElementById("photoFile")
-      .files[0];
-
-  handleSelectedFile(file);
-}
-
-
-function cameraSelected(){
-
-  const file =
-    document.getElementById("cameraFile")
-      .files[0];
-
-  handleSelectedFile(file);
-}
-
-
-/* =====================================================
-   REMOVE PHOTO
-===================================================== */
-
-function removePhoto(){
-
-  selectedPhotoFile = null;
-
-  document.getElementById("photoFile")
-    .value = "";
-
-  document.getElementById("cameraFile")
-    .value = "";
-
-  document.getElementById("photoFileName")
-    .classList.add("hidden");
-
-  document.getElementById("removePhotoBtn")
-    .classList.add("hidden");
-
-  document.getElementById("cameraPreview")
-    .classList.add("hidden");
-
-  document.getElementById("cameraPreview")
-    .src = "";
-
-  document.getElementById("photoStatus")
-    .textContent = "";
-
-  document.getElementById("photoProgress")
-    .style.display = "none";
-}
-
-
-/* =====================================================
-   PROGRESS
-===================================================== */
-
-function startProgress(){
-
-  const container =
-    document.getElementById("photoProgress");
-
-  const bar =
-    document.getElementById("photoProgressBar");
-
-  const text =
-    document.getElementById("photoProgressText");
-
-
-  container.style.display = "block";
-
-  let percent = 0;
-
-  bar.style.width = "0%";
-  text.textContent = "0%";
-
-
-  const timer = setInterval(() => {
-
-    percent += 5;
-
-    if(percent >= 95){
-
-      percent = 95;
-
-      clearInterval(timer);
-    }
-
-    bar.style.width =
-      percent + "%";
-
-    text.textContent =
-      percent + "%";
-
-  },80);
-}
-
-
-function finishProgress(){
-
-  document.getElementById("photoProgressBar")
-    .style.width = "100%";
-
-  document.getElementById("photoProgressText")
-    .textContent = "100%";
-}
-
-
-/* =====================================================
+/* =========================================================
    API REQUEST
-===================================================== */
+========================================================= */
 
-async function callHandNoteAI({
-  question = "",
-  language = "English",
-  style = "standard",
-  file = null
+async function sendToAI({
+
+  question,
+  file,
+  style,
+  language
 }){
 
   const formData =
     new FormData();
 
-  formData.append(
-    "question",
-    question
-  );
 
   formData.append(
-    "language",
-    language
+    "question",
+    question || ""
   );
+
 
   formData.append(
     "style",
-    style
+    style || "standard"
+  );
+
+
+  formData.append(
+    "language",
+    language || "English"
   );
 
 
@@ -1645,8 +2081,7 @@ async function callHandNoteAI({
 
     formData.append(
       "file",
-      file,
-      file.name || "photo.jpg"
+      file
     );
   }
 
@@ -1663,11 +2098,13 @@ async function callHandNoteAI({
 
   let data;
 
+
   try{
 
-    data = await response.json();
+    data =
+      await response.json();
 
-  }catch{
+  }catch(error){
 
     throw new Error(
       "Server returned an invalid response."
@@ -1679,7 +2116,7 @@ async function callHandNoteAI({
 
     throw new Error(
       data.error ||
-      "HandNote AI request failed."
+      "AI request failed."
     );
   }
 
@@ -1696,16 +2133,16 @@ async function callHandNoteAI({
 }
 
 
-/* =====================================================
-   PHOTO GENERATION
-===================================================== */
+/* =========================================================
+   PHOTO → AI
+========================================================= */
 
 async function generatePhotoNotes(){
 
   if(!selectedPhotoFile){
 
     alert(
-      "Please take a photo or select a photo first."
+      "Please take a photo or select an image first."
     );
 
     return;
@@ -1716,6 +2153,7 @@ async function generatePhotoNotes(){
     document.getElementById(
       "photoGenerateBtn"
     );
+
 
   const result =
     document.getElementById(
@@ -1728,53 +2166,59 @@ async function generatePhotoNotes(){
       "photoLanguage"
     ).value;
 
+
   const style =
     document.getElementById(
       "photoStyle"
     ).value;
 
 
-  button.disabled = true;
+  currentLanguage =
+    language;
+
+
+  button.disabled =
+    true;
+
 
   button.textContent =
     "⏳ Reading photo...";
 
 
-  result.style.display = "block";
-
-  result.innerHTML =
-    `<div class="loading">
-      Reading your study material...
-    </div>`;
+  result.style.display =
+    "block";
 
 
-  startProgress();
+  result.innerHTML = `
+    <div class="loading">
+      🔎 Reading your question/study material...
+      <br><br>
+      ✍️ Preparing the AI answer...
+    </div>
+  `;
 
 
   try{
 
     const answer =
-      await callHandNoteAI({
+      await sendToAI({
 
         question:
-          "Read the uploaded study image carefully. Create accurate study notes. Preserve mathematical equations, physics formulas and chemistry formulas. Use proper mathematical notation where necessary. Do not return programming code. Do not put the answer inside code fences.",
-
-        language,
-        style,
+          "Read the uploaded image carefully. If it contains a question, first understand the complete question and then solve/answer it accurately. If it contains study material, organize the important content into clear study notes.",
 
         file:
-          selectedPhotoFile
+          selectedPhotoFile,
+
+        style:
+          style,
+
+        language:
+          language
       });
 
 
-    finishProgress();
-
-
-    result.innerHTML =
-      "✅ Notes generated successfully.";
-
-
-    await updateNotePreview(
+    showAIResult(
+      result,
       answer,
       language
     );
@@ -1782,31 +2226,36 @@ async function generatePhotoNotes(){
 
   }catch(error){
 
-    result.innerHTML =
-      `<span class="error-result">
-        ❌ ${escapeHTML(error.message)}
-      </span>`;
+    result.innerHTML = `
+      <div class="error-result">
+        ❌ ${escapeHTML(
+          error.message
+        )}
+      </div>
+    `;
 
   }finally{
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
     button.textContent =
-      "📚 Generate Handwritten Notes";
+      "📚 Generate AI Answer";
   }
 }
 
 
-/* =====================================================
-   ASK AI
-===================================================== */
+/* =========================================================
+   ASK NORMAL AI
+========================================================= */
 
 async function askNormalAI(){
 
   const question =
-    document.getElementById(
-      "aiQuestion"
-    ).value.trim();
+    document
+      .getElementById("aiQuestion")
+      .value
+      .trim();
 
 
   if(!question){
@@ -1819,21 +2268,11 @@ async function askNormalAI(){
   }
 
 
-  const language =
-    document.getElementById(
-      "aiLanguage"
-    ).value;
-
-  const style =
-    document.getElementById(
-      "aiStyle"
-    ).value;
-
-
   const button =
     document.getElementById(
       "askAIBtn"
     );
+
 
   const result =
     document.getElementById(
@@ -1841,39 +2280,62 @@ async function askNormalAI(){
     );
 
 
-  button.disabled = true;
+  const style =
+    document
+      .getElementById("aiStyle")
+      .value;
+
+
+  const language =
+    document
+      .getElementById("aiLanguage")
+      .value;
+
+
+  currentLanguage =
+    language;
+
+
+  button.disabled =
+    true;
+
 
   button.textContent =
-    "⏳ Solving...";
+    "⏳ Thinking...";
 
 
-  result.style.display = "block";
+  result.style.display =
+    "block";
 
-  result.innerHTML =
-    `<div class="loading">
-      Solving and formatting your answer...
-    </div>`;
+
+  result.innerHTML = `
+    <div class="loading">
+      🤖 AI is solving your question...
+    </div>
+  `;
 
 
   try{
 
     const answer =
-      await callHandNoteAI({
+      await sendToAI({
 
         question:
-          question +
-          "\n\nIMPORTANT: This answer is for HandNote AI handwritten notes. Do not output programming code. Do not put mathematical answers in code fences. Use readable mathematical notation or LaTeX math notation that can be rendered by MathJax. Preserve equations accurately.",
+          question,
 
-        language,
-        style
+        file:
+          null,
+
+        style:
+          style,
+
+        language:
+          language
       });
 
 
-    result.innerHTML =
-      "✅ Answer generated.";
-
-
-    await updateNotePreview(
+    showAIResult(
+      result,
       answer,
       language
     );
@@ -1881,14 +2343,18 @@ async function askNormalAI(){
 
   }catch(error){
 
-    result.innerHTML =
-      `<span class="error-result">
-        ❌ ${escapeHTML(error.message)}
-      </span>`;
+    result.innerHTML = `
+      <div class="error-result">
+        ❌ ${escapeHTML(
+          error.message
+        )}
+      </div>
+    `;
 
   }finally{
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
     button.textContent =
       "🤖 Ask HandNote AI";
@@ -1896,16 +2362,19 @@ async function askNormalAI(){
 }
 
 
-/* =====================================================
+/* =========================================================
    TEXT → HANDWRITING
-===================================================== */
+========================================================= */
 
-async function convertTextToHandwriting(){
+function convertTextToHandwriting(){
 
   const text =
-    document.getElementById(
-      "handwritingText"
-    ).value.trim();
+    document
+      .getElementById(
+        "handwritingText"
+      )
+      .value
+      .trim();
 
 
   if(!text){
@@ -1919,23 +2388,103 @@ async function convertTextToHandwriting(){
 
 
   const language =
-    document.getElementById(
-      "handwritingLanguage"
-    ).value;
+    document
+      .getElementById(
+        "handwritingLanguage"
+      )
+      .value;
 
 
-  await updateNotePreview(
+  showHandwritten(
     text,
     language
   );
 }
 
 
-/* =====================================================
-   SAVE HANDWRITTEN PDF
-===================================================== */
+/* =========================================================
+   CLEAR
+========================================================= */
 
-async function saveHandwrittenPDF(){
+function clearEverything(){
+
+  selectedPhotoFile =
+    null;
+
+  latestAIAnswer =
+    "";
+
+
+  document.getElementById(
+    "cameraFile"
+  ).value = "";
+
+
+  document.getElementById(
+    "photoFile"
+  ).value = "";
+
+
+  document.getElementById(
+    "aiQuestion"
+  ).value = "";
+
+
+  document.getElementById(
+    "handwritingText"
+  ).value = "";
+
+
+  document.getElementById(
+    "cameraPreview"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "photoFileName"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "removePhotoBtn"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "photoResult"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "aiResult"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "notePreview"
+  ).innerHTML =
+    "Your handwritten notes will appear here.";
+
+
+  applyLanguage(
+    "English"
+  );
+}
+
+
+/* =========================================================
+   SAVE HANDWRITTEN PDF
+========================================================= */
+
+function saveHandwrittenPDF(){
 
   const preview =
     document.getElementById(
@@ -1943,125 +2492,37 @@ async function saveHandwrittenPDF(){
     );
 
 
-  if(!preview.innerText.trim()){
+  if(
+    !preview.innerText.trim() ||
+    preview.innerText.trim() ===
+    "Your handwritten notes will appear here."
+  ){
 
     alert(
-      "There is no handwritten note to save."
+      "Please generate handwritten notes first."
     );
 
     return;
   }
 
 
-  /*
-    Browser print dialog.
-    Only #notePreview is visible in print CSS.
-    Therefore the AI raw answer, buttons and other
-    sections are NOT included in the PDF.
-  */
+  window.print();
+}
 
-  if(window.MathJax){
 
-    try{
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-      await MathJax.typesetPromise([
-        preview
-      ]);
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-    }catch(error){
+    applyLanguage(
+      "English"
+    );
 
-      console.error(error);
-    }
   }
-
-
-  setTimeout(() => {
-
-    window.print();
-
-  },300);
-}
-
-
-/* =====================================================
-   CLEAR EVERYTHING
-===================================================== */
-
-function clearEverything(){
-
-  selectedPhotoFile = null;
-
-  document.getElementById("photoFile")
-    .value = "";
-
-  document.getElementById("cameraFile")
-    .value = "";
-
-  document.getElementById("aiQuestion")
-    .value = "";
-
-  document.getElementById("handwritingText")
-    .value = "";
-
-
-  document.getElementById("photoResult")
-    .innerHTML = "";
-
-  document.getElementById("photoResult")
-    .style.display = "none";
-
-
-  document.getElementById("aiResult")
-    .innerHTML = "";
-
-  document.getElementById("aiResult")
-    .style.display = "none";
-
-
-  document.getElementById("notePreview")
-    .className = "note-preview";
-
-
-  document.getElementById("notePreview")
-    .innerHTML =
-      "Your generated handwritten notes will appear here.";
-
-
-  removePhoto();
-
-  hideAllSections();
-}
-
-
-/* =====================================================
-   ENTER KEY
-===================================================== */
-
-document
-  .getElementById("aiQuestion")
-  .addEventListener(
-    "keydown",
-    function(event){
-
-      if(
-        event.key === "Enter" &&
-        (event.ctrlKey || event.metaKey)
-      ){
-
-        askNormalAI();
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   INITIAL
-===================================================== */
-
-console.log(
-  "HandNote AI frontend loaded successfully."
 );
 
 </script>
